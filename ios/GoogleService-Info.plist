@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>835683778710-48vmab2tppi4i35sgiggbrandk7bmntt.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.835683778710-48vmab2tppi4i35sgiggbrandk7bmntt</string>
+	<key>API_KEY</key>
+	<string>AIzaSyARMn4SbeZSwyKugkfw_BYpMDZ5CPE911I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>835683778710</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.indianfootball.transferNews</string>
+	<key>PROJECT_ID</key>
+	<string>transferapp-18e5d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>transferapp-18e5d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:835683778710:ios:128fab98df62685510c2b7</string>
+	<key>DATABASE_URL</key>
+	<string>https://transferapp-18e5d.firebaseio.com</string>
+</dict>
+</plist>

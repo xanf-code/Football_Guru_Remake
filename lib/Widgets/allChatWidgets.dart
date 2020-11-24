@@ -1,0 +1,510 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:transfer_news/Pages/home.dart';
+import 'package:timeago/timeago.dart' as tAgo;
+import 'package:url_launcher/url_launcher.dart';
+
+class Chats extends StatefulWidget {
+  final String userName;
+  final String userId;
+  final String chat;
+  final String url;
+  final Timestamp timestamp;
+  final likes;
+  final String messageID;
+  final String reference;
+  Chats({
+    this.userName,
+    this.userId,
+    this.chat,
+    this.url,
+    this.timestamp,
+    this.likes,
+    this.messageID,
+    this.reference,
+  });
+
+  factory Chats.fromDocument(DocumentSnapshot documentSnapshot) {
+    return Chats(
+      userName: documentSnapshot["username"],
+      userId: documentSnapshot["userId"],
+      chat: documentSnapshot["chat"],
+      url: documentSnapshot["url"],
+      timestamp: documentSnapshot["timestamp"],
+      likes: documentSnapshot["likes"],
+      messageID: documentSnapshot["messageID"],
+      reference: documentSnapshot["reference"],
+    );
+  }
+
+  @override
+  _ChatsState createState() => _ChatsState();
+}
+
+class _ChatsState extends State<Chats> {
+  final String currentUserOnlineId = currentUser?.id;
+
+  @override
+  Widget build(BuildContext context) {
+    return currentUserOnlineId != widget.userId
+        ? NonCurrentUserChatWidget(
+            url: widget.url,
+            chat: widget.chat,
+            name: widget.userName,
+            messageID: widget.messageID,
+            ref: widget.reference,
+            likes: widget.likes,
+            time: widget.timestamp.toDate(),
+          )
+        : CurrentUserChatWidget(
+            url: widget.url,
+            chat: widget.chat,
+            name: widget.userName,
+            messageID: widget.messageID,
+            ref: widget.reference,
+            likes: widget.likes,
+            time: widget.timestamp.toDate(),
+          );
+  }
+}
+
+class CurrentUserChatWidget extends StatelessWidget {
+  const CurrentUserChatWidget({
+    Key key,
+    @required this.chat,
+    @required this.url,
+    this.name,
+    this.messageID,
+    this.ref,
+    this.likes,
+    this.time,
+  }) : super(key: key);
+  final likes;
+  final String name;
+  final String ref;
+  final String messageID;
+  final String chat;
+  final String url;
+  final DateTime time;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 45.0,
+              bottom: 5,
+            ),
+            child: Text(
+              name,
+              style: GoogleFonts.rubik(
+                color: Colors.grey[400],
+                fontSize: 12,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: IconButton(
+                  icon: likes.contains(currentUser.id)
+                      ? Icon(
+                          Ionicons.ios_heart,
+                          color: Colors.red,
+                        )
+                      : Icon(
+                          Ionicons.ios_heart,
+                          color: Colors.white,
+                        ),
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    like(
+                      ref,
+                      messageID,
+                    );
+                  },
+                ),
+              ),
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      //width: MediaQuery.of(context).size.width / 2,
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width / 1.5,
+                        minWidth: 20.0,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        color: Colors.grey[900],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Linkify(
+                          onOpen: (link) async {
+                            if (await canLaunch(link.url)) {
+                              await launch(link.url);
+                            } else {
+                              throw 'Could not launch $link';
+                            }
+                          },
+                          text: chat,
+                          style: GoogleFonts.rubik(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                          linkStyle: TextStyle(
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    likes.length.toString() == 0.toString()
+                        ? SizedBox()
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey[800],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8.0,
+                                right: 8,
+                                bottom: 2,
+                                top: 2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Ionicons.ios_heart,
+                                    size: 13,
+                                    color: Colors.red,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    likes.length.toString() == 0.toString()
+                                        ? ""
+                                        : likes.length.toString(),
+                                    style: GoogleFonts.rubik(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(url),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+//docs.data()["messageID"]
+  like(String groupName, String messageID) async {
+    DocumentSnapshot docs = await chatsReference
+        .doc(groupName)
+        .collection("chats")
+        .doc(messageID)
+        .get();
+    if (docs.data()['likes'].contains(currentUser.id)) {
+      chatsReference.doc(groupName).collection("chats").doc(messageID).update({
+        'likes': FieldValue.arrayRemove(
+          [currentUser.id],
+        )
+      });
+    } else {
+      chatsReference.doc(groupName).collection("chats").doc(messageID).update({
+        'likes': FieldValue.arrayUnion([currentUser.id])
+      });
+    }
+  }
+}
+
+class NonCurrentUserChatWidget extends StatelessWidget {
+  const NonCurrentUserChatWidget({
+    Key key,
+    @required this.url,
+    @required this.chat,
+    this.name,
+    this.ref,
+    this.messageID,
+    this.likes,
+    this.time,
+  }) : super(key: key);
+  final likes;
+  final String url;
+  final String chat;
+  final String name;
+  final String ref;
+  final String messageID;
+  final DateTime time;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 45.0,
+              bottom: 5,
+            ),
+            child: Text(
+              name,
+              style: GoogleFonts.rubik(
+                color: Colors.grey[400],
+                fontSize: 12,
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(url),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      //width: MediaQuery.of(context).size.width / 2,
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width / 1.5,
+                        minWidth: 20.0,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        //color: Colors.grey[900],
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF4e54c8),
+                            const Color(0xFF2948ff),
+                          ],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Linkify(
+                          onOpen: (link) async {
+                            if (await canLaunch(link.url)) {
+                              await launch(link.url);
+                            } else {
+                              throw 'Could not launch $link';
+                            }
+                          },
+                          text: chat,
+                          style: GoogleFonts.rubik(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                          linkStyle: TextStyle(
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    likes.length.toString() == 0.toString()
+                        ? SizedBox()
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey[800],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8.0,
+                                right: 8,
+                                bottom: 2,
+                                top: 2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Ionicons.ios_heart,
+                                    size: 13,
+                                    color: Colors.red,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    likes.length.toString(),
+                                    style: GoogleFonts.rubik(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: IconButton(
+                  icon: likes.contains(currentUser.id)
+                      ? Icon(
+                          Ionicons.ios_heart,
+                          color: Colors.red,
+                        )
+                      : Icon(
+                          Ionicons.ios_heart,
+                          color: Colors.white,
+                        ),
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    like(
+                      ref,
+                      messageID,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  like(String groupName, String messageID) async {
+    DocumentSnapshot docs = await chatsReference
+        .doc(groupName)
+        .collection("chats")
+        .doc(messageID)
+        .get();
+    if (docs.data()['likes'].contains(currentUser.id)) {
+      chatsReference.doc(groupName).collection("chats").doc(messageID).update({
+        'likes': FieldValue.arrayRemove(
+          [currentUser.id],
+        )
+      });
+    } else {
+      chatsReference.doc(groupName).collection("chats").doc(messageID).update({
+        'likes': FieldValue.arrayUnion([currentUser.id])
+      });
+    }
+  }
+}
+
+class CustomCard extends StatelessWidget {
+  final String msg;
+  final String additionalInfo;
+
+  CustomCard({@required this.msg, this.additionalInfo = ""});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  //real message
+                  TextSpan(
+                    text: msg + "    ",
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+
+                  //fake additionalInfo as placeholder
+                  TextSpan(
+                      text: additionalInfo,
+                      style:
+                          TextStyle(color: Color.fromRGBO(255, 255, 255, 1))),
+                ],
+              ),
+            ),
+          ),
+
+          //real additionalInfo
+          Positioned(
+            child: Text(
+              additionalInfo,
+              style: TextStyle(
+                fontSize: 12.0,
+              ),
+            ),
+            right: 8.0,
+            bottom: 4.0,
+          )
+        ],
+      ),
+    );
+  }
+}

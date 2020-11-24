@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "835683778710",
+    "firebase_url": "https://transferapp-18e5d.firebaseio.com",
+    "project_id": "transferapp-18e5d",
+    "storage_bucket": "transferapp-18e5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835683778710:android:887df0c6b71702c510c2b7",
+        "android_client_info": {
+          "package_name": "com.indianfootball.transfer_news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835683778710-jqbgj3ed73tjl6oujp540t1pjas9f8kd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.indianfootball.transfer_news",
+            "certificate_hash": "da57e4dc831fb948eb43cd66e7961f03d8782547"
+          }
+        },
+        {
+          "client_id": "835683778710-pde14om8p0hej4seipoq9pmfqq3eds15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM-cB-zwZCO5qoTkaFZ9GtkdJYGjxPVLc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835683778710-pde14om8p0hej4seipoq9pmfqq3eds15.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835683778710-48vmab2tppi4i35sgiggbrandk7bmntt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.indianfootball.transferNews"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
