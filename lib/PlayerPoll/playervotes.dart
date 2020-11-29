@@ -57,7 +57,6 @@ class _PlayerVotesState extends State<PlayerVotes> {
   );
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     voteStream =
         votesReference.orderBy("timeStamap", descending: true).snapshots();

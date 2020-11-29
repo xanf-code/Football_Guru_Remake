@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
@@ -72,24 +74,40 @@ class _ContentListState extends State<ContentList> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          pushNewScreen(
-                            context,
-                            withNavBar: false,
-                            customPageRoute: MorpheusPageRoute(
-                              builder: (context) => VideoPage(
-                                id: videoList[index]["contentDetails"]
-                                    ["videoId"],
-                                title: videoList[index]["snippet"]["title"],
-                                date: videoList[index]["contentDetails"]
-                                    ["videoPublishedAt"],
-                                desc: videoList[index]["snippet"]
-                                    ["description"],
-                              ),
-                              transitionDuration: Duration(
-                                milliseconds: 200,
-                              ),
-                            ),
-                          );
+                          HapticFeedback.mediumImpact();
+                          videoList[index]["snippet"]["title"] ==
+                                  "Private video"
+                              ? Fluttertoast.showToast(
+                                  msg: "Video is made Private",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.white,
+                                  textColor: Colors.black,
+                                  fontSize: 16.0,
+                                )
+                              : pushNewScreen(
+                                  context,
+                                  withNavBar: false,
+                                  customPageRoute: MorpheusPageRoute(
+                                    builder: (context) => VideoPage(
+                                      id: videoList[index]["contentDetails"]
+                                          ["videoId"],
+                                      title: videoList[index]["snippet"]
+                                          ["title"],
+                                      date: videoList[index]["contentDetails"]
+                                          ["videoPublishedAt"],
+                                      shareLink: videoList[index]
+                                          ["contentDetails"]["videoId"],
+                                      videoLink: videoList[index]
+                                          ["contentDetails"]["videoId"],
+                                      url: widget.urlPath,
+                                    ),
+                                    transitionDuration: Duration(
+                                      milliseconds: 200,
+                                    ),
+                                  ),
+                                );
                         },
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 9),

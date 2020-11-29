@@ -605,22 +605,28 @@ class _ReelsState extends State<Reels> {
     });
   }
 
+  File video;
   // video picker
   pickVideo(ImageSource src) async {
-    final video = await ImagePicker().getVideo(
+    video = await ImagePicker.pickVideo(
       source: src,
-    );
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ConfirmedPage(
-          videoFile: File(video.path),
-          imageSource: src,
-          videoPath: video.path,
-          gCurrentUser: currentUser,
-        ),
+      maxDuration: Duration(
+        seconds: 10,
       ),
     );
+    if (video != null) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => ConfirmedPage(
+            videoFile: File(video.path),
+            imageSource: src,
+            videoPath: video.path,
+            gCurrentUser: currentUser,
+          ),
+        ),
+      );
+    }
   }
 
   // Add likes
@@ -637,40 +643,6 @@ class _ReelsState extends State<Reels> {
       });
     }
   }
-
-  // comment dialog
-  // ShowOptionDialog() {
-  //   return showDialog(
-  //       context: context,
-  //       useRootNavigator: false,
-  //       builder: (mContext) {
-  //         return SimpleDialog(
-  //           children: [
-  //             GestureDetector(
-  //               onTap: () {
-  //                 Navigator.pop(mContext);
-  //                 pickVideo(ImageSource.gallery);
-  //               },
-  //               child: SimpleDialogOption(
-  //                 child: Text("Gallery"),
-  //               ),
-  //             ),
-  //             GestureDetector(
-  //               onTap: () => pickVideo(ImageSource.camera),
-  //               child: SimpleDialogOption(
-  //                 child: Text("Camera"),
-  //               ),
-  //             ),
-  //             GestureDetector(
-  //               onTap: () => Navigator.pop(context),
-  //               child: SimpleDialogOption(
-  //                 child: Text("Cancel"),
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
 }
 
 class VideoPlayerItem extends StatefulWidget {
@@ -709,12 +681,13 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
           ? AspectRatio(
               aspectRatio: controller.value.aspectRatio,
               child: InkWell(
-                  onTap: () {
-                    controller.value.isPlaying
-                        ? controller.pause()
-                        : controller.play();
-                  },
-                  child: CachedVideoPlayer(controller)),
+                onTap: () {
+                  controller.value.isPlaying
+                      ? controller.pause()
+                      : controller.play();
+                },
+                child: CachedVideoPlayer(controller),
+              ),
             )
           : Container(
               color: Colors.black,

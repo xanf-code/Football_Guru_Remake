@@ -193,7 +193,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_unicons/unicons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -214,6 +216,10 @@ class _ProfilePageState extends State<ProfilePage> {
   logOutUser() {
     gSignIn.signOut();
   }
+
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController reportController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -408,6 +414,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             actions: [
                               FlatButton(
                                 onPressed: () {
+                                  HapticFeedback.mediumImpact();
                                   Navigator.of(context).pop();
                                 },
                                 child: Text("Close"),
@@ -574,6 +581,103 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 buildNotificationOptionRow("News for you", true),
                 buildNotificationOptionRow("Notifications", true),
+                SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.cached,
+                      color: Colors.green,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Cache Management",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 15,
+                  thickness: 2,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    HapticFeedback.mediumImpact();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Color(0xFF0e0e10),
+                            title: Text(
+                              "Cache Manager",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            content: Text(
+                              "Are you sure you want to clear all app cache?",
+                              style: GoogleFonts.rubik(
+                                color: Colors.white,
+                              ),
+                            ),
+                            actions: [
+                              FlatButton(
+                                onPressed: () async {
+                                  HapticFeedback.mediumImpact();
+                                  DefaultCacheManager manager =
+                                      new DefaultCacheManager();
+                                  await manager.emptyCache();
+                                  Navigator.of(context).pop();
+                                  Fluttertoast.showToast(
+                                    msg: "Cache Cleared",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.white,
+                                    textColor: Colors.black,
+                                    fontSize: 16.0,
+                                  );
+                                },
+                                child: Text("Clear"),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  HapticFeedback.mediumImpact();
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Close"),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Clear Cache",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[300],
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 50,
                 ),

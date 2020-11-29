@@ -127,7 +127,9 @@ class _ISLStatsState extends State<ISLStats> {
                                   ? ISLStats[index]["StatValue"]
                                       .toString()
                                       .substring(0, 3)
-                                  : ISLStats[index]["StatValue"].toString(),
+                                  : ISLStats[index]["StatValue"]
+                                      .toInt()
+                                      .toString(),
                               style: GoogleFonts.ubuntu(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,

@@ -106,7 +106,9 @@ class _LinupsState extends State<Linups> {
                                               passes: l["stats"]["0"]
                                                       ["Saves inside box"]
                                                   .toString(),
-                                              ratings: l["rating"]["num"],
+                                              ratings:
+                                                  l["rating"]["num"] == null ??
+                                                      '-',
                                               shotacc: l["stats"]["0"]["Throws"]
                                                   .toString(),
                                               onTarget: l["stats"]["1"]
@@ -193,7 +195,8 @@ class _LinupsState extends State<Linups> {
                                               passes: l["stats"]["0"]
                                                       ["Accurate passes"]
                                                   .toString(),
-                                              ratings: l["rating"]["num"],
+                                              ratings:
+                                                  l["rating"]["num"] ?? "-",
                                               shotacc: l["stats"]["1"]
                                                       ["Shot accuracy"]
                                                   .toString(),
@@ -329,7 +332,7 @@ class _LinupsState extends State<Linups> {
                                 child: Text(
                                   l["rating"] == null
                                       ? "-"
-                                      : l["rating"]["num"],
+                                      : l["rating"]["num"].toString(),
                                   style: GoogleFonts.rubik(
                                     color: Colors.white,
                                     fontSize: 12,

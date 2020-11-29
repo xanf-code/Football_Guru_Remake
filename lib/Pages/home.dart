@@ -53,10 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
   PersistentTabController _controller;
   Timer timer;
-
-  TextEditingController clubController = TextEditingController();
+  //String clubName;
   TextEditingController userController = TextEditingController();
-  String leagueName;
   controllSignIn(GoogleSignInAccount signInAccount) async {
     if (signInAccount != null) {
       await saveUserInfoToFireStore();
@@ -81,9 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context,
         CupertinoPageRoute(
           builder: (context) => CreateAccountPage(
-            club: clubController,
             username: userController,
-            league: leagueName,
           ),
         ),
       );
@@ -95,8 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
         "username": userController.text,
         "timeStamp": timeStamp,
         "isBlocked": isBlocked,
-        "club": clubController.text,
-        "favLeague": leagueName,
       });
       documentSnapshot = await usersReference.doc(gCurrentUser.id).get();
     }

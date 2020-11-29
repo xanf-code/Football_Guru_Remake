@@ -70,9 +70,11 @@ class _ChatPageState extends State<ChatPage> {
           );
         }
         List<Chats> chats = [];
-        dataSnapshot.data.documents.forEach((document) {
-          chats.add(Chats.fromDocument(document));
-        });
+        dataSnapshot.data.documents.forEach(
+          (document) {
+            chats.add(Chats.fromDocument(document));
+          },
+        );
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: ListView(

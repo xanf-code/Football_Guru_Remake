@@ -11,6 +11,7 @@ import 'package:transfer_news/Pages/LeaguePages/Page1_NT.dart';
 import 'package:transfer_news/Pages/LeaguePages/Page2_Leagues.dart';
 import 'package:transfer_news/Pages/LeaguePages/Page_3_Women.dart';
 import 'package:transfer_news/Pages/LeaguePages/Page_4_AFC.dart';
+import 'package:transfer_news/Pages/LeaguePages/Page_5_StateLeagues.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
 
@@ -135,6 +136,13 @@ class _StandingsState extends State<Standings> {
                           icon: SizedBox.shrink(),
                           label: RotatedBox(
                             quarterTurns: -1,
+                            child: Text("State Leagues"),
+                          ),
+                        ),
+                        NavigationRailDestination(
+                          icon: SizedBox.shrink(),
+                          label: RotatedBox(
+                            quarterTurns: -1,
                             child: Text("Continental Tournaments"),
                           ),
                         ),
@@ -154,6 +162,7 @@ class _StandingsState extends State<Standings> {
                 NationalTeam(),
                 LeaguePage(),
                 WomensPage(),
+                StatesLeague(),
                 ContinentalTournaments(),
               ],
             ),

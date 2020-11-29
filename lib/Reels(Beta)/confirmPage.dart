@@ -52,42 +52,6 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
     controller.dispose();
   }
 
-  // createReels(
-  //   String name,
-  //   String ownerID,
-  //   String postId,
-  //   String url,
-  //   String description,
-  //   String songName,
-  // ) async {
-  //   Map<String, dynamic> data = {
-  //     "name": name,
-  //     "ownerID": ownerID,
-  //     "postId": postId,
-  //     "url": url,
-  //     "discription": description,
-  //     "songName": songName,
-  //   };
-  //   String jsonBody = json.encode(data);
-  //   final headers = {'Content-Type': 'application/json'};
-  //   final String apiUrl = "https://reelsapiapp.herokuapp.com/api/postStories";
-  //   final encoding = Encoding.getByName('utf-8');
-  //
-  //   final response = await http.post(
-  //     apiUrl,
-  //     body: jsonBody,
-  //     headers: headers,
-  //     encoding: encoding,
-  //   );
-  //   if (response.statusCode == 200) {
-  //     final String responseString = response.body;
-  //     print("Almost Done");
-  //     return storiesModelFromJson(responseString);
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
   Future<String> uploadVideo(mVideoFile) async {
     StorageUploadTask mStorageUploadTask =
         reelsReference.child("post_$postId.mp4").putFile(
@@ -153,96 +117,98 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF0e0e10),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              uploading ? LinearProgressIndicator() : Text(""),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.5,
-                child: VideoPlayer(controller),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 14,
-                  right: 14,
-                  bottom: 14,
-                  top: 14,
-                ),
-                child: TextFormField(
-                  controller: descTextEditingController,
-                  decoration: new InputDecoration(
-                    filled: true,
-                    labelText: "Enter Caption",
-                    hintStyle: GoogleFonts.rubik(
-                      color: Colors.white,
-                    ),
-                    labelStyle: GoogleFonts.rubik(
-                      color: Colors.grey,
-                    ),
-                    fillColor: Colors.grey[900],
-                    border: InputBorder.none,
-                    //fillColor: Colors.green
-                  ),
-                  validator: (val) {
-                    if (val.length == 0) {
-                      return "Caption cannot be empty";
-                    }
-                    if (val.length > 30) {
-                      return "Caption cannot be more than 30";
-                    } else {
-                      return null;
-                    }
-                  },
-                  style: GoogleFonts.rubik(
-                    color: Colors.white,
+        body: Stack(
+          children: [
+            Stack(
+              children: [
+                Center(
+                  child: AspectRatio(
+                    aspectRatio: controller.value.aspectRatio,
+                    child: VideoPlayer(controller),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () => controllUploadAndSave(),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFF8E2DE2),
-                        const Color(0xFF4A00E0),
-                      ],
-                      begin: const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text(
-                          "Upload Video",
-                          style: GoogleFonts.rubik(
+              ],
+            ),
+            Positioned(
+              bottom: 15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      height: 60,
+                      child: TextFormField(
+                        controller: descTextEditingController,
+                        decoration: new InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          prefixIcon: Icon(
+                            Octicons.pencil,
+                            color: Colors.grey,
+                          ),
+                          filled: true,
+                          labelText: "Enter Caption",
+                          hintStyle: GoogleFonts.rubik(
                             color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                          ),
+                          labelStyle: GoogleFonts.rubik(
+                            color: Colors.grey,
+                          ),
+                          fillColor: Colors.grey[900],
+                          border: InputBorder.none,
+                          //fillColor: Colors.green
+                        ),
+                        validator: (val) {
+                          if (val.length == 0) {
+                            return "Caption cannot be empty";
+                          }
+                          if (val.length > 30) {
+                            return "Caption cannot be more than 30";
+                          } else {
+                            return null;
+                          }
+                        },
+                        style: GoogleFonts.rubik(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        await controllUploadAndSave();
+                      },
+                      //uploading ? null : () => var resp = await controllUploadAndSave(),
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFe0f2f1),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Ionicons.ios_send,
+                            size: 20,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        AntDesign.rightcircle,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+            uploading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Text(""),
+          ],
         ),
       ),
     );

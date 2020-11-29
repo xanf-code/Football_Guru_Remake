@@ -19,6 +19,7 @@ import 'package:transfer_news/Pages/LiveScore/live.dart';
 import 'package:transfer_news/Pages/Stories/updatePage.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Widgets/NewsCardWidget.dart';
+import 'package:transfer_news/Widgets/storyCard.dart';
 
 class ISLNews extends StatefulWidget {
   final User gCurrentUser;
@@ -71,7 +72,7 @@ class _ISLNewsState extends State<ISLNews>
                   slidingCurve: Curves.decelerate,
                   delay: Duration(milliseconds: 200),
                   child: LiveScoreWidget(
-                    leagueId: 9478,
+                    leagueId: 223,
                   ),
                 ),
                 DelayedDisplay(
@@ -91,7 +92,7 @@ class _ISLNewsState extends State<ISLNews>
       slidingCurve: Curves.decelerate,
       delay: Duration(milliseconds: 100),
       child: Container(
-        height: 110,
+        height: 100,
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("stories")
@@ -109,55 +110,30 @@ class _ISLNewsState extends State<ISLNews>
               return SizedBox();
             } else {
               return SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();
-                        Navigator.push(
+                        pushNewScreen(
                           context,
-                          CupertinoPageRoute(
+                          withNavBar: false,
+                          customPageRoute: MorpheusPageRoute(
                             builder: (context) => UploadPage(
                               gCurrentUser: currentUser,
+                            ),
+                            transitionDuration: Duration(
+                              milliseconds: 200,
                             ),
                           ),
                         );
                       },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 14.0, top: 1),
-                            child: CircleAvatar(
-                              radius: 31,
-                              backgroundColor: Color(0xFF7232f2),
-                              child: CircleAvatar(
-                                radius: 28,
-                                backgroundImage: CachedNetworkImageProvider(
-                                  (currentUser.url),
-                                ),
-                                child: Icon(
-                                  AntDesign.plus,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: Text(
-                              "Add Stories",
-                              style: GoogleFonts.cabin(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: StoryDesign(
+                        image: currentUser.url,
+                        name: currentUser.username,
+                        isUpload: true,
                       ),
                     ),
                     ListView.builder(
@@ -170,62 +146,28 @@ class _ISLNewsState extends State<ISLNews>
                         if (snapshot.data == null) {
                           return SizedBox();
                         } else {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              top: 2,
-                              //left: 8.0,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 14.0,
+                          return InkWell(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              pushNewScreen(
+                                context,
+                                withNavBar: false,
+                                customPageRoute: MorpheusPageRoute(
+                                  builder: (context) => StoryPage(
+                                    url: snapshot.data.docs[index]["url"],
+                                    caption: snapshot.data.docs[index]
+                                        ["caption"],
                                   ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      pushNewScreen(
-                                        context,
-                                        withNavBar: false,
-                                        customPageRoute: MorpheusPageRoute(
-                                          builder: (context) => StoryPage(
-                                            url: snapshot.data.docs[index]
-                                                ["url"],
-                                            caption: snapshot.data.docs[index]
-                                                ["caption"],
-                                          ),
-                                          transitionDuration: Duration(
-                                            milliseconds: 200,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 31,
-                                      backgroundColor: Color(0xFF7232f2),
-                                      child: CircleAvatar(
-                                        radius: 28,
-                                        backgroundImage:
-                                            CachedNetworkImageProvider(
-                                          snapshot.data.docs[index]["url"],
-                                        ),
-                                      ),
-                                    ),
+                                  transitionDuration: Duration(
+                                    milliseconds: 200,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Text(
-                                    snapshot.data.docs[index]["name"],
-                                    style: GoogleFonts.cabin(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              );
+                            },
+                            child: StoryDesign(
+                              image: snapshot.data.docs[index]["url"],
+                              name: snapshot.data.docs[index]["name"],
+                              isUpload: false,
                             ),
                           );
                         }

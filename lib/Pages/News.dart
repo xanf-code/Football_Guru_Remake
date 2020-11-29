@@ -10,14 +10,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:transfer_news/Helper/tmnews_helper.dart';
 import 'package:transfer_news/Model/tmnewsmodel.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/ISLNews.dart';
 import 'package:transfer_news/Pages/IleagueNews.dart';
-import 'package:transfer_news/Pages/NestedPages/AllNews.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/categoryPages/categoryIntroPage.dart';
 import 'package:transfer_news/Pages/home.dart';
@@ -63,7 +61,7 @@ class _NewsPageState extends State<NewsPage> {
 
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         backgroundColor: Color(0xFF0e0e10),
         appBar: AppBar(
@@ -120,31 +118,31 @@ class _NewsPageState extends State<NewsPage> {
                 left: 4,
                 bottom: 12,
               ),
-              child: TabBar(
-                labelStyle: GoogleFonts.ubuntu(
-                  fontWeight: FontWeight.bold,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: TabBar(
+                  labelStyle: GoogleFonts.ubuntu(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.grey,
+                  isScrollable: true,
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey[900],
+                  ),
+                  tabs: <Widget>[
+                    Tab(
+                      text: "ISL News",
+                    ),
+                    Tab(
+                      text: "I-League News",
+                    ),
+                    Tab(
+                      text: "Transfer News",
+                    ),
+                  ],
                 ),
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.grey,
-                isScrollable: true,
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.grey[900],
-                ),
-                tabs: <Widget>[
-                  Tab(
-                    text: "ISL News",
-                  ),
-                  Tab(
-                    text: "I-League News",
-                  ),
-                  Tab(
-                    text: "Football News",
-                  ),
-                  Tab(
-                    text: "Transfer News",
-                  ),
-                ],
               ),
             ),
           ),
@@ -155,7 +153,6 @@ class _NewsPageState extends State<NewsPage> {
               gCurrentUser: currentUser,
             ),
             ILeagueNews(),
-            AllNews(),
             TMNewsWidget(news: news),
           ],
         ),

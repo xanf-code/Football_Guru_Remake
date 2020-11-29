@@ -10,12 +10,13 @@ import 'package:transfer_news/Pages/constants/constants.dart';
 import 'package:transfer_news/Pages/home.dart';
 
 class CreateAccountPage extends StatefulWidget {
-  final TextEditingController club;
+  // final String club;
   final TextEditingController username;
-  final String league;
 
-  const CreateAccountPage({Key key, this.club, this.username, this.league})
-      : super(key: key);
+  CreateAccountPage({
+    // this.club,
+    this.username,
+  });
   @override
   _CreateAccountPageState createState() => _CreateAccountPageState();
 }
@@ -23,7 +24,7 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPageState extends State<CreateAccountPage> {
   @override
   String username;
-
+  //String clubName;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
@@ -44,6 +45,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       );
     }
   }
+
+  // final List<String> teams = [
+  //   'Bengaluru FC',
+  //   'Kerala Blasters FC',
+  //   'Jamshedpur FC',
+  //   'ATK Mohun Bagan FC',
+  //   'Techtro Swadesh FC'
+  // ];
 
   Widget build(BuildContext context) {
     return SafeArea(
@@ -95,10 +104,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.grey[900],
-                            // focusedBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.white),
-                            //   borderRadius: BorderRadius.circular(10),
-                            // ),
                             border: InputBorder.none,
                             labelText: "Username",
                             labelStyle: GoogleFonts.ubuntu(
@@ -113,97 +118,47 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           autocorrect: true,
                           //autofocus: true,
                         ),
-
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                        // // TextFormField(
-                        // //   style: GoogleFonts.ubuntu(color: Colors.white),
-                        // //   controller: widget.league,
-                        // //   decoration: InputDecoration(
-                        // //     filled: true,
-                        // //     fillColor: Colors.grey[900],
-                        // //     // focusedBorder: UnderlineInputBorder(
-                        // //     //   borderSide: BorderSide(color: Colors.white),
-                        // //     //   borderRadius: BorderRadius.circular(10),
-                        // //     // ),
-                        // //     border: InputBorder.none,
-                        // //     labelText: "League",
-                        // //     labelStyle: GoogleFonts.ubuntu(
-                        // //       fontSize: 16,
-                        // //       color: Colors.white,
-                        // //       fontWeight: FontWeight.bold,
-                        // //     ),
-                        // //     hintText: "Select a League",
-                        // //     hintStyle:
-                        // //         GoogleFonts.montserrat(color: Colors.grey),
-                        // //   ),
-                        // //   autocorrect: true,
-                        // //   autofocus: true,
-                        // // ),
-                        // // Container(
-                        // //   color: Colors.white,
-                        // //   child: DropDownField(
-                        // //     //required: true,
-                        // //     itemsVisibleInDropdown: 2,
-                        // //     hintText: "Select League",
-                        // //     hintStyle:
-                        // //         GoogleFonts.montserrat(color: Colors.white),
-                        // //     textStyle:
-                        // //         GoogleFonts.montserrat(color: Colors.white),
-                        // //     controller: widget.league,
-                        // //     items: favLeagueList,
-                        // //     onValueChanged: (value) {
-                        // //       setState(() {
-                        // //         selectedLeague = value;
-                        // //       });
-                        // //     },
-                        // //   ),
-                        // // ),
-                        // FormField<String>(
-                        //   builder: (FormFieldState<String> state) {
-                        //     return InputDecorator(
-                        //       decoration: InputDecoration(
-                        //           filled: true,
-                        //           fillColor: Colors.grey[900],
-                        //           hintText: 'Please select League',
-                        //           hintStyle: GoogleFonts.montserrat(
-                        //             color: Colors.white,
-                        //             fontWeight: FontWeight.bold,
-                        //           ),
-                        //           border: OutlineInputBorder(
-                        //               borderRadius:
-                        //                   BorderRadius.circular(5.0))),
-                        //       //isEmpty: selectedLeague == '',
-                        //       child: DropdownButtonHideUnderline(
-                        //         child: DropdownButton<String>(
-                        //           dropdownColor: Colors.black,
-                        //           iconEnabledColor: Colors.white,
-                        //           style: GoogleFonts.rubik(
-                        //             color: Colors.white,
-                        //             fontWeight: FontWeight.bold,
-                        //           ),
-                        //           value: selectedLeague,
-                        //           isDense: true,
-                        //           onChanged: (String newValue) {
-                        //             setState(() {
-                        //               selectedLeague = newValue;
-                        //               state.didChange(newValue);
-                        //               print(selectedLeague);
-                        //               //print(widget.league);
-                        //             });
-                        //           },
-                        //           items: favLeagueList(),
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
                       ],
                     ),
                   ),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.all(17.0),
+              //   child: DropdownButtonFormField(
+              //     dropdownColor: Colors.black,
+              //     style: GoogleFonts.ubuntu(
+              //       fontSize: 16,
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //     value: clubName,
+              //     onChanged: (val) {
+              //       setState(() {
+              //         clubName = val;
+              //       });
+              //
+              //       print(widget.club);
+              //     },
+              //     decoration: InputDecoration(
+              //       filled: true,
+              //       fillColor: Colors.grey[900],
+              //       border: InputBorder.none,
+              //       labelText: "Select Club",
+              //       labelStyle: GoogleFonts.ubuntu(
+              //         fontSize: 16,
+              //         color: Colors.white,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //     items: teams.map((team) {
+              //       return DropdownMenuItem(
+              //         child: Text("$team"),
+              //         value: team,
+              //       );
+              //     }).toList(),
+              //   ),
+              // ),
               GestureDetector(
                 onTap: submitUsername,
                 child: Container(

@@ -120,13 +120,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  change_app_package_name:
-    dependency: "direct dev"
-    description:
-      name: change_app_package_name
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   characters:
     dependency: transitive
     description:
@@ -364,7 +357,7 @@ packages:
     source: hosted
     version: "0.5.0"
   flutter_cache_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
@@ -653,6 +646,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.4"
   logging:
     dependency: transitive
     description:
@@ -849,6 +849,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  rename:
+    dependency: "direct dev"
+    description:
+      name: rename
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   rxdart:
     dependency: transitive
     description:
@@ -930,7 +937,7 @@ packages:
       name: story_designer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.6"
+    version: "0.0.8+1"
   story_view:
     dependency: "direct main"
     description:
@@ -1078,13 +1085,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.5"
+  video_compress:
+    dependency: "direct main"
+    description:
+      name: video_compress
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   video_player:
     dependency: "direct main"
     description:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   video_player_platform_interface:
     dependency: transitive
     description:
