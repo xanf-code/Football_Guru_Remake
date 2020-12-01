@@ -35,32 +35,6 @@ class _ReelsState extends State<Reels> {
         .snapshots();
   }
 
-  // Widget float1() {
-  //   return Container(
-  //     child: FloatingActionButton(
-  //       heroTag: "tag1",
-  //       onPressed: () {
-  //         HapticFeedback.mediumImpact();
-  //         pickVideo(ImageSource.gallery);
-  //       },
-  //       child: Icon(FontAwesome.file_video_o),
-  //     ),
-  //   );
-  // }
-  //
-  // Widget float2() {
-  //   return Container(
-  //     child: FloatingActionButton(
-  //       heroTag: "tag2",
-  //       onPressed: () {
-  //         HapticFeedback.mediumImpact();
-  //         pickVideo(ImageSource.camera);
-  //       },
-  //       child: Icon(Ionicons.ios_videocam),
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -76,8 +50,8 @@ class _ReelsState extends State<Reels> {
             curve: Curves.bounceIn,
             overlayColor: Colors.black,
             overlayOpacity: 0.5,
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
+            backgroundColor: Color(0xFF7232f2),
+            foregroundColor: Colors.white,
             elevation: 8.0,
             shape: CircleBorder(),
             children: [

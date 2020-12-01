@@ -142,12 +142,18 @@ class _ForumState extends State<Forum> {
           getLatestPosts();
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => captureImageWithGallery(),
-      //   child: Icon(Icons.add),
-      //   foregroundColor: Colors.black,
-      //   backgroundColor: Colors.white,
-      // ),
+      floatingActionButton: currentUser.isAdmin == true
+          ? FloatingActionButton(
+              heroTag: null,
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                captureImageWithGallery();
+              },
+              child: Icon(Icons.add),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+            )
+          : SizedBox(),
     );
   }
 
@@ -361,26 +367,6 @@ class _ForumState extends State<Forum> {
       body: ListView(
         children: [
           uploading ? LinearProgressIndicator() : Text(""),
-          // Container(
-          //   height: 230,
-          //   width: MediaQuery.of(context).size.width,
-          //   child: Center(
-          //     child: AspectRatio(
-          //       aspectRatio: 16 / 9,
-          //       child: Container(
-          //         decoration: BoxDecoration(
-          //           image: DecorationImage(
-          //             image: FileImage(file),
-          //             fit: BoxFit.cover,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 10,
-          // ),
           ListTile(
             leading: Icon(
               Icons.title,

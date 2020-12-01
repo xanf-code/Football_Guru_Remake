@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  bloc:
+    dependency: transitive
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -337,6 +344,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  firestore_collection:
+    dependency: "direct main"
+    description:
+      name: firestore_collection
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   fixnum:
     dependency: transitive
     description:
@@ -349,6 +363,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bloc:
+    dependency: transitive
+    description:
+      name: flutter_bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.1"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -695,6 +716,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.2+1"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   node_interop:
     dependency: transitive
     description:
@@ -723,6 +751,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
+  paginate_firestore:
+    dependency: "direct main"
+    description:
+      name: paginate_firestore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.2"
   path:
     dependency: transitive
     description:
@@ -828,6 +863,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.13"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.2+2"
   pub_semver:
     dependency: transitive
     description:
@@ -896,6 +938,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sorted_list:
+    dependency: transitive
+    description:
+      name: sorted_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   source_gen:
     dependency: transitive
     description:
@@ -1022,6 +1071,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1+2"
+  transparent_image:
+    dependency: "direct main"
+    description:
+      name: transparent_image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   typed_data:
     dependency: transitive
     description:

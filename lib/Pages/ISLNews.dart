@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:story_view/controller/story_controller.dart';
@@ -72,7 +69,7 @@ class _ISLNewsState extends State<ISLNews>
                   slidingCurve: Curves.decelerate,
                   delay: Duration(milliseconds: 200),
                   child: LiveScoreWidget(
-                    leagueId: 223,
+                    leagueId: 9478,
                   ),
                 ),
                 DelayedDisplay(

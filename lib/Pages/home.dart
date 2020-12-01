@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
@@ -18,6 +19,7 @@ import 'package:transfer_news/Pages/Forum.dart';
 import 'package:transfer_news/Pages/News.dart';
 import 'package:transfer_news/Pages/Profile/terms&cond.dart';
 import 'package:transfer_news/Pages/Transfers/transfers.dart';
+import 'package:transfer_news/RealTime/realTimeMain.dart';
 import 'createaccount.dart';
 
 final GoogleSignIn gSignIn = GoogleSignIn();
@@ -30,6 +32,8 @@ final StorageReference storageReference =
     FirebaseStorage.instance.ref().child("Posts Pictures");
 final StorageReference storyReference =
     FirebaseStorage.instance.ref().child("Stories Pictures");
+final StorageReference realTimeReference =
+    FirebaseStorage.instance.ref().child("RealTime Pictures");
 final StorageReference reelsReference =
     FirebaseStorage.instance.ref().child("Reels");
 final activityReference = FirebaseFirestore.instance.collection("feed");
@@ -51,6 +55,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _isSignedIn = false;
   int currentIndex = 0;
+  bool singningIn = false;
   PersistentTabController _controller;
   Timer timer;
   //String clubName;
@@ -69,6 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   bool isBlocked = false;
+  bool isAdmin = false;
+  bool isVerified = false;
   saveUserInfoToFireStore() async {
     final GoogleSignInAccount gCurrentUser = gSignIn.currentUser;
     DocumentSnapshot documentSnapshot =
@@ -91,18 +98,19 @@ class _MyHomePageState extends State<MyHomePage> {
         "username": userController.text,
         "timeStamp": timeStamp,
         "isBlocked": isBlocked,
+        "isAdmin": isAdmin,
+        "verified": isVerified,
       });
       documentSnapshot = await usersReference.doc(gCurrentUser.id).get();
     }
     currentUser = User.fromDocument(documentSnapshot);
   }
 
-  loginUser() {
-    gSignIn.signIn();
-  }
-
-  logOutUser() {
-    gSignIn.signOut();
+  loginUser() async {
+    setState(() {
+      singningIn = true;
+    });
+    await gSignIn.signIn();
   }
 
   CachedVideoPlayerController controller;
@@ -125,6 +133,9 @@ class _MyHomePageState extends State<MyHomePage> {
       print("Error Message : " + gError);
     });
     gSignIn.signInSilently(suppressErrors: false).then((gSignInAccount) {
+      setState(() {
+        singningIn = true;
+      });
       controllSignIn(gSignInAccount);
     }).catchError((gError) {
       print(gError);
@@ -152,6 +163,9 @@ class _MyHomePageState extends State<MyHomePage> {
       Forum(
         gCurrentUser: currentUser,
       ),
+      RealTime(
+        gCurrentUser: currentUser,
+      ),
       AllTransfers(
         gCurrentUser: currentUser,
       ),
@@ -174,10 +188,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(
-          EvaIcons.messageCircleOutline,
+          AntDesign.aliwangwang_o1,
           size: 24,
         ),
         title: ("Forum"),
+        activeColor: Color(0xFF7232f2),
+        inactiveColor: Colors.white70,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(
+          Entypo.modern_mic,
+          size: 24,
+        ),
+        title: ("Real Time"),
         activeColor: Color(0xFF7232f2),
         inactiveColor: Colors.white70,
       ),
@@ -205,6 +228,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     if (_isSignedIn && currentUser.isBlocked == false) {
+      setState(() {
+        singningIn = false;
+      });
       return buildPersistentTabView();
     } else {
       return SignInPage();
@@ -376,6 +402,35 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+        singningIn == true
+            ? Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.white54,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Loading..",
+                        style: Theme.of(context).primaryTextTheme.button,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Text(""),
       ],
     );
   }

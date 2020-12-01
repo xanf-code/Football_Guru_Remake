@@ -7,8 +7,11 @@ class User {
   final String url;
   final String email;
   final bool isBlocked;
-
+  final bool isAdmin;
+  final bool isVerified;
   User({
+    this.isAdmin,
+    this.isVerified,
     this.isBlocked,
     this.id,
     this.profileName,
@@ -24,6 +27,8 @@ class User {
       profileName: doc["displayName"],
       username: doc["username"],
       isBlocked: doc["isBlocked"],
+      isAdmin: doc["isAdmin"],
+      isVerified: doc["verified"],
     );
   }
 }

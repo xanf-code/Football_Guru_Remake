@@ -179,8 +179,7 @@ class _AllTransfersState extends State<AllTransfers> {
                                                   Color(0xFF7232f2),
                                               child: CircleAvatar(
                                                 radius: 20,
-                                                backgroundImage:
-                                                    CachedNetworkImageProvider(
+                                                backgroundImage: NetworkImage(
                                                   (transfers[index]
                                                       .playerImage),
                                                 ),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class StoryDesign extends StatelessWidget {
   final String image;
@@ -54,8 +55,10 @@ class StoryDesign extends StatelessWidget {
                 width: 55.0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
-                  child: CachedNetworkImage(
-                    imageUrl: image,
+                  child: FadeInImage.memoryNetwork(
+                    fadeInCurve: Curves.easeIn,
+                    placeholder: kTransparentImage,
+                    image: image,
                     fit: BoxFit.cover,
                   ),
                 ),

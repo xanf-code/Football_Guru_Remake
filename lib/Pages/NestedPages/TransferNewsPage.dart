@@ -10,6 +10,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Model/tmnewsmodel.dart';
 import 'package:transfer_news/Pages/bodyWebView/webview.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class TMNewsWidget extends StatelessWidget {
   const TMNewsWidget({
@@ -99,8 +100,9 @@ class TMNewsWidget extends StatelessWidget {
                                 ),
                                 Row(
                                   children: [
-                                    CachedNetworkImage(
-                                      imageUrl: news[index].topImage,
+                                    FadeInImage.memoryNetwork(
+                                      placeholder: kTransparentImage,
+                                      image: news[index].topImage,
                                       height: 22,
                                       width: 22,
                                     ),
@@ -129,8 +131,9 @@ class TMNewsWidget extends StatelessWidget {
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
-                        child: CachedNetworkImage(
-                          imageUrl: news[index].articleImage,
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: news[index].articleImage,
                           width: 72,
                           height: 72,
                           fit: BoxFit.cover,

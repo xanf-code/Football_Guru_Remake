@@ -16,6 +16,7 @@ import 'package:transfer_news/Pages/LiveScore/live.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:html/parser.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ILeagueNews extends StatefulWidget {
@@ -162,9 +163,10 @@ class ILeagueNewsWidget extends StatelessWidget {
                         ),
                         height: 280,
                         width: MediaQuery.of(context).size.width,
-                        child: CachedNetworkImage(
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
                           fit: BoxFit.cover,
-                          imageUrl: ILeaguenewsData[index]
+                          image: ILeaguenewsData[index]
                                       ["jetpack_featured_media_url"] ==
                                   ""
                               ? "https://www.globalpharmatek.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg"

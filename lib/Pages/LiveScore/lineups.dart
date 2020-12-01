@@ -107,8 +107,9 @@ class _LinupsState extends State<Linups> {
                                                       ["Saves inside box"]
                                                   .toString(),
                                               ratings:
-                                                  l["rating"]["num"] == null ??
-                                                      '-',
+                                                  l["rating"]["num"] == null
+                                                      ? '-'
+                                                      : l["rating"]["num"],
                                               shotacc: l["stats"]["0"]["Throws"]
                                                   .toString(),
                                               onTarget: l["stats"]["1"]
@@ -330,7 +331,7 @@ class _LinupsState extends State<Linups> {
                               ),
                               child: Center(
                                 child: Text(
-                                  l["rating"] == null
+                                  l["rating"]["num"] == null
                                       ? "-"
                                       : l["rating"]["num"].toString(),
                                   style: GoogleFonts.rubik(

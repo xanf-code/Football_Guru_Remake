@@ -35,29 +35,31 @@ class _ChatIntroState extends State<ChatIntro> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-        onPressed: () {
-          HapticFeedback.mediumImpact();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Colors.grey[800],
-                content: Container(
-                  height: 500,
-                  width: double.maxFinite,
-                  child: AddChatForm(),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      floatingActionButton: currentUser.isAdmin == true
+          ? FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.grey[800],
+                      content: Container(
+                        height: 500,
+                        width: double.maxFinite,
+                        child: AddChatForm(),
+                      ),
+                    );
+                  },
+                );
+              },
+            )
+          : SizedBox(),
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(
         title: Text("Discussion Rooms"),

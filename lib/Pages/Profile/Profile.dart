@@ -202,6 +202,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/Profile/privacypolicies.dart';
 import 'package:transfer_news/Pages/Profile/terms&cond.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/RealTime/UsersRealTimePosts/usersRTPosts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -554,6 +555,43 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
+                currentUser.isAdmin == false
+                    ? SizedBox()
+                    : GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          pushNewScreen(
+                            context,
+                            withNavBar: false,
+                            customPageRoute: MorpheusPageRoute(
+                              builder: (context) => RealTimePostsMade(),
+                              transitionDuration: Duration(
+                                milliseconds: 200,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Real Time Posts",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                 SizedBox(
                   height: 40,
                 ),
@@ -689,14 +727,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     onPressed: () {
+                      HapticFeedback.mediumImpact();
                       logOutUser();
+
                       Navigator.pop(context);
                     },
-                    child: Text("SIGN OUT",
-                        style: TextStyle(
-                            fontSize: 16,
-                            letterSpacing: 2.2,
-                            color: Colors.white)),
+                    child: Text(
+                      "SIGN OUT",
+                      style: TextStyle(
+                          fontSize: 16,
+                          letterSpacing: 2.2,
+                          color: Colors.white),
+                    ),
                   ),
                 )
               ],

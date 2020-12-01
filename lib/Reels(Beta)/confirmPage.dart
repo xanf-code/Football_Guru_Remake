@@ -35,7 +35,6 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       controller = VideoPlayerController.file(widget.videoFile);

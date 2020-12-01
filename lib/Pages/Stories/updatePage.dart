@@ -16,6 +16,7 @@ import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/ISLNews.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Widgets/storyCard.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadPage extends StatefulWidget {
@@ -546,11 +547,12 @@ class _UploadPageState extends State<UploadPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: CachedNetworkImage(
+                                child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
                                   width: 150,
                                   height: double.infinity,
                                   fit: BoxFit.cover,
-                                  imageUrl: snapshot.data.docs[index]["url"],
+                                  image: snapshot.data.docs[index]["url"],
                                 ),
                               ),
                             ),

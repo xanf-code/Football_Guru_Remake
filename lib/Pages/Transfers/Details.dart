@@ -75,7 +75,7 @@ class TransferDetails extends StatelessWidget {
                               backgroundColor: Color(0xFF7232f2),
                               child: CircleAvatar(
                                 radius: 20,
-                                backgroundImage: CachedNetworkImageProvider(
+                                backgroundImage: NetworkImage(
                                   this.playerImage,
                                 ),
                               ),

@@ -423,27 +423,26 @@ class Comment extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: "$userName ",
-                    style: GoogleFonts.ubuntu(
+              title: Row(
+                children: [
+                  Text(
+                    userName,
+                    style: GoogleFonts.openSans(
                       color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
                     ),
                   ),
-                  TextSpan(
-                    text: "$comment",
-                    style: GoogleFonts.ubuntu(
-                      color: Colors.white,
-                      height: 1.3,
-                      letterSpacing: .7,
-                      fontSize: 15,
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    tAgo.format(
+                      timestamp.toDate(),
+                    ),
+                    style: GoogleFonts.openSans(
+                      color: Colors.grey[500],
                     ),
                   ),
-                ]),
+                ],
               ),
               leading: Container(
                 width: 40,
@@ -451,7 +450,9 @@ class Comment extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(url),
+                    image: CachedNetworkImageProvider(
+                      url,
+                    ),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -459,11 +460,9 @@ class Comment extends StatelessWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  tAgo.format(
-                    timestamp.toDate(),
-                  ),
-                  style: GoogleFonts.ubuntu(
-                    color: Colors.grey[500],
+                  comment,
+                  style: GoogleFonts.montserrat(
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -479,35 +478,28 @@ class Comment extends StatelessWidget {
                 },
               ),
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 70.0),
-                  child: InkWell(
-                    onTap: () {
-                      HapticFeedback.mediumImpact();
-                      likeComment(
-                        postID,
-                        postID2,
-                      );
-                    },
-                    child: likes.contains(currentUser.id)
-                        ? Icon(
-                            Ionicons.ios_heart,
-                            color: Colors.red,
-                            size: 16,
-                          )
-                        : Icon(
-                            Ionicons.ios_heart,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                  ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
+            Padding(
+              padding: const EdgeInsets.only(left: 40.0),
+              child: FlatButton.icon(
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  likeComment(
+                    postID,
+                    postID2,
+                  );
+                },
+                icon: likes.contains(currentUser.id)
+                    ? Icon(
+                        Ionicons.ios_heart,
+                        color: Colors.red,
+                        size: 16,
+                      )
+                    : Icon(
+                        Ionicons.ios_heart,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                label: Text(
                   likes.length.toString() == 0.toString()
                       ? ""
                       : likes.length.toString(),
@@ -515,7 +507,7 @@ class Comment extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
