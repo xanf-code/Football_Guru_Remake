@@ -35,6 +35,7 @@ class _ReelsState extends State<Reels> {
         .snapshots();
   }
 
+  final String currentUserOnlineId = currentUser?.id;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,6 +94,8 @@ class _ReelsState extends State<Reels> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       DocumentSnapshot videos = snapshot.data.docs[index];
+                      bool isPostOwner =
+                          currentUserOnlineId == videos.data()["ownerID"];
                       return Stack(
                         children: [
                           VideoPlayerItem(
@@ -220,28 +223,56 @@ class _ReelsState extends State<Reels> {
                                             ],
                                           ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () =>
-                                              showAlertDialog(context, postID2),
-                                          child: Column(
-                                            children: [
-                                              Icon(
-                                                Ionicons.ios_flag,
-                                                //size: 15,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                height: 2,
-                                              ),
-                                              Text(
-                                                "Report",
-                                                style: GoogleFonts.averageSans(
-                                                  color: Colors.white,
+                                        isPostOwner
+                                            ? GestureDetector(
+                                                onTap: () =>
+                                                    modalBottomSheetMenu(
+                                                  videos.data()["postId"],
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Entypo
+                                                          .dots_three_horizontal,
+                                                      //size: 15,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Text(
+                                                      "More",
+                                                      style: GoogleFonts
+                                                          .averageSans(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : GestureDetector(
+                                                onTap: () => showAlertDialog(
+                                                    context, postID2),
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Ionicons.ios_flag,
+                                                      //size: 15,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Text(
+                                                      "Report",
+                                                      style: GoogleFonts
+                                                          .averageSans(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ],
@@ -256,6 +287,53 @@ class _ReelsState extends State<Reels> {
             }),
       ),
     );
+  }
+
+  modalBottomSheetMenu(snapshot) {
+    showModalBottomSheet(
+      context: context,
+      builder: (builder) {
+        return Container(
+          height: 60,
+          color: Colors.transparent,
+          child: new Container(
+            decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(10.0),
+                    topRight: const Radius.circular(10.0))),
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.mediumImpact();
+                Navigator.of(context).pop();
+                removeVideo(snapshot);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.delete,
+                  color: Colors.grey,
+                ),
+                title: Text("Delete Video"),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  removeVideo(postID) {
+    FirebaseFirestore.instance
+        .collection("reels")
+        .doc(postID)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+
+    reelsReference.child("post_$postID.mp4").delete();
   }
 
   reportComment(String username, String postID) {

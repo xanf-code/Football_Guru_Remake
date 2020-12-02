@@ -203,8 +203,34 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
               ),
             ),
             uploading
-                ? Center(
-                    child: CircularProgressIndicator(),
+                ? Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Loading..",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   )
                 : Text(""),
           ],

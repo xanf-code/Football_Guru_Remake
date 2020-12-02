@@ -2,26 +2,30 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:transfer_news/Forum/CommentsPage/replyToComments.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:uuid/uuid.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 
-class CommentRealTime extends StatefulWidget {
+class CommentsForumPage extends StatefulWidget {
   final String postID;
+  final String path;
 
-  const CommentRealTime({Key key, this.postID}) : super(key: key);
+  const CommentsForumPage({Key key, this.postID, this.path}) : super(key: key);
   @override
-  _CommentRealTimeState createState() => _CommentRealTimeState();
+  _CommentsForumPageState createState() => _CommentsForumPageState();
 }
 
-class _CommentRealTimeState extends State<CommentRealTime> {
+class _CommentsForumPageState extends State<CommentsForumPage> {
   String commentID = Uuid().v4();
   final _formKey = GlobalKey<FormState>();
   final String currentUserOnlineId = currentUser?.id;
   TextEditingController commentController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +119,9 @@ class _CommentRealTimeState extends State<CommentRealTime> {
 
   saveComments() {
     FirebaseFirestore.instance
-        .collection("realTimeTweets")
+        .collection("Forum")
+        .doc(widget.path)
+        .collection("Posts")
         .doc(widget.postID)
         .collection("comments")
         .doc(commentID)
@@ -127,6 +133,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
       "likes": [],
       "userId": currentUser.id,
       "commentID": commentID,
+      "replyCount": 0,
     });
     setState(() {
       commentController.clear();
@@ -137,17 +144,20 @@ class _CommentRealTimeState extends State<CommentRealTime> {
   displayComment() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection("realTimeTweets")
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
           .doc(widget.postID)
           .collection("comments")
           .orderBy("timestamp", descending: true)
+          .limit(75)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SizedBox();
         } else {
           return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index) {
@@ -240,30 +250,59 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                         child: FlatButton.icon(
                           onPressed: () {
                             HapticFeedback.mediumImpact();
-                            likeComment(
-                              comments.data()["commentID"],
+                            pushNewScreen(
+                              context,
+                              withNavBar: false,
+                              customPageRoute: MorpheusPageRoute(
+                                builder: (context) => ReplyComments(
+                                  path: widget.path,
+                                  postid: widget.postID,
+                                  commentID: comments.data()["commentID"],
+                                ),
+                                transitionDuration: Duration(
+                                  milliseconds: 200,
+                                ),
+                              ),
                             );
                           },
-                          icon:
-                              comments.data()["likes"].contains(currentUser.id)
-                                  ? Icon(
-                                      AntDesign.heart,
-                                      color: Colors.red,
-                                      size: 20,
-                                    )
-                                  : Icon(
-                                      Feather.heart,
-                                      color: Colors.grey,
-                                      size: 20,
-                                    ),
+                          icon: Unicon(
+                            UniconData.uniCommentAlt,
+                            color: Colors.grey,
+                            size: 20,
+                          ),
                           label: Text(
-                            comments.data()["likes"].length.toString() ==
-                                    0.toString()
-                                ? ""
-                                : comments.data()["likes"].length.toString(),
+                            comments.data()["replyCount"].toString(),
                             style: GoogleFonts.rubik(
                               color: Colors.white,
                             ),
+                          ),
+                        ),
+                      ),
+                      FlatButton.icon(
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          likeComment(
+                            comments.data()["commentID"],
+                          );
+                        },
+                        icon: comments.data()["likes"].contains(currentUser.id)
+                            ? Icon(
+                                AntDesign.heart,
+                                color: Colors.red,
+                                size: 20,
+                              )
+                            : Icon(
+                                Feather.heart,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                        label: Text(
+                          comments.data()["likes"].length.toString() ==
+                                  0.toString()
+                              ? ""
+                              : comments.data()["likes"].length.toString(),
+                          style: GoogleFonts.rubik(
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -283,14 +322,18 @@ class _CommentRealTimeState extends State<CommentRealTime> {
 
   likeComment(String commentID) async {
     DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("realTimeTweets")
+        .collection("Forum")
+        .doc(widget.path)
+        .collection("Posts")
         .doc(widget.postID)
         .collection("comments")
         .doc(commentID)
         .get();
     if (docs.data()['likes'].contains(currentUser.id)) {
       FirebaseFirestore.instance
-          .collection("realTimeTweets")
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
           .doc(widget.postID)
           .collection("comments")
           .doc(commentID)
@@ -299,7 +342,9 @@ class _CommentRealTimeState extends State<CommentRealTime> {
       });
     } else {
       FirebaseFirestore.instance
-          .collection("realTimeTweets")
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
           .doc(widget.postID)
           .collection("comments")
           .doc(commentID)
@@ -344,7 +389,9 @@ class _CommentRealTimeState extends State<CommentRealTime> {
 
   removeComment(commentID) async {
     FirebaseFirestore.instance
-        .collection("realTimeTweets")
+        .collection("Forum")
+        .doc(widget.path)
+        .collection("Posts")
         .doc(widget.postID)
         .collection("comments")
         .doc(commentID)

@@ -102,12 +102,12 @@ class _UploadPageState extends State<UploadPage> {
       "official": official,
       "caption": captionEditor.text,
     }).then((result) {
-      Navigator.pop(context);
       setState(() {
         selectedImage = null;
         uploading = false;
         postId = Uuid().v4();
       });
+      Navigator.pop(context);
     });
   }
 
@@ -207,9 +207,9 @@ class _UploadPageState extends State<UploadPage> {
                               ),
                               GestureDetector(
                                 onTap: () async {
+                                  FocusScope.of(context).unfocus();
                                   await controllUploadAndSave();
                                 },
-                                //uploading ? null : () => var resp = await controllUploadAndSave(),
                                 child: Container(
                                   width: 50,
                                   height: 50,
@@ -381,8 +381,34 @@ class _UploadPageState extends State<UploadPage> {
                     ],
                   ),
             uploading
-                ? Center(
-                    child: CircularProgressIndicator(),
+                ? Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Loading..",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   )
                 : Text(""),
           ],

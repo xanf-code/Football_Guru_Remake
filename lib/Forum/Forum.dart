@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:html_editor/html_editor.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -14,10 +13,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
+import 'package:transfer_news/Forum/cardWidget.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
-import 'package:transfer_news/Widgets/allPostWidget.dart';
 import 'package:transfer_news/Widgets/featuredPostWidget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -36,16 +36,13 @@ class _ForumState extends State<Forum> {
   bool uploading = false;
   TextEditingController titleTextEditingController = TextEditingController();
   TextEditingController decsTextEditingController = TextEditingController();
-  List<AllPostWidget> allposts = [];
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool loading = false;
-  List<AllPostWidget> postList = [];
   List<FeaturedPostWidget> featuredPostList = [];
 
   @override
   void initState() {
     super.initState();
-    getLatestPosts();
     getFeaturedPosts();
   }
 
@@ -67,27 +64,10 @@ class _ForumState extends State<Forum> {
     });
   }
 
-  getLatestPosts() async {
-    setState(() {
-      loading = true;
-    });
-    QuerySnapshot querySnapshot = await allPostsReference
-        .orderBy("timestamp", descending: true)
-        .limit(50)
-        .get();
-
-    setState(() {
-      loading = false;
-      postList = querySnapshot.docs
-          .map((documentSnapshot) =>
-              AllPostWidget.fromDocument(documentSnapshot))
-          .toList();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(
         actions: [
@@ -134,12 +114,10 @@ class _ForumState extends State<Forum> {
           ),
         ),
       ),
-      key: scaffoldKey,
       body: RefreshIndicator(
         child: file == null ? ForumDisplayPage() : displayUploadFormScreen(),
         onRefresh: () async {
           getFeaturedPosts();
-          getLatestPosts();
         },
       ),
       floatingActionButton: currentUser.isAdmin == true
@@ -191,7 +169,97 @@ class _ForumState extends State<Forum> {
             shrinkWrap: true,
             children: [
               FeaturedFeed(),
-              createFeed(postList),
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("Forum")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Text("");
+                    } else {
+                      return Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              pushNewScreen(
+                                context,
+                                withNavBar: false,
+                                customPageRoute: MorpheusPageRoute(
+                                  builder: (context) => ForumDetails(
+                                    forumName: "National Team",
+                                    tagName: [
+                                      'Off topic',
+                                      'National Team',
+                                      'Women\'s National Team',
+                                      'U-17 National Team',
+                                      'U-20 National Team',
+                                      'World Cup Qualifiers',
+                                      'FIFA U-17 Women\'s World Cup',
+                                    ],
+                                    appBar: "National Team",
+                                  ),
+                                  transitionDuration: Duration(
+                                    milliseconds: 200,
+                                  ),
+                                ),
+                              );
+                              viewCounterNT();
+                            },
+                            child: Cards(
+                              title: "National Teams Discussion 🇮🇳 ⚽",
+                              image:
+                                  "https://news.cgtn.com/news/3d3d674e3241444e7a457a6333566d54/img/6513d5354b04433a9512a2b1f521465c/6513d5354b04433a9512a2b1f521465c.jpg",
+                              views:
+                                  "${snapshot.data.docs[1]["counter"].length} Views",
+                              tags: "National Football Teams",
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              pushNewScreen(
+                                context,
+                                withNavBar: false,
+                                customPageRoute: MorpheusPageRoute(
+                                  builder: (context) => ForumDetails(
+                                    forumName: "ISL",
+                                    tagName: [
+                                      'Off topic',
+                                      'Bengaluru FC',
+                                      'Kerala Blasters FC',
+                                      'Jamshedpur FC',
+                                      'ATK Mohun Bagan FC',
+                                      'Mumbai City',
+                                      'NorthEast United FC',
+                                      'Chennaiyin FC',
+                                      'Hyderabad FC',
+                                      'FC Goa',
+                                      'Odisha FC',
+                                      'East Bengal FC',
+                                    ],
+                                    appBar: "Indian Super League",
+                                  ),
+                                  transitionDuration: Duration(
+                                    milliseconds: 200,
+                                  ),
+                                ),
+                              );
+                              viewCounter();
+                            },
+                            child: Cards(
+                              title: "Indian Super League 🏆",
+                              image:
+                                  "https://images.news18.com/ibnlive/uploads/2019/08/Sports-741.png",
+                              views:
+                                  "${snapshot.data.docs[0]["counter"].length} Views",
+                              tags: "Domestic Leagues",
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  }),
             ],
           );
   }
@@ -205,41 +273,6 @@ class _ForumState extends State<Forum> {
       padding: const EdgeInsets.only(top: 10.0),
       child: Column(
         children: featuredPostList,
-      ),
-    );
-  }
-
-  // Non Featured Widget
-  createFeed(List item) {
-    if (postList.isEmpty) {
-      return Container(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CachedNetworkImage(
-                height: 300,
-                width: 300,
-                imageUrl:
-                    "https://png.pngtree.com/svg/20161030/nodata_800056.png",
-              ),
-              Text(
-                "oops it's empty :(",
-                style: GoogleFonts.montserrat(
-                  color: Colors.grey[400],
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Column(
-        children: item,
       ),
     );
   }
@@ -286,43 +319,6 @@ class _ForumState extends State<Forum> {
     return downloadUrl;
   }
 
-  // Non Featured Posts
-  controllUploadAndSave() async {
-    setState(() {
-      uploading = true;
-    });
-    String downloadImage = await UploadImage(file);
-    savePostToFirestore(
-      url: downloadImage,
-      title: titleTextEditingController.text,
-      desc: result,
-      tags: decsTextEditingController.text,
-    );
-
-    titleTextEditingController.clear();
-    decsTextEditingController.clear();
-    setState(() {
-      file = null;
-      uploading = false;
-      postID = Uuid().v4();
-      result = "";
-    });
-  }
-
-  savePostToFirestore({String url, String title, String desc, String tags}) {
-    allPostsReference.doc(postID).set({
-      "postId": postID,
-      "ownerID": widget.gCurrentUser.id,
-      "timestamp": timeStamp,
-      "likes": {},
-      "username": widget.gCurrentUser.username,
-      "title": title,
-      "desc": desc,
-      "url": url,
-      "tags": tags,
-    });
-  }
-
   // Featured Posts
   controllUploadAndSaveFeatured() async {
     setState(() {
@@ -351,6 +347,7 @@ class _ForumState extends State<Forum> {
       "ownerID": widget.gCurrentUser.id,
       "timestamp": timeStamp,
       "likes": {},
+      "tags": "FEATURED",
       "username": widget.gCurrentUser.username,
       "title": title,
       "desc": desc,
@@ -363,6 +360,18 @@ class _ForumState extends State<Forum> {
 
   displayUploadFormScreen() {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF0e0e10),
+        title: Text("Go Back"),
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            setState(() {
+              file = null;
+            });
+          },
+        ),
+      ),
       backgroundColor: Color(0xFF0e0e10),
       body: ListView(
         children: [
@@ -443,23 +452,6 @@ class _ForumState extends State<Forum> {
                     setState(() {
                       result = txt;
                     });
-                    controllUploadAndSave();
-                  },
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                FlatButton(
-                  color: Colors.blue,
-                  onPressed: () async {
-                    final txt = await keyEditor.currentState.getText();
-                    setState(() {
-                      result = txt;
-                    });
                     controllUploadAndSaveFeatured();
                   },
                   child: Text(
@@ -473,5 +465,24 @@ class _ForumState extends State<Forum> {
         ],
       ),
     );
+  }
+
+  viewCounter() async {
+    await FirebaseFirestore.instance.collection("Forum").doc("ISL").update({
+      'counter': FieldValue.arrayUnion(
+        [currentUser.id],
+      )
+    });
+  }
+
+  viewCounterNT() async {
+    await FirebaseFirestore.instance
+        .collection("Forum")
+        .doc("National Team")
+        .update({
+      'counter': FieldValue.arrayUnion(
+        [currentUser.id],
+      )
+    });
   }
 }

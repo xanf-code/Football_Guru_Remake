@@ -331,7 +331,8 @@ class _LinupsState extends State<Linups> {
                               ),
                               child: Center(
                                 child: Text(
-                                  l["rating"]["num"] == null
+                                  l["rating"] == null ||
+                                          l["rating"]["num"] == null
                                       ? "-"
                                       : l["rating"]["num"].toString(),
                                   style: GoogleFonts.rubik(

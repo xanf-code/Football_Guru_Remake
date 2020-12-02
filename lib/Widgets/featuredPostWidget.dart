@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_unicons/unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:morpheus/morpheus.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/comments.dart';
@@ -130,8 +129,11 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
 
     storageReference.child("post_$postId.jpg").delete();
 
-    QuerySnapshot commentsQuerySnapshot =
-        await commentsReference.doc(postId).collection("comments").get();
+    QuerySnapshot commentsQuerySnapshot = await FirebaseFirestore.instance
+        .collection("featuredPosts")
+        .doc(postId)
+        .collection("comments")
+        .get();
 
     commentsQuerySnapshot.docs.forEach((document) {
       if (document.exists) {
@@ -157,23 +159,7 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
     }
   }
 
-  // addLike() {
-  //   bool isnotpostowner = currentUserOnlineId != ownerId;
-  //   if (isnotpostowner) {
-  //     activityReference.doc(ownerId).collection("feedItems").doc(postId).set({
-  //       "activityType": "like",
-  //       "username": currentUser.username,
-  //       "userId": currentUser.id,
-  //       "timestamp": DateTime.now(),
-  //       "description": desc,
-  //       "title": title,
-  //       "postId": postId,
-  //       "userProfileImg": currentUser.url
-  //     });
-  //   }
-  // }
-
-  erLikedPost() {
+  LikedPost() {
     bool _liked = likes[currentUserOnlineId] == true;
 
     if (_liked) {
@@ -251,7 +237,7 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
                               width: 10,
                             ),
                             Text(
-                              "Discussion$tag",
+                              "$tag",
                               style: GoogleFonts.rubik(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -303,7 +289,7 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
             IconButton(
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
-              onPressed: () => erLikedPost(),
+              onPressed: () => LikedPost(),
               icon: isLiked
                   ? Unicon(
                       UniconData.uniFire,
@@ -323,78 +309,11 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
                 ),
               ),
             ),
-            // SizedBox(
-            //   width: 15,
-            // ),
-            // Icon(
-            //   MaterialCommunityIcons.comment_text_multiple_outline,
-            //   color: Colors.blueAccent,
-            // ),
-            // SizedBox(
-            //   width: 10,
-            // ),
-            // Container(
-            //   child: Text(
-            //     "$comments comments",
-            //     style: GoogleFonts.rubik(
-            //       color: Colors.white,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ],
     );
   }
-  // displayComments() {
-  //   return StreamBuilder(
-  //     stream: commentsReference
-  //         .doc(postId)
-  //         .collection("comments")
-  //         .orderBy("timestamp", descending: true)
-  //         .snapshots(),
-  //     builder: (context, dataSnapshot) {
-  //       if (!dataSnapshot.hasData) {
-  //         return Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       }
-  //       List<Comment> comments = [];
-  //       dataSnapshot.data.documents.forEach((document) {
-  //         comments.add(Comment.fromDocument(document));
-  //       });
-  //       return ListView(
-  //         children: comments,
-  //       );
-  //     },
-  //   );
-  // }
-  //
-  // saveComment() {
-  //   commentsReference.doc(postId).collection("comments").add({
-  //     "username": currentUser.username,
-  //     "comment": commentTextEditingController.text,
-  //     "timestamp": DateTime.now(),
-  //     "url": currentUser.url,
-  //     "userId": currentUser.id,
-  //   });
-  //   bool isNotPostOwner = ownerId != currentUser.id;
-  //   if (isNotPostOwner) {
-  //     activityReference.doc(ownerId).collection("feedItems").add({
-  //       "activityType": "comment",
-  //       "commentDate": timeStamp,
-  //       "postId": postId,
-  //       "userId": currentUser.id,
-  //       "username": currentUser.username,
-  //       "userProfileImage": currentUser.url,
-  //       "description": desc,
-  //     });
-  //   }
-  //   commentTextEditingController.clear();
-  // }
-
-  // var _formKey = GlobalKey<FormState>();
 
   Comments(BuildContext context,
       {String postId,
@@ -419,20 +338,5 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
             milliseconds: 200,
           )),
     );
-    // Navigator.push(
-    //   context,
-    //   MorpheusPageRoute(
-    //     transitionDuration: Duration(
-    //       milliseconds: 200,
-    //     ),
-    //     builder: (context) => CommentsPage(
-    //       postId: postId,
-    //       postOwnerId: ownerId,
-    //       postDescription: desc,
-    //       postType: title,
-    //       postUrl: url,
-    //     ),
-    //   ),
-    // );
   }
 }

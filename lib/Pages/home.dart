@@ -15,11 +15,11 @@ import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/LeaguesIntro.dart';
-import 'package:transfer_news/Pages/Forum.dart';
+import 'package:transfer_news/Forum/Forum.dart';
 import 'package:transfer_news/Pages/News.dart';
 import 'package:transfer_news/Pages/Profile/terms&cond.dart';
 import 'package:transfer_news/Pages/Transfers/transfers.dart';
-import 'package:transfer_news/RealTime/realTimeMain.dart';
+import 'package:transfer_news/RealTime/RealTimePage.dart';
 import 'createaccount.dart';
 
 final GoogleSignIn gSignIn = GoogleSignIn();
@@ -34,6 +34,8 @@ final StorageReference storyReference =
     FirebaseStorage.instance.ref().child("Stories Pictures");
 final StorageReference realTimeReference =
     FirebaseStorage.instance.ref().child("RealTime Pictures");
+final StorageReference forumReference =
+    FirebaseStorage.instance.ref().child("Public Forum");
 final StorageReference reelsReference =
     FirebaseStorage.instance.ref().child("Reels");
 final activityReference = FirebaseFirestore.instance.collection("feed");
@@ -163,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Forum(
         gCurrentUser: currentUser,
       ),
-      RealTime(
+      RealTimeUI(
         gCurrentUser: currentUser,
       ),
       AllTransfers(

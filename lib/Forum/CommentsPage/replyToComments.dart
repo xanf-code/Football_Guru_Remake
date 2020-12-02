@@ -8,19 +8,21 @@ import 'package:transfer_news/Pages/home.dart';
 import 'package:uuid/uuid.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 
-class CommentRealTime extends StatefulWidget {
-  final String postID;
-
-  const CommentRealTime({Key key, this.postID}) : super(key: key);
+class ReplyComments extends StatefulWidget {
+  final String postid;
+  final String path;
+  final String commentID;
+  const ReplyComments({Key key, this.postid, this.path, this.commentID})
+      : super(key: key);
   @override
-  _CommentRealTimeState createState() => _CommentRealTimeState();
+  _ReplyCommentsState createState() => _ReplyCommentsState();
 }
 
-class _CommentRealTimeState extends State<CommentRealTime> {
-  String commentID = Uuid().v4();
+class _ReplyCommentsState extends State<ReplyComments> {
+  String replyID = Uuid().v4();
   final _formKey = GlobalKey<FormState>();
   final String currentUserOnlineId = currentUser?.id;
-  TextEditingController commentController = TextEditingController();
+  TextEditingController replyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(
         backgroundColor: Color(0xFF0e0e10),
-        title: Text("Comments"),
+        title: Text("Replies"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -54,7 +56,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                           return null;
                         }
                       },
-                      controller: commentController,
+                      controller: replyController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey[900],
@@ -115,39 +117,57 @@ class _CommentRealTimeState extends State<CommentRealTime> {
 
   saveComments() {
     FirebaseFirestore.instance
-        .collection("realTimeTweets")
-        .doc(widget.postID)
+        .collection("Forum")
+        .doc(widget.path)
+        .collection("Posts")
+        .doc(widget.postid)
         .collection("comments")
-        .doc(commentID)
+        .doc(widget.commentID)
+        .collection("replies")
+        .doc(replyID)
         .set({
       "username": currentUser.username,
-      "comment": commentController.text,
+      "comment": replyController.text,
       "timestamp": DateTime.now(),
       "url": currentUser.url,
       "likes": [],
       "userId": currentUser.id,
-      "commentID": commentID,
-    });
-    setState(() {
-      commentController.clear();
-      commentID = Uuid().v4();
+      "replyCommentID": replyID,
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postid)
+          .collection("comments")
+          .doc(widget.commentID)
+          .update({"replyCount": FieldValue.increment(1)});
+      setState(() {
+        replyController.clear();
+        replyID = Uuid().v4();
+      });
     });
   }
 
   displayComment() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection("realTimeTweets")
-          .doc(widget.postID)
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postid)
           .collection("comments")
+          .doc(widget.commentID)
+          .collection("replies")
           .orderBy("timestamp", descending: true)
+          .limit(75)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SizedBox();
         } else {
           return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index) {
@@ -225,7 +245,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                               onPressed: () {
                                 HapticFeedback.mediumImpact();
                                 modalBottomSheetMenu(
-                                  comments.data()["commentID"],
+                                  comments.data()["replyCommentID"],
                                 );
                               },
                             )
@@ -241,7 +261,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                           onPressed: () {
                             HapticFeedback.mediumImpact();
                             likeComment(
-                              comments.data()["commentID"],
+                              comments.data()["replyCommentID"],
                             );
                           },
                           icon:
@@ -281,28 +301,40 @@ class _CommentRealTimeState extends State<CommentRealTime> {
     );
   }
 
-  likeComment(String commentID) async {
+  likeComment(String replyID) async {
     DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("realTimeTweets")
-        .doc(widget.postID)
+        .collection("Forum")
+        .doc(widget.path)
+        .collection("Posts")
+        .doc(widget.postid)
         .collection("comments")
-        .doc(commentID)
+        .doc(widget.commentID)
+        .collection("replies")
+        .doc(replyID)
         .get();
     if (docs.data()['likes'].contains(currentUser.id)) {
       FirebaseFirestore.instance
-          .collection("realTimeTweets")
-          .doc(widget.postID)
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postid)
           .collection("comments")
-          .doc(commentID)
+          .doc(widget.commentID)
+          .collection("replies")
+          .doc(replyID)
           .update({
         'likes': FieldValue.arrayRemove([currentUser.id])
       });
     } else {
       FirebaseFirestore.instance
-          .collection("realTimeTweets")
-          .doc(widget.postID)
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postid)
           .collection("comments")
-          .doc(commentID)
+          .doc(widget.commentID)
+          .collection("replies")
+          .doc(replyID)
           .update({
         'likes': FieldValue.arrayUnion([currentUser.id])
       });
@@ -342,17 +374,30 @@ class _CommentRealTimeState extends State<CommentRealTime> {
     );
   }
 
-  removeComment(commentID) async {
+  removeComment(replyID) async {
     FirebaseFirestore.instance
-        .collection("realTimeTweets")
-        .doc(widget.postID)
+        .collection("Forum")
+        .doc(widget.path)
+        .collection("Posts")
+        .doc(widget.postid)
         .collection("comments")
-        .doc(commentID)
+        .doc(widget.commentID)
+        .collection("replies")
+        .doc(replyID)
         .get()
         .then((document) {
       if (document.exists) {
         document.reference.delete();
       }
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postid)
+          .collection("comments")
+          .doc(widget.commentID)
+          .update({"replyCount": FieldValue.increment(-1)});
     });
   }
 }
