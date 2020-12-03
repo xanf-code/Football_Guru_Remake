@@ -550,16 +550,16 @@ class _ReelsState extends State<Reels> {
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 80.0),
-                        child: InkWell(
-                          onTap: () {
+                        padding: const EdgeInsets.only(left: 50.0),
+                        child: FlatButton.icon(
+                          onPressed: () {
                             HapticFeedback.mediumImpact();
                             likeComment(
                               comments.data()["postID"],
                               comments.data()["ref"],
                             );
                           },
-                          child:
+                          icon:
                               comments.data()["likes"].contains(currentUser.id)
                                   ? Icon(
                                       Ionicons.ios_heart,
@@ -571,18 +571,15 @@ class _ReelsState extends State<Reels> {
                                       color: Colors.white,
                                       size: 16,
                                     ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        comments.data()["likes"].length.toString() ==
-                                0.toString()
-                            ? ""
-                            : comments.data()["likes"].length.toString(),
-                        style: GoogleFonts.rubik(
-                          color: Colors.white,
+                          label: Text(
+                            comments.data()["likes"].length.toString() ==
+                                    0.toString()
+                                ? ""
+                                : comments.data()["likes"].length.toString(),
+                            style: GoogleFonts.rubik(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ],

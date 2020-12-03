@@ -4,6 +4,7 @@ import 'package:cached_video_player/cached_video_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/LeaguesIntro.dart';
 import 'package:transfer_news/Forum/Forum.dart';
@@ -55,6 +57,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool _isSignedIn = false;
   int currentIndex = 0;
   bool singningIn = false;
@@ -62,6 +65,93 @@ class _MyHomePageState extends State<MyHomePage> {
   Timer timer;
   //String clubName;
   TextEditingController userController = TextEditingController();
+
+  _configureFirebaseListening() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage : $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        navigationOfNotification(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        navigationOfNotification(message);
+      },
+    );
+  }
+
+  void navigationOfNotification(Map<String, dynamic> message) {
+    final notification = message['notification'];
+    var data = message["data"];
+    var view = data["view"];
+    final String title = notification['title'];
+    final String body = notification['body'];
+    String mMessage = data['message'];
+    print("Title: $title, body: $body, message: $mMessage");
+
+    if (view != null) {
+      if (view == 'real_time') {
+        NavigationController(
+          RealTimeUI(
+            gCurrentUser: currentUser,
+          ),
+        );
+      }
+      if (view == 'ISL_forum') {
+        NavigationController(
+          ForumDetails(
+            forumName: "ISL",
+            tagName: [
+              'Off topic',
+              'Bengaluru FC',
+              'Kerala Blasters FC',
+              'Jamshedpur FC',
+              'ATK Mohun Bagan FC',
+              'Mumbai City',
+              'NorthEast United FC',
+              'Chennaiyin FC',
+              'Hyderabad FC',
+              'FC Goa',
+              'Odisha FC',
+              'East Bengal FC',
+            ],
+            appBar: "Indian Super League",
+          ),
+        );
+      }
+    }
+    if (view == 'NT_forum') {
+      NavigationController(
+        ForumDetails(
+          forumName: "National Team",
+          tagName: [
+            'Off topic',
+            'National Team',
+            'Women\'s National Team',
+            'U-17 National Team',
+            'U-20 National Team',
+            'World Cup Qualifiers',
+            'FIFA U-17 Women\'s World Cup',
+          ],
+          appBar: "National Team",
+        ),
+      );
+    }
+  }
+
+  Future<Object> NavigationController(router) {
+    return pushNewScreen(
+      context,
+      withNavBar: false,
+      customPageRoute: MorpheusPageRoute(
+        builder: (context) => router,
+        transitionDuration: Duration(
+          milliseconds: 200,
+        ),
+      ),
+    );
+  }
+
   controllSignIn(GoogleSignInAccount signInAccount) async {
     if (signInAccount != null) {
       await saveUserInfoToFireStore();
@@ -119,6 +209,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    _firebaseMessaging.subscribeToTopic("all");
+    _configureFirebaseListening();
     controller = CachedVideoPlayerController.network(
       "https://iftwc.com/wp-content/uploads/2020/11/170804_C_Lombok_061.mp4",
     )..initialize().then((_) {
