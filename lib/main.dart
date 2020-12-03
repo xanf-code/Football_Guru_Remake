@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:transfer_news/Behaviour/customScrollBehaviour.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/chatForum/databaseModel/chatModel.dart';
 
@@ -24,6 +25,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: Theme.of(context).copyWith(
+        highlightColor: Color(0xFF7232f2),
+      ),
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: child,
+        );
+      },
       home: MyHomePage(),
     );
   }

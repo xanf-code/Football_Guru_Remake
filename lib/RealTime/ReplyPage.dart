@@ -2,30 +2,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:morpheus/page_routes/morpheus_page_route.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:transfer_news/Forum/CommentsPage/replyToComments.dart';
 import 'package:transfer_news/Pages/home.dart';
-import 'package:transfer_news/RealTime/ReplyPage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 
-class CommentRealTime extends StatefulWidget {
-  final String postID;
-
-  const CommentRealTime({Key key, this.postID}) : super(key: key);
+class RealTimeReply extends StatefulWidget {
+  final String postid;
+  final String commentID;
+  const RealTimeReply({Key key, this.postid, this.commentID}) : super(key: key);
   @override
-  _CommentRealTimeState createState() => _CommentRealTimeState();
+  _RealTimeReplyState createState() => _RealTimeReplyState();
 }
 
-class _CommentRealTimeState extends State<CommentRealTime> {
-  String commentID = Uuid().v4();
+class _RealTimeReplyState extends State<RealTimeReply> {
+  String replyID = Uuid().v4();
   final _formKey = GlobalKey<FormState>();
   final String currentUserOnlineId = currentUser?.id;
-  TextEditingController commentController = TextEditingController();
+  TextEditingController replyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +28,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(
         backgroundColor: Color(0xFF0e0e10),
-        title: Text("Comments"),
+        title: Text("Replies"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -59,7 +54,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                           return null;
                         }
                       },
-                      controller: commentController,
+                      controller: replyController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey[900],
@@ -121,22 +116,30 @@ class _CommentRealTimeState extends State<CommentRealTime> {
   saveComments() {
     FirebaseFirestore.instance
         .collection("realTimeTweets")
-        .doc(widget.postID)
+        .doc(widget.postid)
         .collection("comments")
-        .doc(commentID)
+        .doc(widget.commentID)
+        .collection("replies")
+        .doc(replyID)
         .set({
       "username": currentUser.username,
-      "comment": commentController.text,
+      "comment": replyController.text,
       "timestamp": DateTime.now(),
       "url": currentUser.url,
       "likes": [],
       "userId": currentUser.id,
-      "commentID": commentID,
-      "replyCount": 0,
-    });
-    setState(() {
-      commentController.clear();
-      commentID = Uuid().v4();
+      "replyCommentID": replyID,
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("realTimeTweets")
+          .doc(widget.postid)
+          .collection("comments")
+          .doc(widget.commentID)
+          .update({"replyCount": FieldValue.increment(1)});
+      setState(() {
+        replyController.clear();
+        replyID = Uuid().v4();
+      });
     });
   }
 
@@ -144,16 +147,19 @@ class _CommentRealTimeState extends State<CommentRealTime> {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("realTimeTweets")
-          .doc(widget.postID)
+          .doc(widget.postid)
           .collection("comments")
+          .doc(widget.commentID)
+          .collection("replies")
           .orderBy("timestamp", descending: true)
+          .limit(75)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SizedBox();
         } else {
           return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index) {
@@ -231,7 +237,7 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                               onPressed: () {
                                 HapticFeedback.mediumImpact();
                                 modalBottomSheetMenu(
-                                  comments.data()["commentID"],
+                                  comments.data()["replyCommentID"],
                                 );
                               },
                             )
@@ -246,58 +252,30 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                         child: FlatButton.icon(
                           onPressed: () {
                             HapticFeedback.mediumImpact();
-                            pushNewScreen(
-                              context,
-                              withNavBar: false,
-                              customPageRoute: MorpheusPageRoute(
-                                builder: (context) => RealTimeReply(
-                                  postid: widget.postID,
-                                  commentID: comments.data()["commentID"],
-                                ),
-                                transitionDuration: Duration(
-                                  milliseconds: 200,
-                                ),
-                              ),
+                            likeComment(
+                              comments.data()["replyCommentID"],
                             );
                           },
-                          icon: Unicon(
-                            UniconData.uniCommentAlt,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
+                          icon:
+                              comments.data()["likes"].contains(currentUser.id)
+                                  ? Icon(
+                                      AntDesign.heart,
+                                      color: Colors.red,
+                                      size: 20,
+                                    )
+                                  : Icon(
+                                      Feather.heart,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
                           label: Text(
-                            comments.data()["replyCount"].toString(),
+                            comments.data()["likes"].length.toString() ==
+                                    0.toString()
+                                ? ""
+                                : comments.data()["likes"].length.toString(),
                             style: GoogleFonts.rubik(
                               color: Colors.white,
                             ),
-                          ),
-                        ),
-                      ),
-                      FlatButton.icon(
-                        onPressed: () {
-                          HapticFeedback.mediumImpact();
-                          likeComment(
-                            comments.data()["commentID"],
-                          );
-                        },
-                        icon: comments.data()["likes"].contains(currentUser.id)
-                            ? Icon(
-                                AntDesign.heart,
-                                color: Colors.red,
-                                size: 20,
-                              )
-                            : Icon(
-                                Feather.heart,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                        label: Text(
-                          comments.data()["likes"].length.toString() ==
-                                  0.toString()
-                              ? ""
-                              : comments.data()["likes"].length.toString(),
-                          style: GoogleFonts.rubik(
-                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -315,28 +293,34 @@ class _CommentRealTimeState extends State<CommentRealTime> {
     );
   }
 
-  likeComment(String commentID) async {
+  likeComment(String replyID) async {
     DocumentSnapshot docs = await FirebaseFirestore.instance
         .collection("realTimeTweets")
-        .doc(widget.postID)
+        .doc(widget.postid)
         .collection("comments")
-        .doc(commentID)
+        .doc(widget.commentID)
+        .collection("replies")
+        .doc(replyID)
         .get();
     if (docs.data()['likes'].contains(currentUser.id)) {
       FirebaseFirestore.instance
           .collection("realTimeTweets")
-          .doc(widget.postID)
+          .doc(widget.postid)
           .collection("comments")
-          .doc(commentID)
+          .doc(widget.commentID)
+          .collection("replies")
+          .doc(replyID)
           .update({
         'likes': FieldValue.arrayRemove([currentUser.id])
       });
     } else {
       FirebaseFirestore.instance
           .collection("realTimeTweets")
-          .doc(widget.postID)
+          .doc(widget.postid)
           .collection("comments")
-          .doc(commentID)
+          .doc(widget.commentID)
+          .collection("replies")
+          .doc(replyID)
           .update({
         'likes': FieldValue.arrayUnion([currentUser.id])
       });
@@ -376,17 +360,26 @@ class _CommentRealTimeState extends State<CommentRealTime> {
     );
   }
 
-  removeComment(commentID) async {
+  removeComment(replyID) async {
     FirebaseFirestore.instance
         .collection("realTimeTweets")
-        .doc(widget.postID)
+        .doc(widget.postid)
         .collection("comments")
-        .doc(commentID)
+        .doc(widget.commentID)
+        .collection("replies")
+        .doc(replyID)
         .get()
         .then((document) {
       if (document.exists) {
         document.reference.delete();
       }
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("realTimeTweets")
+          .doc(widget.postid)
+          .collection("comments")
+          .doc(widget.commentID)
+          .update({"replyCount": FieldValue.increment(-1)});
     });
   }
 }

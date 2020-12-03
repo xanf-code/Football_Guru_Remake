@@ -244,7 +244,10 @@ class _FeaturedCommentsState extends State<FeaturedComments> {
                             size: 20,
                           ),
                           label: Text(
-                            "",
+                            comments.data()["replyCount"].toString(),
+                            style: GoogleFonts.rubik(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -304,6 +307,7 @@ class _FeaturedCommentsState extends State<FeaturedComments> {
       "postID": widget.postId,
       "likes": [],
       "commentID": commentID,
+      "replyCount": 0,
     });
     setState(() {
       commentTextEditingController.clear();

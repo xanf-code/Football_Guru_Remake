@@ -130,10 +130,17 @@ class _FeaturedReplyCommentsState extends State<FeaturedReplyComments> {
       "likes": [],
       "userId": currentUser.id,
       "replyCommentID": replyID,
-    });
-    setState(() {
-      replyController.clear();
-      replyID = Uuid().v4();
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("featuredPosts")
+          .doc(widget.postid)
+          .collection("comments")
+          .doc(widget.commentID)
+          .update({"replyCount": FieldValue.increment(1)});
+      setState(() {
+        replyController.clear();
+        replyID = Uuid().v4();
+      });
     });
   }
 
@@ -367,6 +374,13 @@ class _FeaturedReplyCommentsState extends State<FeaturedReplyComments> {
       if (document.exists) {
         document.reference.delete();
       }
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("featuredPosts")
+          .doc(widget.postid)
+          .collection("comments")
+          .doc(widget.commentID)
+          .update({"replyCount": FieldValue.increment(-1)});
     });
   }
 }

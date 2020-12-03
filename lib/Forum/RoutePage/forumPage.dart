@@ -123,374 +123,388 @@ class _ForumDetailsState extends State<ForumDetails> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                cacheExtent: 500.0,
-                controller: _scrollController,
-                separatorBuilder: (context, i) {
-                  return Divider(
-                    color: Colors.grey[800],
-                    indent: 10,
-                    endIndent: 10,
-                  );
-                },
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot posts = snapshot.data.docs[index];
-                  bool isPostOwner =
-                      currentUserOnlineId == posts.data()["ownerID"];
-                  return Stack(
-                    children: [
-                      posts.data()["top25"] == true
-                          ? Positioned(
-                              right: 30,
-                              top: 30,
-                              child: GestureDetector(
-                                onTap: () {
-                                  HapticFeedback.mediumImpact();
-                                  Fluttertoast.showToast(
-                                    msg: "Top 25 trending",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                },
-                                child: Icon(
-                                  Feather.trending_up,
-                                  color: Colors.indigoAccent,
+            return Scrollbar(
+              thickness: 3,
+              radius: Radius.circular(10),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  cacheExtent: 500.0,
+                  controller: _scrollController,
+                  separatorBuilder: (context, i) {
+                    return Divider(
+                      color: Colors.grey[800],
+                      indent: 10,
+                      endIndent: 10,
+                    );
+                  },
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot posts = snapshot.data.docs[index];
+                    bool isPostOwner =
+                        currentUserOnlineId == posts.data()["ownerID"];
+                    return Stack(
+                      children: [
+                        posts.data()["top25"] == true
+                            ? Positioned(
+                                right: 30,
+                                top: 30,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    HapticFeedback.mediumImpact();
+                                    Fluttertoast.showToast(
+                                      msg: "Top 25 trending",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                  },
+                                  child: Icon(
+                                    Feather.trending_up,
+                                    color: Colors.indigoAccent,
+                                  ),
                                 ),
-                              ),
-                            )
-                          : SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 12.0,
-                          right: 12,
-                          top: 12,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7.0),
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    child: ClipOval(
-                                      child: Image.network(
-                                        posts.data()["userPic"],
+                              )
+                            : SizedBox(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 12.0,
+                            right: 12,
+                            top: 12,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7.0),
+                                    child: CircleAvatar(
+                                      radius: 20,
+                                      child: ClipOval(
+                                        child: Image.network(
+                                          posts.data()["userPic"],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 13,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          posts.data()["name"],
-                                          style: GoogleFonts.averageSans(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        posts.data()["isVerified"] != true
-                                            ? SizedBox()
-                                            : Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 6.0,
-                                                  top: 1,
-                                                ),
-                                                child: CachedNetworkImage(
-                                                  height: 15,
-                                                  imageUrl:
-                                                      "https://webstockreview.net/images/confirmation-clipart-verified.png",
-                                                ),
-                                              ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8,
-                                            bottom: 3,
-                                          ),
-                                          child: Text(
-                                            ".",
-                                            style: GoogleFonts.rubik(
-                                              color: Colors.grey,
+                                  SizedBox(
+                                    width: 13,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            posts.data()["name"],
+                                            style: GoogleFonts.averageSans(
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 17,
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 2),
-                                          child: Text(
-                                            tAgo.format(
-                                              posts
-                                                  .data()["timestamp"]
-                                                  .toDate(),
-                                            ),
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.transparent,
-                                        border: Border.all(
-                                          width: 1,
-                                          color: Color(0xFF7232f2),
-                                        ),
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 2.0,
-                                          bottom: 2,
-                                          left: 5,
-                                          right: 5,
-                                        ),
-                                        child: Text(
-                                          posts
-                                                      .data()["tags"]
-                                                      .toString()
-                                                      .toUpperCase() ==
-                                                  ""
-                                              ? "Off topic".toUpperCase()
-                                              : posts
-                                                  .data()["tags"]
-                                                  .toString()
-                                                  .toUpperCase(),
-                                          style: GoogleFonts.openSans(
-                                            color: Colors.white70,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.25,
-                                      child: Linkify(
-                                        onOpen: (link) async {
-                                          if (await canLaunch(link.url)) {
-                                            await launch(link.url);
-                                          } else {
-                                            Fluttertoast.showToast(
-                                              msg: "Could not launch the link",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.BOTTOM,
-                                            );
-                                          }
-                                        },
-                                        text: posts.data()["caption"],
-                                        style: GoogleFonts.montserrat(
-                                          color: Colors.white,
-                                          height: 1.4,
-                                        ),
-                                        linkStyle: TextStyle(
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                    posts.data()["url"] == ""
-                                        ? SizedBox(
-                                            height: 0,
-                                          )
-                                        : SizedBox(
-                                            height: 12,
-                                          ),
-                                    posts.data()["url"] == ""
-                                        ? const SizedBox.shrink()
-                                        : GestureDetector(
-                                            onTap: () {
-                                              HapticFeedback.mediumImpact();
-                                              pushNewScreen(
-                                                context,
-                                                withNavBar: false,
-                                                customPageRoute:
-                                                    MorpheusPageRoute(
-                                                  builder: (context) =>
-                                                      DetailScreen(
-                                                    image: posts.data()["url"],
-                                                    postID:
-                                                        posts.data()["postId"],
+                                          posts.data()["isVerified"] != true
+                                              ? SizedBox()
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 6.0,
+                                                    top: 1,
                                                   ),
-                                                  transitionDuration: Duration(
-                                                    milliseconds: 130,
+                                                  child: CachedNetworkImage(
+                                                    height: 15,
+                                                    imageUrl:
+                                                        "https://webstockreview.net/images/confirmation-clipart-verified.png",
                                                   ),
                                                 ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8.0,
+                                              right: 8,
+                                              bottom: 3,
+                                            ),
+                                            child: Text(
+                                              ".",
+                                              style: GoogleFonts.rubik(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 2),
+                                            child: Text(
+                                              tAgo.format(
+                                                posts
+                                                    .data()["timestamp"]
+                                                    .toDate(),
+                                              ),
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                            width: 1,
+                                            color: Color(0xFF7232f2),
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 2.0,
+                                            bottom: 2,
+                                            left: 5,
+                                            right: 5,
+                                          ),
+                                          child: Text(
+                                            posts
+                                                        .data()["tags"]
+                                                        .toString()
+                                                        .toUpperCase() ==
+                                                    ""
+                                                ? "Off topic".toUpperCase()
+                                                : posts
+                                                    .data()["tags"]
+                                                    .toString()
+                                                    .toUpperCase(),
+                                            style: GoogleFonts.openSans(
+                                              color: Colors.white70,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.25,
+                                        child: Linkify(
+                                          onOpen: (link) async {
+                                            if (await canLaunch(link.url)) {
+                                              await launch(link.url);
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                msg:
+                                                    "Could not launch the link",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
                                               );
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 8.0),
-                                              child: Container(
-                                                height: 250,
-                                                width: 400,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image:
-                                                        CachedNetworkImageProvider(
-                                                      posts.data()["url"],
+                                            }
+                                          },
+                                          text: posts.data()["caption"],
+                                          style: GoogleFonts.montserrat(
+                                            color: Colors.white,
+                                            height: 1.4,
+                                          ),
+                                          linkStyle: TextStyle(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ),
+                                      posts.data()["url"] == ""
+                                          ? SizedBox(
+                                              height: 0,
+                                            )
+                                          : SizedBox(
+                                              height: 12,
+                                            ),
+                                      posts.data()["url"] == ""
+                                          ? const SizedBox.shrink()
+                                          : GestureDetector(
+                                              onTap: () {
+                                                HapticFeedback.mediumImpact();
+                                                pushNewScreen(
+                                                  context,
+                                                  withNavBar: false,
+                                                  customPageRoute:
+                                                      MorpheusPageRoute(
+                                                    builder: (context) =>
+                                                        DetailScreen(
+                                                      image:
+                                                          posts.data()["url"],
+                                                      postID: posts
+                                                          .data()["postId"],
+                                                    ),
+                                                    transitionDuration:
+                                                        Duration(
+                                                      milliseconds: 130,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 8.0),
+                                                child: Container(
+                                                  height: 250,
+                                                  width: 400,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image:
+                                                          CachedNetworkImageProvider(
+                                                        posts.data()["url"],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  FlatButton.icon(
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      likePost(posts.data()["postId"]);
+                                    },
+                                    label: Text(
+                                      posts.data()["likes"].length.toString(),
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    icon: posts
+                                            .data()["likes"]
+                                            .contains(currentUser.id)
+                                        ? Unicon(
+                                            UniconData.uniFire,
+                                            color: Colors.blueAccent,
+                                            size: 19,
+                                          )
+                                        : Unicon(
+                                            UniconData.uniFire,
+                                            color: Colors.grey,
+                                            size: 19,
                                           ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                FlatButton.icon(
-                                  onPressed: () {
-                                    HapticFeedback.mediumImpact();
-                                    likePost(posts.data()["postId"]);
-                                  },
-                                  label: Text(
-                                    posts.data()["likes"].length.toString(),
-                                    style: TextStyle(
+                                  ),
+                                  FlatButton.icon(
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      pushNewScreen(
+                                        context,
+                                        withNavBar: false,
+                                        customPageRoute: MorpheusPageRoute(
+                                          builder: (context) =>
+                                              CommentsForumPage(
+                                            postID: posts.data()["postId"],
+                                            path: widget.forumName,
+                                          ),
+                                          transitionDuration: Duration(
+                                            milliseconds: 200,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    label: Text(
+                                      "Comment",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    icon: Icon(
+                                      MaterialCommunityIcons.comment_outline,
                                       color: Colors.grey,
+                                      size: 20,
                                     ),
                                   ),
-                                  icon: posts
-                                          .data()["likes"]
-                                          .contains(currentUser.id)
-                                      ? Unicon(
-                                          UniconData.uniFire,
-                                          color: Colors.blueAccent,
-                                          size: 19,
+                                  FlatButton.icon(
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      Share.share(
+                                        "${posts.data()["caption"]} \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.footballindia.news",
+                                      );
+                                    },
+                                    label: Text(
+                                      "Share",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    icon: Icon(
+                                      MaterialCommunityIcons.share_outline,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  isPostOwner
+                                      ? FlatButton.icon(
+                                          onPressed: () {
+                                            HapticFeedback.mediumImpact();
+                                            modalBottomSheetMenu(
+                                              posts.data()["postId"],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Feather.settings,
+                                            color: Colors.grey,
+                                            size: 18,
+                                          ),
+                                          label: Text(
+                                            "More",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
                                         )
-                                      : Unicon(
-                                          UniconData.uniFire,
-                                          color: Colors.grey,
-                                          size: 19,
-                                        ),
-                                ),
-                                FlatButton.icon(
-                                  onPressed: () {
-                                    HapticFeedback.mediumImpact();
-                                    pushNewScreen(
-                                      context,
-                                      withNavBar: false,
-                                      customPageRoute: MorpheusPageRoute(
-                                        builder: (context) => CommentsForumPage(
-                                          postID: posts.data()["postId"],
-                                          path: widget.forumName,
-                                        ),
-                                        transitionDuration: Duration(
-                                          milliseconds: 200,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  label: Text(
-                                    "Comment",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  icon: Icon(
-                                    MaterialCommunityIcons.comment_outline,
-                                    color: Colors.grey,
-                                    size: 20,
-                                  ),
-                                ),
-                                FlatButton.icon(
-                                  onPressed: () {
-                                    HapticFeedback.mediumImpact();
-                                    Share.share(
-                                      "${posts.data()["caption"]} \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.footballindia.news",
-                                    );
-                                  },
-                                  label: Text(
-                                    "Share",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  icon: Icon(
-                                    MaterialCommunityIcons.share_outline,
-                                    color: Colors.grey,
-                                    size: 20,
-                                  ),
-                                ),
-                                isPostOwner
-                                    ? FlatButton.icon(
-                                        onPressed: () {
-                                          HapticFeedback.mediumImpact();
-                                          modalBottomSheetMenu(
-                                            posts.data()["postId"],
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Feather.settings,
-                                          color: Colors.grey,
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          "More",
-                                          style: TextStyle(
+                                      : FlatButton.icon(
+                                          splashColor: Colors.transparent,
+                                          onPressed: () {
+                                            HapticFeedback.mediumImpact();
+                                            reportPost(
+                                              posts.data()["postId"],
+                                              posts.data()["caption"],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Feather.flag,
                                             color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                          label: Text(
+                                            "Report",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                         ),
-                                      )
-                                    : FlatButton.icon(
-                                        splashColor: Colors.transparent,
-                                        onPressed: () {
-                                          HapticFeedback.mediumImpact();
-                                          reportPost(
-                                            posts.data()["postId"],
-                                            posts.data()["caption"],
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Feather.flag,
-                                          color: Colors.grey,
-                                          size: 20,
-                                        ),
-                                        label: Text(
-                                          "Report",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             );
           }
