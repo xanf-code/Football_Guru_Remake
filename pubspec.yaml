@@ -103,9 +103,6 @@ dependencies:
   transparent_image: ^1.0.0
   image_gallery_saver: ^1.6.6
 
- #Pagination
-  paginate_firestore: ^0.2.2
-
   #Youtube
   youtube_player_flutter: ^7.0.0+7
   video_compress: ^2.1.1

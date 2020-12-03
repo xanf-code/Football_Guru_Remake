@@ -63,7 +63,7 @@ class TimeLineWidget extends StatelessWidget {
                             width: 110,
                             height: 20,
                             child: Marquee(
-                              text: matchFacts[index]["nameStr"],
+                              text: "${matchFacts[index]["nameStr"]} ",
                               style: GoogleFonts.rubik(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -148,18 +148,18 @@ class TimeLineWidget extends StatelessWidget {
                             width: 110,
                             height: 20,
                             child: Marquee(
-                              text: matchFacts[index]["nameStr"],
+                              text: "${matchFacts[index]["nameStr"]} ",
                               style: GoogleFonts.rubik(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                               scrollAxis: Axis.horizontal,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              blankSpace: 20.0,
-                              velocity: 100.0,
+                              blankSpace: 0.0,
+                              velocity: 50.0,
                               pauseAfterRound: Duration(seconds: 1),
                               startPadding: 10.0,
-                              accelerationDuration: Duration(seconds: 1),
+                              accelerationDuration: Duration(milliseconds: 500),
                               accelerationCurve: Curves.easeIn,
                               decelerationDuration: Duration(milliseconds: 500),
                               decelerationCurve: Curves.easeOut,
