@@ -16,8 +16,7 @@ class ScoresDetailsWidget extends StatefulWidget {
   final int matchID;
   final String homeTeam;
   final String awayTeam;
-  const ScoresDetailsWidget(
-      {Key key, this.matchID, this.homeTeam, this.awayTeam})
+  ScoresDetailsWidget({Key key, this.matchID, this.homeTeam, this.awayTeam})
       : super(key: key);
   @override
   _ScoresDetailsWidgetState createState() => _ScoresDetailsWidgetState();

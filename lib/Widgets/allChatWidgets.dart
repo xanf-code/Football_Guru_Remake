@@ -5,8 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:timeago/timeago.dart' as tAgo;
+import 'package:transfer_news/RealTime/imageDetailScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Chats extends StatefulWidget {
@@ -18,6 +21,7 @@ class Chats extends StatefulWidget {
   final likes;
   final String messageID;
   final String reference;
+  final String ImageUrl;
   Chats({
     this.userName,
     this.userId,
@@ -27,6 +31,7 @@ class Chats extends StatefulWidget {
     this.likes,
     this.messageID,
     this.reference,
+    this.ImageUrl,
   });
 
   factory Chats.fromDocument(DocumentSnapshot documentSnapshot) {
@@ -39,6 +44,7 @@ class Chats extends StatefulWidget {
       likes: documentSnapshot["likes"],
       messageID: documentSnapshot["messageID"],
       reference: documentSnapshot["reference"],
+      ImageUrl: documentSnapshot["ImageUrl"],
     );
   }
 
@@ -60,6 +66,7 @@ class _ChatsState extends State<Chats> {
             ref: widget.reference,
             likes: widget.likes,
             time: widget.timestamp.toDate(),
+            ImageUrl: widget.ImageUrl,
           )
         : CurrentUserChatWidget(
             url: widget.url,
@@ -69,6 +76,7 @@ class _ChatsState extends State<Chats> {
             ref: widget.reference,
             likes: widget.likes,
             time: widget.timestamp.toDate(),
+            ImageUrl: widget.ImageUrl,
           );
   }
 }
@@ -83,6 +91,7 @@ class CurrentUserChatWidget extends StatelessWidget {
     this.ref,
     this.likes,
     this.time,
+    this.ImageUrl,
   }) : super(key: key);
   final likes;
   final String name;
@@ -91,7 +100,7 @@ class CurrentUserChatWidget extends StatelessWidget {
   final String chat;
   final String url;
   final DateTime time;
-
+  final String ImageUrl;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -113,11 +122,13 @@ class CurrentUserChatWidget extends StatelessWidget {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: IconButton(
+                  splashColor: Colors.transparent,
+                  splashRadius: 1,
                   icon: likes.contains(currentUser.id)
                       ? Icon(
                           Ionicons.ios_heart,
@@ -158,22 +169,65 @@ class CurrentUserChatWidget extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Linkify(
-                          onOpen: (link) async {
-                            if (await canLaunch(link.url)) {
-                              await launch(link.url);
-                            } else {
-                              throw 'Could not launch $link';
-                            }
-                          },
-                          text: chat,
-                          style: GoogleFonts.rubik(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                          linkStyle: TextStyle(
-                            color: Colors.blueAccent,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ImageUrl != ""
+                                ? Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        HapticFeedback.mediumImpact();
+                                        pushNewScreen(
+                                          context,
+                                          withNavBar: false,
+                                          customPageRoute: MorpheusPageRoute(
+                                            builder: (context) => DetailScreen(
+                                              image: ImageUrl,
+                                              postID: "",
+                                            ),
+                                            transitionDuration: Duration(
+                                              milliseconds: 130,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 250,
+                                        width: 400,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: CachedNetworkImageProvider(
+                                              ImageUrl,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(),
+                            Linkify(
+                              onOpen: (link) async {
+                                if (await canLaunch(link.url)) {
+                                  await launch(link.url);
+                                } else {
+                                  throw 'Could not launch $link';
+                                }
+                              },
+                              text: chat,
+                              style: GoogleFonts.rubik(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                              linkStyle: TextStyle(
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -225,14 +279,17 @@ class CurrentUserChatWidget extends StatelessWidget {
               SizedBox(
                 width: 15,
               ),
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(url),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(url),
+                    ),
                   ),
                 ),
               ),
@@ -274,6 +331,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
     this.messageID,
     this.likes,
     this.time,
+    this.ImageUrl,
   }) : super(key: key);
   final likes;
   final String url;
@@ -282,7 +340,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
   final String ref;
   final String messageID;
   final DateTime time;
-
+  final String ImageUrl;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -304,15 +362,19 @@ class NonCurrentUserChatWidget extends StatelessWidget {
             ),
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(url),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(url),
+                    ),
                   ),
                 ),
               ),
@@ -349,22 +411,65 @@ class NonCurrentUserChatWidget extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Linkify(
-                          onOpen: (link) async {
-                            if (await canLaunch(link.url)) {
-                              await launch(link.url);
-                            } else {
-                              throw 'Could not launch $link';
-                            }
-                          },
-                          text: chat,
-                          style: GoogleFonts.rubik(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                          linkStyle: TextStyle(
-                            color: Colors.yellow,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ImageUrl != ""
+                                ? Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        HapticFeedback.mediumImpact();
+                                        pushNewScreen(
+                                          context,
+                                          withNavBar: false,
+                                          customPageRoute: MorpheusPageRoute(
+                                            builder: (context) => DetailScreen(
+                                              image: ImageUrl,
+                                              postID: "",
+                                            ),
+                                            transitionDuration: Duration(
+                                              milliseconds: 130,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 250,
+                                        width: 400,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: CachedNetworkImageProvider(
+                                              ImageUrl,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(),
+                            Linkify(
+                              onOpen: (link) async {
+                                if (await canLaunch(link.url)) {
+                                  await launch(link.url);
+                                } else {
+                                  throw 'Could not launch $link';
+                                }
+                              },
+                              text: chat,
+                              style: GoogleFonts.rubik(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                              linkStyle: TextStyle(
+                                color: Colors.yellow,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -415,6 +520,8 @@ class NonCurrentUserChatWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
+                  splashRadius: 1,
+                  splashColor: Colors.transparent,
                   icon: likes.contains(currentUser.id)
                       ? Icon(
                           Ionicons.ios_heart,

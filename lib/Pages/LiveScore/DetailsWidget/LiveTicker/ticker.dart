@@ -164,7 +164,10 @@ class _LiveTickerState extends State<LiveTicker>
         backgroundColor: Colors.transparent,
         radius: 15,
         backgroundImage: CachedNetworkImageProvider(
-            "https://images.fotmob.com/image_resources/playerimages/${liveTicker[index]["Players"][0]["Id"]}.png"),
+          liveTicker[index]["Players"] == null
+              ? ""
+              : "https://images.fotmob.com/image_resources/playerimages/${liveTicker[index]["Players"][0]["Id"]}.png",
+        ),
       );
     }
     if (liveTicker[index]["IncidentCode"] == "PSG") {
@@ -172,7 +175,10 @@ class _LiveTickerState extends State<LiveTicker>
         backgroundColor: Colors.transparent,
         radius: 15,
         backgroundImage: CachedNetworkImageProvider(
-            "https://images.fotmob.com/image_resources/playerimages/${liveTicker[index]["Players"][0]["Id"]}.png"),
+          liveTicker[index]["Players"] == null
+              ? ""
+              : "https://images.fotmob.com/image_resources/playerimages/${liveTicker[index]["Players"][0]["Id"]}.png",
+        ),
       );
     } else {
       return SizedBox();
