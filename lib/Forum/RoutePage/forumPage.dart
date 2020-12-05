@@ -583,6 +583,19 @@ class _ForumDetailsState extends State<ForumDetails> {
       }
     });
     forumReference.child("post_$postID.jpg").delete();
+
+    FirebaseFirestore.instance
+        .collection("Forum")
+        .doc(widget.forumName)
+        .collection("Posts")
+        .doc(postID)
+        .collection("comments")
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
   }
 
   likePost(String id) async {

@@ -271,7 +271,9 @@ class _CommentsForumPageState extends State<CommentsForumPage> {
                             size: 20,
                           ),
                           label: Text(
-                            comments.data()["replyCount"].toString(),
+                            comments.data()["replyCount"].toString() == "null"
+                                ? ""
+                                : comments.data()["replyCount"].toString(),
                             style: GoogleFonts.rubik(
                               color: Colors.white,
                             ),

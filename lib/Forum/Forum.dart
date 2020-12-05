@@ -190,6 +190,7 @@ class _ForumState extends State<Forum> {
                                     forumName: "National Team",
                                     tagName: [
                                       'Off topic',
+                                      "Announcement",
                                       'National Team',
                                       'Women\'s National Team',
                                       'U-17 National Team',
@@ -226,6 +227,7 @@ class _ForumState extends State<Forum> {
                                     forumName: "ISL",
                                     tagName: [
                                       'Off topic',
+                                      'Announcement',
                                       'Bengaluru FC',
                                       'Kerala Blasters FC',
                                       'Jamshedpur FC',

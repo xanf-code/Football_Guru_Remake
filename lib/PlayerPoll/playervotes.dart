@@ -76,79 +76,92 @@ class _PlayerVotesState extends State<PlayerVotes> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => showDialog(
-      //       context: context,
-      //       builder: (BuildContext context) {
-      //         return AlertDialog(
-      //           backgroundColor: Colors.white,
-      //           content: Container(
-      //             width: double.maxFinite,
-      //             child: Column(
-      //               children: [
-      //                 TextFormField(
-      //                   controller: titleController,
-      //                   decoration: const InputDecoration(labelText: 'Title'),
-      //                   validator: (String value) {
-      //                     if (value.isEmpty) return 'Please enter some text';
-      //                     return null;
-      //                   },
-      //                 ),
-      //                 TextFormField(
-      //                   controller: option1Name,
-      //                   decoration:
-      //                       const InputDecoration(labelText: 'Option 1 name'),
-      //                   validator: (String value) {
-      //                     if (value.isEmpty) return 'Please enter some text';
-      //                     return null;
-      //                   },
-      //                 ),
-      //                 TextFormField(
-      //                   controller: option2Name,
-      //                   decoration:
-      //                       const InputDecoration(labelText: 'Option 2 Name'),
-      //                   validator: (String value) {
-      //                     if (value.isEmpty) return 'Please enter some text';
-      //                     return null;
-      //                   },
-      //                 ),
-      //                 TextFormField(
-      //                   controller: option1Image,
-      //                   decoration:
-      //                       const InputDecoration(labelText: 'Option 1 url'),
-      //                   validator: (String value) {
-      //                     if (value.isEmpty) return 'Please enter some text';
-      //                     return null;
-      //                   },
-      //                 ),
-      //                 TextFormField(
-      //                   controller: option2Image,
-      //                   decoration:
-      //                       const InputDecoration(labelText: 'Option 2 url'),
-      //                   validator: (String value) {
-      //                     if (value.isEmpty) return 'Please enter some text';
-      //                     return null;
-      //                   },
-      //                 ),
-      //                 TextFormField(
-      //                   controller: bgImage,
-      //                   decoration: const InputDecoration(
-      //                       labelText: 'Background Image'),
-      //                   validator: (String value) {
-      //                     if (value.isEmpty) return 'Please enter some text';
-      //                     return null;
-      //                   },
-      //                 ),
-      //                 RaisedButton(
-      //                   onPressed: () => uploadToFirestore(),
-      //                   child: Text("Submit"),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         );
-      //       }),
-      // ),
+      floatingActionButton: currentUser.isAdmin == true
+          ? FloatingActionButton(
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      content: Container(
+                        width: double.maxFinite,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: titleController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Title'),
+                              validator: (String value) {
+                                if (value.isEmpty)
+                                  return 'Please enter some text';
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: option1Name,
+                              decoration: const InputDecoration(
+                                  labelText: 'Option 1 name'),
+                              validator: (String value) {
+                                if (value.isEmpty)
+                                  return 'Please enter some text';
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: option2Name,
+                              decoration: const InputDecoration(
+                                  labelText: 'Option 2 Name'),
+                              validator: (String value) {
+                                if (value.isEmpty)
+                                  return 'Please enter some text';
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: option1Image,
+                              decoration: const InputDecoration(
+                                  labelText: 'Option 1 url'),
+                              validator: (String value) {
+                                if (value.isEmpty)
+                                  return 'Please enter some text';
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: option2Image,
+                              decoration: const InputDecoration(
+                                  labelText: 'Option 2 url'),
+                              validator: (String value) {
+                                if (value.isEmpty)
+                                  return 'Please enter some text';
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: bgImage,
+                              decoration: const InputDecoration(
+                                  labelText: 'Background Image'),
+                              validator: (String value) {
+                                if (value.isEmpty)
+                                  return 'Please enter some text';
+                                return null;
+                              },
+                            ),
+                            RaisedButton(
+                              onPressed: () => uploadToFirestore(),
+                              child: Text("Submit"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            )
+          : SizedBox.expand(),
       body: StreamBuilder(
           stream: voteStream,
           builder: (context, snapshot) {

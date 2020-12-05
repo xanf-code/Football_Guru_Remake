@@ -152,12 +152,16 @@ class _RealTimeUIState extends State<RealTimeUI> {
                       : state.tweets.length,
                   itemBuilder: (context, i) {
                     if (i >= state.tweets.length) {
-                      _dataBloc.add(DataEventFetchMore());
+                      _dataBloc.add(
+                        DataEventFetchMore(),
+                      );
                       return Container(
                         margin: EdgeInsets.only(top: 15),
                         height: 30,
                         width: 30,
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       );
                     }
                     return Padding(

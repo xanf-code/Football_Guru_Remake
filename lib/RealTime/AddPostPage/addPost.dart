@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:uuid/uuid.dart';
@@ -19,7 +17,7 @@ class AddRealTime extends StatefulWidget {
 class _AddRealTimeState extends State<AddRealTime> {
   File selectedImage;
   File fileImage;
-  File croppedImage;
+  //File croppedImage;
   String postId = Uuid().v4();
   bool uploading = false;
   TextEditingController descController = TextEditingController();
@@ -325,24 +323,24 @@ class _AddRealTimeState extends State<AddRealTime> {
   Future captureImageWithGallery() async {
     fileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (fileImage != null) {
-      croppedImage = await ImageCropper.cropImage(
-        sourcePath: fileImage.path,
-        aspectRatio: CropAspectRatio(
-          ratioX: 1,
-          ratioY: 1,
-        ),
-        maxWidth: 700,
-        maxHeight: 700,
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: "Crop Image",
-          toolbarWidgetColor: Colors.white,
-          toolbarColor: Color(0xFF0e0e10),
-          statusBarColor: Color(0xFF0e0e10),
-          backgroundColor: Colors.white,
-        ),
-      );
+      // croppedImage = await ImageCropper.cropImage(
+      //   sourcePath: fileImage.path,
+      //   aspectRatio: CropAspectRatio(
+      //     ratioX: 1,
+      //     ratioY: 1,
+      //   ),
+      //   maxWidth: 700,
+      //   maxHeight: 700,
+      //   androidUiSettings: AndroidUiSettings(
+      //     toolbarTitle: "Crop Image",
+      //     toolbarWidgetColor: Colors.white,
+      //     toolbarColor: Color(0xFF0e0e10),
+      //     statusBarColor: Color(0xFF0e0e10),
+      //     backgroundColor: Colors.white,
+      //   ),
+      // );
       setState(() {
-        selectedImage = croppedImage;
+        selectedImage = fileImage;
       });
     }
   }
@@ -351,24 +349,24 @@ class _AddRealTimeState extends State<AddRealTime> {
   Future captureImageWithCamera() async {
     fileImage = await ImagePicker.pickImage(source: ImageSource.camera);
     if (fileImage != null) {
-      croppedImage = await ImageCropper.cropImage(
-        sourcePath: fileImage.path,
-        aspectRatio: CropAspectRatio(
-          ratioX: 1,
-          ratioY: 1,
-        ),
-        maxWidth: 700,
-        maxHeight: 700,
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: "Crop Image",
-          toolbarWidgetColor: Colors.white,
-          toolbarColor: Color(0xFF0e0e10),
-          statusBarColor: Color(0xFF0e0e10),
-          backgroundColor: Colors.white,
-        ),
-      );
+      // croppedImage = await ImageCropper.cropImage(
+      //   sourcePath: fileImage.path,
+      //   aspectRatio: CropAspectRatio(
+      //     ratioX: 1,
+      //     ratioY: 1,
+      //   ),
+      //   maxWidth: 700,
+      //   maxHeight: 700,
+      //   androidUiSettings: AndroidUiSettings(
+      //     toolbarTitle: "Crop Image",
+      //     toolbarWidgetColor: Colors.white,
+      //     toolbarColor: Color(0xFF0e0e10),
+      //     statusBarColor: Color(0xFF0e0e10),
+      //     backgroundColor: Colors.white,
+      //   ),
+      // );
       setState(() {
-        selectedImage = croppedImage;
+        selectedImage = fileImage;
       });
     }
   }
