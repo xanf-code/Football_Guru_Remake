@@ -16,7 +16,10 @@ class StoryDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        bottom: 8,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -25,8 +28,8 @@ class StoryDesign extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.only(left: 3.0, right: 3.0),
-                height: 64.0,
-                width: 64.0,
+                height: 59.0,
+                width: 59.0,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
@@ -43,16 +46,16 @@ class StoryDesign extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 60.0,
-                width: 60.0,
+                height: 55.0,
+                width: 55.0,
                 decoration: BoxDecoration(
                   color: Color(0xfff5f5f5),
                   borderRadius: BorderRadius.circular(21.0),
                 ),
               ),
               Container(
-                height: 55.0,
-                width: 55.0,
+                height: 50.0,
+                width: 50.0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: FadeInImage.memoryNetwork(

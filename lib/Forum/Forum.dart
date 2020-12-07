@@ -15,6 +15,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
 import 'package:transfer_news/Forum/cardWidget.dart';
+import 'package:transfer_news/Forum/main.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
@@ -120,18 +121,19 @@ class _ForumState extends State<Forum> {
           getFeaturedPosts();
         },
       ),
-      floatingActionButton: currentUser.isAdmin == true
-          ? FloatingActionButton(
-              heroTag: null,
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-                captureImageWithGallery();
-              },
-              child: Icon(Icons.add),
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.white,
-            )
-          : SizedBox(),
+      floatingActionButton:
+          currentUser.isAdmin == true && currentUser.isVerified == true
+              ? FloatingActionButton(
+                  heroTag: null,
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    captureImageWithGallery();
+                  },
+                  child: Icon(Icons.add),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                )
+              : SizedBox(),
     );
   }
 
@@ -186,7 +188,7 @@ class _ForumState extends State<Forum> {
                                 context,
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
-                                  builder: (context) => ForumDetails(
+                                  builder: (context) => ForumMain(
                                     forumName: "National Team",
                                     tagName: [
                                       'Off topic',
@@ -205,14 +207,14 @@ class _ForumState extends State<Forum> {
                                   ),
                                 ),
                               );
-                              viewCounterNT();
+                              viewCounter("National Team");
                             },
                             child: Cards(
                               title: "National Teams Discussion 🇮🇳 ⚽",
                               image:
                                   "https://news.cgtn.com/news/3d3d674e3241444e7a457a6333566d54/img/6513d5354b04433a9512a2b1f521465c/6513d5354b04433a9512a2b1f521465c.jpg",
                               views:
-                                  "${snapshot.data.docs[1]["counter"].length} Views",
+                                  "${snapshot.data.docs[2]["counter"].length} Views",
                               tags: "National Football Teams",
                             ),
                           ),
@@ -223,11 +225,13 @@ class _ForumState extends State<Forum> {
                                 context,
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
-                                  builder: (context) => ForumDetails(
+                                  builder: (context) => ForumMain(
                                     forumName: "ISL",
                                     tagName: [
                                       'Off topic',
                                       'Announcement',
+                                      'Transfers',
+                                      'Rumours',
                                       'Bengaluru FC',
                                       'Kerala Blasters FC',
                                       'Jamshedpur FC',
@@ -247,15 +251,59 @@ class _ForumState extends State<Forum> {
                                   ),
                                 ),
                               );
-                              viewCounter();
+                              viewCounter("ISL");
                             },
                             child: Cards(
                               title: "Indian Super League 🏆",
                               image:
                                   "https://images.news18.com/ibnlive/uploads/2019/08/Sports-741.png",
                               views:
-                                  "${snapshot.data.docs[0]["counter"].length} Views",
+                                  "${snapshot.data.docs[1]["counter"].length} Views",
                               tags: "Domestic Leagues",
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              pushNewScreen(
+                                context,
+                                withNavBar: false,
+                                customPageRoute: MorpheusPageRoute(
+                                  builder: (context) => ForumMain(
+                                    forumName: "I-League",
+                                    tagName: [
+                                      'Off topic',
+                                      "Announcement",
+                                      'Transfers',
+                                      'Rumours',
+                                      'Aizawl FC',
+                                      'Chennai City FC',
+                                      'Churchill Brothers',
+                                      'Gokulam Kearala',
+                                      'Indian Arrows',
+                                      'Mohammedan Sporting',
+                                      'Neroca FC',
+                                      'Punjab FC',
+                                      'Real Kashmir',
+                                      'Sudeva FC',
+                                      'TRAU',
+                                    ],
+                                    appBar: "I-League",
+                                  ),
+                                  transitionDuration: Duration(
+                                    milliseconds: 200,
+                                  ),
+                                ),
+                              );
+                              viewCounter("I-League");
+                            },
+                            child: Cards(
+                              title: "I-League 🏅⚽",
+                              image:
+                                  "https://images.daznservices.com/di/library/GOAL/1d/cb/i-league-trophy_12jv1cp4di6vk17y4zcone0ndz.jpg?t=150978242&quality=60&w=1200&h=800",
+                              views:
+                                  "${snapshot.data.docs[0]["counter"].length} Views",
+                              tags: "I-League",
                             ),
                           ),
                         ],
@@ -469,19 +517,8 @@ class _ForumState extends State<Forum> {
     );
   }
 
-  viewCounter() async {
-    await FirebaseFirestore.instance.collection("Forum").doc("ISL").update({
-      'counter': FieldValue.arrayUnion(
-        [currentUser.id],
-      )
-    });
-  }
-
-  viewCounterNT() async {
-    await FirebaseFirestore.instance
-        .collection("Forum")
-        .doc("National Team")
-        .update({
+  viewCounter(String docName) async {
+    await FirebaseFirestore.instance.collection("Forum").doc(docName).update({
       'counter': FieldValue.arrayUnion(
         [currentUser.id],
       )

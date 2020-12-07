@@ -205,7 +205,9 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
             },
             onLongPress: () {
               HapticFeedback.mediumImpact();
-              removeUserPost();
+              currentUser.isAdmin == true && currentUser.isVerified == true
+                  ? removeUserPost()
+                  : SizedBox();
             },
             child: Stack(
               children: [

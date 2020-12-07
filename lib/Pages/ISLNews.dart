@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unicons/unicons.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:story_view/controller/story_controller.dart';
@@ -17,6 +19,7 @@ import 'package:transfer_news/Pages/Stories/updatePage.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Widgets/NewsCardWidget.dart';
 import 'package:transfer_news/Widgets/storyCard.dart';
+import 'package:timeago/timeago.dart' as tAgo;
 
 class ISLNews extends StatefulWidget {
   final User gCurrentUser;
@@ -89,7 +92,7 @@ class _ISLNewsState extends State<ISLNews>
       slidingCurve: Curves.decelerate,
       delay: Duration(milliseconds: 100),
       child: Container(
-        height: 100,
+        height: 90,
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("stories")
@@ -146,6 +149,9 @@ class _ISLNewsState extends State<ISLNews>
                           return InkWell(
                             onTap: () {
                               HapticFeedback.mediumImpact();
+                              viewCounter(
+                                snapshot.data.docs[index]["postId"],
+                              );
                               pushNewScreen(
                                 context,
                                 withNavBar: false,
@@ -154,6 +160,12 @@ class _ISLNewsState extends State<ISLNews>
                                     url: snapshot.data.docs[index]["url"],
                                     caption: snapshot.data.docs[index]
                                         ["caption"],
+                                    userPic: snapshot.data.docs[index]
+                                        ["userPic"],
+                                    userName: snapshot.data.docs[index]["name"],
+                                    viewCount: snapshot
+                                        .data.docs[index]["viewed"].length
+                                        .toString(),
                                   ),
                                   transitionDuration: Duration(
                                     milliseconds: 200,
@@ -180,6 +192,14 @@ class _ISLNewsState extends State<ISLNews>
     );
   }
 
+  viewCounter(String docID) async {
+    await FirebaseFirestore.instance.collection("stories").doc(docID).update({
+      'viewed': FieldValue.arrayUnion(
+        [currentUser.id],
+      )
+    });
+  }
+
   @override
   bool get wantKeepAlive => true;
 }
@@ -188,31 +208,86 @@ class StoryPage extends StatelessWidget {
   final storyController = StoryController();
   final String url;
   final String caption;
-
-  StoryPage({Key key, this.url, this.caption}) : super(key: key);
+  final String userName;
+  final String userPic;
+  final String viewCount;
+  StoryPage({
+    Key key,
+    this.url,
+    this.caption,
+    this.userName,
+    this.userPic,
+    this.viewCount,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.height,
-        child: StoryView(
-          controller: storyController,
-          storyItems: [
-            StoryItem.pageImage(
-              duration: Duration(
-                seconds: 10,
-              ),
-              url: url,
-              caption: caption,
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.height,
+            child: StoryView(
               controller: storyController,
+              storyItems: [
+                StoryItem.pageImage(
+                  duration: Duration(
+                    seconds: 10,
+                  ),
+                  url: url,
+                  caption: caption,
+                  controller: storyController,
+                ),
+              ],
+              onComplete: () {
+                Navigator.pop(context);
+              },
             ),
-          ],
-          onComplete: () {
-            Navigator.pop(context);
-          },
-        ),
+          ),
+          Positioned(
+            top: 60,
+            left: 15,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(userPic),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  userName,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 15,
+            child: Row(
+              children: [
+                Unicon(
+                  UniconData.uniEye,
+                  color: Colors.white70,
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Text(
+                  "${viewCount} Views",
+                  style: TextStyle(
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

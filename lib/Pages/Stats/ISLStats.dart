@@ -84,7 +84,7 @@ class _ISLStatsState extends State<ISLStats> {
                                   fit: BoxFit.cover,
                                   color: Colors.grey,
                                   imageUrl:
-                                      "https://list.wiki/images/9/92/Unknown-avatar.png",
+                                      "https://www.pinclipart.com/picdir/big/357-3579339_unknown-person-icon-png-wordpress-clipart.png",
                                 ),
                               ),
                             ),

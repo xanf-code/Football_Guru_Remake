@@ -111,7 +111,8 @@ class IndStats extends StatelessWidget {
                 placeholder: (context, url) => new CachedNetworkImage(
                   fit: BoxFit.cover,
                   color: Colors.grey,
-                  imageUrl: "https://list.wiki/images/9/92/Unknown-avatar.png",
+                  imageUrl:
+                      "https://www.pinclipart.com/picdir/big/357-3579339_unknown-person-icon-png-wordpress-clipart.png",
                 ),
               ),
             ),

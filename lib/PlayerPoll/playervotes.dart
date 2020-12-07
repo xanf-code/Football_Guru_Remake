@@ -55,6 +55,7 @@ class _PlayerVotesState extends State<PlayerVotes> {
     initialPage: 0,
     viewportFraction: 1,
   );
+
   @override
   void initState() {
     super.initState();
@@ -82,7 +83,9 @@ class _PlayerVotesState extends State<PlayerVotes> {
                 Icons.add,
                 color: Colors.white,
               ),
-              onPressed: () => showDialog(
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
@@ -159,7 +162,9 @@ class _PlayerVotesState extends State<PlayerVotes> {
                         ),
                       ),
                     );
-                  }),
+                  },
+                );
+              },
             )
           : SizedBox.expand(),
       body: StreamBuilder(
@@ -177,180 +182,214 @@ class _PlayerVotesState extends State<PlayerVotes> {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot votes = snapshot.data.docs[index];
-                  return Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.15), BlendMode.dstATop),
-                        image: CachedNetworkImageProvider(
-                          votes.data()["backgroundImage"],
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      //shrinkWrap: true,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 14.0,
-                          ),
-                          child: Container(
-                            width: double.infinity,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 14,
-                                right: 14,
-                              ),
-                              child: Text(
-                                votes.data()["title"],
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.rubik(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                  return Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.15),
+                                BlendMode.dstATop),
+                            image: CachedNetworkImageProvider(
+                              votes.data()["backgroundImage"],
                             ),
                           ),
                         ),
-                        Divider(
-                          color: Colors.grey[800],
-                          //thickness: 0.5,
-                          //height: 1,
-                          indent: 50,
-                          endIndent: 50,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    votes.data()["option1Name"],
-                                    style: GoogleFonts.rubik(
-                                      color: Colors.grey[300],
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                        child: Column(
+                          //shrinkWrap: true,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 14.0,
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 14,
+                                    right: 14,
                                   ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    height: 200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      //color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: CachedNetworkImageProvider(
-                                          votes.data()["option1Image"],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Ionicons.ios_arrow_up,
-                                      color: votes
-                                              .data()["likes1Option"]
-                                              .contains(currentUser.id)
-                                          ? Colors.red
-                                          : Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      HapticFeedback.mediumImpact();
-                                      likeOption1(
-                                        votes.data()["postID"],
-                                      );
-                                    },
-                                  ),
-                                  Text(
-                                    votes
-                                        .data()["likes1Option"]
-                                        .length
-                                        .toString(),
+                                  child: Text(
+                                    votes.data()["title"],
+                                    textAlign: TextAlign.center,
                                     style: GoogleFonts.rubik(
                                       color: Colors.white,
-                                      fontSize: 22,
+                                      fontSize: 32,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                              Column(
+                            ),
+                            Divider(
+                              color: Colors.grey[800],
+                              //thickness: 0.5,
+                              //height: 1,
+                              indent: 50,
+                              endIndent: 50,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
-                                    votes.data()["option2Name"],
-                                    style: GoogleFonts.rubik(
-                                      color: Colors.grey[300],
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    height: 200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      //color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: CachedNetworkImageProvider(
-                                          votes.data()["option2Image"],
+                                  Column(
+                                    children: [
+                                      Text(
+                                        votes.data()["option1Name"],
+                                        style: GoogleFonts.rubik(
+                                          color: Colors.grey[300],
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                    ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        height: 200,
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          //color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: CachedNetworkImageProvider(
+                                              votes.data()["option1Image"],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Ionicons.ios_arrow_up,
+                                          color: votes
+                                                  .data()["likes1Option"]
+                                                  .contains(currentUser.id)
+                                              ? Colors.red
+                                              : Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          HapticFeedback.mediumImpact();
+                                          likeOption1(
+                                            votes.data()["postID"],
+                                          );
+                                        },
+                                      ),
+                                      Text(
+                                        votes
+                                            .data()["likes1Option"]
+                                            .length
+                                            .toString(),
+                                        style: GoogleFonts.rubik(
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Ionicons.ios_arrow_up,
-                                      color: votes
-                                              .data()["likes2Option"]
-                                              .contains(currentUser.id)
-                                          ? Colors.red
-                                          : Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      HapticFeedback.mediumImpact();
-                                      likeOption2(
-                                        votes.data()["postID"],
-                                      );
-                                    },
-                                  ),
-                                  Text(
-                                    votes
-                                        .data()["likes2Option"]
-                                        .length
-                                        .toString(),
-                                    style: GoogleFonts.rubik(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        votes.data()["option2Name"],
+                                        style: GoogleFonts.rubik(
+                                          color: Colors.grey[300],
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        height: 200,
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          //color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: CachedNetworkImageProvider(
+                                              votes.data()["option2Image"],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Ionicons.ios_arrow_up,
+                                          color: votes
+                                                  .data()["likes2Option"]
+                                                  .contains(currentUser.id)
+                                              ? Colors.red
+                                              : Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          HapticFeedback.mediumImpact();
+                                          likeOption2(
+                                            votes.data()["postID"],
+                                          );
+                                        },
+                                      ),
+                                      Text(
+                                        votes
+                                            .data()["likes2Option"]
+                                            .length
+                                            .toString(),
+                                        style: GoogleFonts.rubik(
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      currentUser.isAdmin == true
+                          ? Positioned(
+                              top: 50,
+                              right: 15,
+                              child: FloatingActionButton(
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  HapticFeedback.mediumImpact();
+                                  removeBattle(
+                                    votes.data()["postID"],
+                                  );
+                                },
+                              ),
+                            )
+                          : SizedBox.expand(),
+                    ],
                   );
                 });
           }),
     );
+  }
+
+  removeBattle(String id) async {
+    await votesReference.doc(id).get().then((docs) {
+      if (docs.exists) {
+        docs.reference.delete();
+      }
+    });
   }
 
   likeOption1(String id) async {

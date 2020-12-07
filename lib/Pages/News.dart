@@ -193,25 +193,25 @@ class _NewsPageState extends State<NewsPage> {
                         icons: UniconData.uniChatInfo,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MorpheusPageRoute(
-                            transitionDuration: Duration(milliseconds: 200),
-                            builder: (context) => CategoryPage(),
-                          ),
-                        );
-                      },
-                      child: DiscordType(
-                        height: 50,
-                        width: 50,
-                        color: Colors.blueGrey[900],
-                        icons: UniconData.uniNewspaper,
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     HapticFeedback.mediumImpact();
+                    //     Navigator.pop(context);
+                    //     Navigator.push(
+                    //       context,
+                    //       MorpheusPageRoute(
+                    //         transitionDuration: Duration(milliseconds: 200),
+                    //         builder: (context) => CategoryPage(),
+                    //       ),
+                    //     );
+                    //   },
+                    //   child: DiscordType(
+                    //     height: 50,
+                    //     width: 50,
+                    //     color: Colors.blueGrey[900],
+                    //     icons: UniconData.uniNewspaper,
+                    //   ),
+                    // ),
                     GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();

@@ -27,7 +27,8 @@ class ForumDetails extends StatefulWidget {
   _ForumDetailsState createState() => _ForumDetailsState();
 }
 
-class _ForumDetailsState extends State<ForumDetails> {
+class _ForumDetailsState extends State<ForumDetails>
+    with AutomaticKeepAliveClientMixin<ForumDetails> {
   int maxMessageToDisplay;
   ScrollController _scrollController;
 
@@ -50,25 +51,10 @@ class _ForumDetailsState extends State<ForumDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF0e0e10),
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Icon(
-              AntDesign.aliwangwang_o1,
-              size: 24,
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Text(widget.appBar),
-          ],
-        ),
-      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: FloatingActionButton(
+          heroTag: null,
           child: Container(
             width: 60,
             height: 60,
@@ -358,16 +344,15 @@ class _ForumDetailsState extends State<ForumDetails> {
                                                 child: Container(
                                                   height: 250,
                                                   width: 400,
-                                                  decoration: BoxDecoration(
+                                                  child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            10),
-                                                    image: DecorationImage(
+                                                      8,
+                                                    ),
+                                                    child: CachedNetworkImage(
                                                       fit: BoxFit.cover,
-                                                      image:
-                                                          CachedNetworkImageProvider(
-                                                        posts.data()["url"],
-                                                      ),
+                                                      imageUrl:
+                                                          posts.data()["url"],
                                                     ),
                                                   ),
                                                 ),
@@ -440,7 +425,7 @@ class _ForumDetailsState extends State<ForumDetails> {
                                     onPressed: () {
                                       HapticFeedback.mediumImpact();
                                       Share.share(
-                                        "${posts.data()["caption"]} \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.footballindia.news",
+                                        "${posts.data()["caption"]} \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.indianfootball.transferNews",
                                       );
                                     },
                                     label: Text(
@@ -571,6 +556,7 @@ class _ForumDetailsState extends State<ForumDetails> {
   }
 
   removePost(postID) async {
+    // Delete Post Collection
     FirebaseFirestore.instance
         .collection("Forum")
         .doc(widget.forumName)
@@ -582,18 +568,19 @@ class _ForumDetailsState extends State<ForumDetails> {
         document.reference.delete();
       }
     });
+    //Delete Post Pic from Storage
     forumReference.child("post_$postID.jpg").delete();
 
+    // Post Individual
     FirebaseFirestore.instance
-        .collection("Forum")
-        .doc(widget.forumName)
-        .collection("Posts")
+        .collection("Individual Tweets")
+        .doc(currentUser.id)
+        .collection("Forum Posts")
         .doc(postID)
-        .collection("comments")
         .get()
-        .then((snapshot) {
-      for (DocumentSnapshot doc in snapshot.docs) {
-        doc.reference.delete();
+        .then((document) {
+      if (document.exists) {
+        document.reference.delete();
       }
     });
   }
@@ -627,4 +614,7 @@ class _ForumDetailsState extends State<ForumDetails> {
       });
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

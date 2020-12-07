@@ -72,6 +72,29 @@ exports.NTNotifications = functions.firestore.document('/Forum/National Team/Pos
     }
 });
 
+exports.PollsNotification = functions.firestore.document('/PlayerBattle/{documentID}').onCreate(async(snapshot,context) => {
+    if(snapshot.empty){
+        console.log("No devices");
+        return;
+    }
+    var payload = {
+        notification: {
+            title: 'Battle Started ⚔️⚽',
+            body: "Head over to vote now 🇮🇳🔥",
+        }, 
+            data: {
+                click_action: 'FLUTTER_NOTIFICATION_CLICK',
+                view: 'Poll' 
+            }
+    } 
+    try {
+        const response = await admin.messaging().sendToTopic("all", payload);
+        console.log("Notification sent");
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //

@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -277,6 +277,26 @@ class ILeagueNewsWidget extends StatelessWidget {
                               ],
                             ),
                           ],
+                        ),
+                      ),
+                      Positioned(
+                        right: 5,
+                        top: 8,
+                        child: IconButton(
+                          splashRadius: 1,
+                          splashColor: Colors.transparent,
+                          onPressed: () {
+                            HapticFeedback.mediumImpact();
+                            Share.share(
+                              "${parse(ILeaguenewsData[index]["title"]["rendered"]).documentElement.text}"
+                              " "
+                              "${ILeaguenewsData[index]["link"]}",
+                            );
+                          },
+                          icon: Unicon(
+                            UniconData.uniShare,
+                            color: Colors.white70,
+                          ),
                         ),
                       ),
                     ],

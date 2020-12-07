@@ -3,10 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:swipe_to/swipe_to.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
@@ -105,199 +107,223 @@ class CurrentUserChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 45.0,
-              bottom: 5,
-            ),
-            child: Text(
-              name,
-              style: GoogleFonts.rubik(
-                color: Colors.grey[400],
-                fontSize: 12,
+      child: SwipeTo(
+        onLeftSwipe: () {
+          HapticFeedback.mediumImpact();
+          removeMessage(ref, messageID);
+        },
+        iconOnLeftSwipe: MaterialIcons.delete,
+        iconColor: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 45.0,
+                bottom: 5,
               ),
-            ),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: IconButton(
-                  splashColor: Colors.transparent,
-                  splashRadius: 1,
-                  icon: likes.contains(currentUser.id)
-                      ? Icon(
-                          Ionicons.ios_heart,
-                          color: Colors.red,
-                        )
-                      : Icon(
-                          Ionicons.ios_heart,
-                          color: Colors.white,
-                        ),
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    like(
-                      ref,
-                      messageID,
-                    );
-                  },
+              child: Text(
+                name,
+                style: GoogleFonts.rubik(
+                  color: Colors.grey[400],
+                  fontSize: 12,
                 ),
               ),
-              Spacer(),
-              Padding(
-                padding: EdgeInsets.only(bottom: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Container(
-                      //width: MediaQuery.of(context).size.width / 2,
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width / 1.5,
-                        minWidth: 20.0,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: IconButton(
+                    splashColor: Colors.transparent,
+                    splashRadius: 1,
+                    icon: likes.contains(currentUser.id)
+                        ? Icon(
+                            Ionicons.ios_heart,
+                            color: Colors.red,
+                          )
+                        : Icon(
+                            Ionicons.ios_heart,
+                            color: Colors.white,
+                          ),
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      like(
+                        ref,
+                        messageID,
+                      );
+                    },
+                  ),
+                ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        //width: MediaQuery.of(context).size.width / 2,
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width / 1.5,
+                          minWidth: 20.0,
                         ),
-                        color: Colors.grey[900],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ImageUrl != ""
-                                ? Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 10.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        HapticFeedback.mediumImpact();
-                                        pushNewScreen(
-                                          context,
-                                          withNavBar: false,
-                                          customPageRoute: MorpheusPageRoute(
-                                            builder: (context) => DetailScreen(
-                                              image: ImageUrl,
-                                              postID: "",
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          color: Colors.grey[900],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ImageUrl != ""
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          HapticFeedback.mediumImpact();
+                                          pushNewScreen(
+                                            context,
+                                            withNavBar: false,
+                                            customPageRoute: MorpheusPageRoute(
+                                              builder: (context) =>
+                                                  DetailScreen(
+                                                image: ImageUrl,
+                                                postID: "",
+                                              ),
+                                              transitionDuration: Duration(
+                                                milliseconds: 130,
+                                              ),
                                             ),
-                                            transitionDuration: Duration(
-                                              milliseconds: 130,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 250,
-                                        width: 400,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: CachedNetworkImageProvider(
-                                              ImageUrl,
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 250,
+                                          width: 400,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: CachedNetworkImageProvider(
+                                                ImageUrl,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                : SizedBox(),
-                            Linkify(
-                              onOpen: (link) async {
-                                if (await canLaunch(link.url)) {
-                                  await launch(link.url);
-                                } else {
-                                  throw 'Could not launch $link';
-                                }
-                              },
-                              text: chat,
-                              style: GoogleFonts.rubik(
-                                color: Colors.white,
-                                fontSize: 15,
+                                    )
+                                  : SizedBox(),
+                              Linkify(
+                                onOpen: (link) async {
+                                  if (await canLaunch(link.url)) {
+                                    await launch(link.url);
+                                  } else {
+                                    throw 'Could not launch $link';
+                                  }
+                                },
+                                text: chat,
+                                style: GoogleFonts.rubik(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
+                                linkStyle: TextStyle(
+                                  color: Colors.blueAccent,
+                                ),
                               ),
-                              linkStyle: TextStyle(
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 3,
-                    ),
-                    likes.length.toString() == 0.toString()
-                        ? SizedBox()
-                        : Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[800],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8.0,
-                                right: 8,
-                                bottom: 2,
-                                top: 2,
+                      SizedBox(
+                        height: 3,
+                      ),
+                      likes.length.toString() == 0.toString()
+                          ? SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[800],
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(
-                                    Ionicons.ios_heart,
-                                    size: 13,
-                                    color: Colors.red,
-                                  ),
-                                  SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text(
-                                    likes.length.toString() == 0.toString()
-                                        ? ""
-                                        : likes.length.toString(),
-                                    style: GoogleFonts.rubik(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 8.0,
+                                  right: 8,
+                                  bottom: 2,
+                                  top: 2,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Ionicons.ios_heart,
+                                      size: 13,
+                                      color: Colors.red,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text(
+                                      likes.length.toString() == 0.toString()
+                                          ? ""
+                                          : likes.length.toString(),
+                                      style: GoogleFonts.rubik(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(url),
+                SizedBox(
+                  width: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(url),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  removeMessage(String groupName, String messageID) async {
+    // Delete Message Collection
+    await chatsReference
+        .doc(groupName)
+        .collection("chats")
+        .doc(messageID)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+    chatImagesReferences.child("post_$messageID.jpg").delete();
   }
 
 //docs.data()["messageID"]

@@ -96,42 +96,45 @@ class _UploadPageState extends State<UploadPage> {
     FirebaseFirestore.instance.collection("stories").doc(postId).set({
       "postId": postId,
       "ownerID": widget.gCurrentUser.id,
-      "timestamp": timeStamp,
+      "timestamp": DateTime.now(),
       "name": currentUser.username,
       "url": url,
+      "userPic": currentUser.url,
       "official": official,
       "caption": captionEditor.text,
+      "viewed": [],
     }).then((result) {
       setState(() {
         selectedImage = null;
         uploading = false;
         postId = Uuid().v4();
       });
-      Navigator.pop(context);
     });
   }
 
   savePostToFirestoreIndividual({String url}) {
     FirebaseFirestore.instance
-        .collection("RecentStories")
+        .collection("Individual Tweets")
         .doc(currentUser.id)
-        .collection("Alltories")
+        .collection("AllStories")
         .doc(postId)
         .set({
       "postId": postId,
       "ownerID": widget.gCurrentUser.id,
-      "timestamp": timeStamp,
+      "timestamp": DateTime.now(),
       "name": currentUser.username,
+      "userPic": currentUser.url,
       "url": url,
       "official": official,
       "caption": captionEditor.text,
+      "viewed": [],
     }).then((result) {
-      Navigator.pop(context);
       setState(() {
         selectedImage = null;
         uploading = false;
         postId = Uuid().v4();
       });
+      Navigator.pop(context);
     });
   }
 
@@ -519,9 +522,9 @@ class _UploadPageState extends State<UploadPage> {
       delay: Duration(milliseconds: 100),
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection("RecentStories")
+            .collection("Individual Tweets")
             .doc(currentUser.id)
-            .collection("Alltories")
+            .collection("AllStories")
             .orderBy("timestamp", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -630,9 +633,9 @@ class _UploadPageState extends State<UploadPage> {
 
   removeStory(postID) async {
     FirebaseFirestore.instance
-        .collection("RecentStories")
+        .collection("Individual Tweets")
         .doc(currentUser.id)
-        .collection("Alltories")
+        .collection("AllStories")
         .doc(postID)
         .get()
         .then((document) {

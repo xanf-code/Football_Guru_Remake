@@ -643,10 +643,11 @@ class _ReelsState extends State<Reels> {
       "likes": [],
       "ref": postID2,
     }).whenComplete(() {
-      FirebaseFirestore.instance
-          .collection("reels")
-          .doc(id)
-          .update({"commentCount": FieldValue.increment(1)});
+      FirebaseFirestore.instance.collection("reels").doc(id).update(
+        {
+          "commentCount": FieldValue.increment(1),
+        },
+      );
     });
     setState(() {
       commentController.clear();

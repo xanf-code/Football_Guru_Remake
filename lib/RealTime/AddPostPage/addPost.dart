@@ -395,28 +395,13 @@ class _AddRealTimeState extends State<AddRealTime> {
         url: downloadImage,
       );
     } else {
-      savePostToDbNoImage();
+      savePostToDatabase(
+        url: "",
+      );
       savePostToIndUserDatabase(
         url: "",
       );
     }
-  }
-
-  //save to DB without image
-  savePostToDbNoImage() {
-    FirebaseFirestore.instance.collection("realTimeTweets").doc(postId).set({
-      "postId": postId,
-      "ownerID": currentUser.id,
-      "timestamp": DateTime.now(),
-      "name": currentUser.username,
-      "url": "",
-      "likes": [],
-      "caption": descController.text,
-      "userPic": currentUser.url,
-      "commentCount": 0,
-      "isVerified": currentUser.isVerified,
-      "role": correspondentController.text,
-    });
   }
 
   //save to database with url

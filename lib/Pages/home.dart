@@ -15,12 +15,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
+import 'package:transfer_news/Forum/main.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/LeaguesIntro.dart';
 import 'package:transfer_news/Forum/Forum.dart';
 import 'package:transfer_news/Pages/News.dart';
 import 'package:transfer_news/Pages/Profile/terms&cond.dart';
 import 'package:transfer_news/Pages/Transfers/transfers.dart';
+import 'package:transfer_news/PlayerPoll/playervotes.dart';
 import 'package:transfer_news/RealTime/RealTimePage.dart';
 import 'createaccount.dart';
 
@@ -99,9 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
       }
+      if (view == 'Poll') {
+        NavigationController(
+          PlayerVotes(),
+        );
+      }
       if (view == 'ISL_forum') {
         NavigationController(
-          ForumDetails(
+          ForumMain(
             forumName: "ISL",
             tagName: [
               'Off topic',
@@ -124,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     if (view == 'NT_forum') {
       NavigationController(
-        ForumDetails(
+        ForumMain(
           forumName: "National Team",
           tagName: [
             'Off topic',
@@ -170,6 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isBlocked = false;
   bool isAdmin = false;
   bool isVerified = false;
+
   saveUserInfoToFireStore() async {
     final GoogleSignInAccount gCurrentUser = gSignIn.currentUser;
     DocumentSnapshot documentSnapshot =

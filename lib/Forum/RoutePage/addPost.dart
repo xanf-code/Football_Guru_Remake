@@ -170,7 +170,6 @@ class _AddPostToForumState extends State<AddPostToForum> {
                             setState(() {
                               tag = val;
                             });
-                            print(tag);
                           },
                           decoration: InputDecoration(
                             filled: true,
@@ -391,44 +390,20 @@ class _AddPostToForumState extends State<AddPostToForum> {
     });
     if (selectedImage != null) {
       String downloadImage = await uploadImage(selectedImage);
+      savePostToIndUserDatabase(
+        url: downloadImage,
+      );
       savePostToDatabase(
         url: downloadImage,
       );
     } else {
-      savePostToDbNoImage();
+      savePostToIndUserDatabase(
+        url: "",
+      );
+      savePostToDatabase(
+        url: "",
+      );
     }
-  }
-
-  //save to DB without image
-  savePostToDbNoImage() {
-    FirebaseFirestore.instance
-        .collection("Forum")
-        .doc(widget.name)
-        .collection("Posts")
-        .doc(postId)
-        .set({
-      "postId": postId,
-      "ownerID": currentUser.id,
-      "timestamp": DateTime.now(),
-      "name": currentUser.username,
-      "url": "",
-      "likes": [],
-      "caption": descController.text,
-      "userPic": currentUser.url,
-      "commentCount": 0,
-      "isVerified": currentUser.isVerified,
-      "tags": tag,
-      "top25": isTop25,
-    }).then((result) {
-      Navigator.pop(context);
-      setState(() {
-        uploading = false;
-        postId = Uuid().v4();
-        descController.clear();
-        selectedImage = null;
-        fileImage = null;
-      });
-    });
   }
 
   //save to database with url
@@ -462,34 +437,27 @@ class _AddPostToForumState extends State<AddPostToForum> {
       });
     });
   }
-  // //User Collection Image
-  // savePostToIndUserDatabase({String url}) {
-  //   FirebaseFirestore.instance
-  //       .collection("Individual Tweets")
-  //       .doc(currentUser.id)
-  //       .collection("tweets")
-  //       .doc(postId)
-  //       .set({
-  //     "postId": postId,
-  //     "ownerID": currentUser.id,
-  //     "timestamp": DateTime.now(),
-  //     "name": currentUser.username,
-  //     "url": url,
-  //     "likes": [],
-  //     "caption": descController.text,
-  //     "userPic": currentUser.url,
-  //     "commentCount": 0,
-  //     "isVerified": currentUser.isVerified,
-  //     "role": correspondentController.text,
-  //   }).then((result) {
-  //     Navigator.pop(context);
-  //     setState(() {
-  //       uploading = false;
-  //       postId = Uuid().v4();
-  //       descController.clear();
-  //       selectedImage = null;
-  //       fileImage = null;
-  //     });
-  //   });
-  // }
+
+  //User Collection Image
+  savePostToIndUserDatabase({String url}) {
+    FirebaseFirestore.instance
+        .collection("Individual Tweets")
+        .doc(currentUser.id)
+        .collection("Forum Posts")
+        .doc(postId)
+        .set({
+      "postId": postId,
+      "ownerID": currentUser.id,
+      "timestamp": DateTime.now(),
+      "name": currentUser.username,
+      "url": url,
+      "likes": [],
+      "caption": descController.text,
+      "userPic": currentUser.url,
+      "commentCount": 0,
+      "isVerified": currentUser.isVerified,
+      "tags": tag,
+      "top25": isTop25,
+    });
+  }
 }

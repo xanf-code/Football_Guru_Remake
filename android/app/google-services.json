@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "835683778710-5fdoli8m3laed14qn5unf6v22bpj0lna.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.indianfootball.transfer_news",
+            "certificate_hash": "1e4b373b237c73981282f1f5f18fa302165c3ddd"
+          }
+        },
+        {
           "client_id": "835683778710-jqbgj3ed73tjl6oujp540t1pjas9f8kd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
