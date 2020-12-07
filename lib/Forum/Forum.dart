@@ -256,7 +256,7 @@ class _ForumState extends State<Forum> {
                             child: Cards(
                               title: "Indian Super League 🏆",
                               image:
-                                  "https://images.news18.com/ibnlive/uploads/2019/08/Sports-741.png",
+                                  "https://www.footballteamnews.com/img/news/news_5aafc5a78b3e5.JPEG",
                               views:
                                   "${snapshot.data.docs[1]["counter"].length} Views",
                               tags: "Domestic Leagues",

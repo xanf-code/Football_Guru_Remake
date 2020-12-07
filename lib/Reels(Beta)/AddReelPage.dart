@@ -64,14 +64,14 @@ class _ReelsState extends State<Reels> {
                   pickVideo(ImageSource.gallery);
                 },
               ),
-              SpeedDialChild(
-                child: Icon(Ionicons.ios_videocam),
-                backgroundColor: Colors.green,
-                onTap: () {
-                  HapticFeedback.mediumImpact();
-                  pickVideo(ImageSource.camera);
-                },
-              ),
+              // SpeedDialChild(
+              //   child: Icon(Ionicons.ios_videocam),
+              //   backgroundColor: Colors.green,
+              //   onTap: () {
+              //     HapticFeedback.mediumImpact();
+              //     pickVideo(ImageSource.camera);
+              //   },
+              // ),
             ],
           ),
         ),
@@ -655,10 +655,10 @@ class _ReelsState extends State<Reels> {
     });
   }
 
-  File video;
+  var video;
   // video picker
   pickVideo(ImageSource src) async {
-    video = await ImagePicker.pickVideo(
+    video = await ImagePicker().getVideo(
       source: src,
       maxDuration: Duration(
         seconds: 10,

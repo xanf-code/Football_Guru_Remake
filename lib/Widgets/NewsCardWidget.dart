@@ -100,10 +100,10 @@ class ISLNewsWidget extends StatelessWidget {
                 ),
                 height: 280,
                 width: MediaQuery.of(context).size.width,
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
+                child: CachedNetworkImage(
                   fit: BoxFit.cover,
-                  image: ISLnewsData[index]["jetpack_featured_media_url"] == ""
+                  imageUrl: ISLnewsData[index]["jetpack_featured_media_url"] ==
+                          ""
                       ? "https://www.globalpharmatek.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg"
                       : ISLnewsData[index]["jetpack_featured_media_url"],
                 ),

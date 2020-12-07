@@ -517,44 +517,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Playstore",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[300],
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      launch(
+                          "https://play.google.com/store/apps/details?id=com.indianfootball.transfer_news");
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Playstore",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[300],
+                          ),
                         ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.grey,
-                      ),
-                    ],
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Share",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.grey,
-                      ),
-                    ],
-                  ),
-                ),
+
                 currentUser.isAdmin == false
                     ? SizedBox()
                     : GestureDetector(
@@ -617,7 +605,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 15,
                   thickness: 2,
                 ),
-                buildNotificationOptionRow("News for you", true),
+                //buildNotificationOptionRow("News for you", true),
                 buildNotificationOptionRow("Notifications", true),
                 SizedBox(
                   height: 40,

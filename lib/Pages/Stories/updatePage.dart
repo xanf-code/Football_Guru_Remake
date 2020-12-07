@@ -57,10 +57,15 @@ class _UploadPageState extends State<UploadPage> {
   Future captureImageWithCamera() async {
     fileImage = await ImagePicker.pickImage(source: ImageSource.camera);
     if (fileImage != null) {
-      File editedFile = await Navigator.of(context).push(
-        new MaterialPageRoute(
+      File editedFile = await pushNewScreen(
+        context,
+        withNavBar: false,
+        customPageRoute: MorpheusPageRoute(
           builder: (context) => StoryDesigner(
             filePath: fileImage.path,
+          ),
+          transitionDuration: Duration(
+            milliseconds: 200,
           ),
         ),
       );

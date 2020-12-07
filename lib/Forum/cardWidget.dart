@@ -37,11 +37,12 @@ class Cards extends StatelessWidget {
                 child: Container(
                   height: 110,
                   width: 160,
-                  decoration: BoxDecoration(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
+                    child: CachedNetworkImage(
                       fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(image),
+                      useOldImageOnUrlChange: true,
+                      imageUrl: image,
                     ),
                   ),
                 ),
