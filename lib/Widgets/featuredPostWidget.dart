@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -109,14 +110,17 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
   @override
   Widget build(BuildContext context) {
     isLiked = (likes[currentUserOnlineId] == true);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        createPostBody(),
-        // Divider(),
-        UpvoteButton(),
-        // Divider(),
-      ],
+    return DelayedDisplay(
+      slidingBeginOffset: Offset(0, -1),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          createPostBody(),
+          // Divider(),
+          UpvoteButton(),
+          // Divider(),
+        ],
+      ),
     );
   }
 

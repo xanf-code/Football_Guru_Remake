@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:transfer_news/Forum/Prediction/ISLPredictionPage.dart';
 import 'package:transfer_news/Forum/RoutePage/PollPage.dart';
 import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
+import 'package:transfer_news/Forum/learderboard/showLearderboard.dart';
 
 class ForumMain extends StatefulWidget {
   final String forumName;
   final List<String> tagName;
   final String appBar;
-
-  const ForumMain({Key key, this.forumName, this.tagName, this.appBar})
+  final int length;
+  const ForumMain(
+      {Key key, this.forumName, this.tagName, this.appBar, this.length})
       : super(key: key);
   @override
   _ForumMainState createState() => _ForumMainState();
@@ -18,7 +21,7 @@ class _ForumMainState extends State<ForumMain> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: widget.length,
       child: Scaffold(
         backgroundColor: Color(0xFF0e0e10),
         appBar: AppBar(
@@ -39,42 +42,192 @@ class _ForumMainState extends State<ForumMain> {
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(65),
             child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 8),
               padding: EdgeInsets.all(12),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: TabBar(
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.white60,
-                  //isScrollable: true,
-                  indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.grey[900],
-                  ),
-                  tabs: [
-                    Tab(
-                      text: "Forum",
-                    ),
-                    Tab(
-                      text: "Polls",
-                    ),
-                  ],
-                ),
+                child: widget.length == 4
+                    ? TabBar(
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.white60,
+                        isScrollable: true,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.transparent,
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFF7232f2),
+                          ),
+                        ),
+                        tabs: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 10.0,
+                              right: 10.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Ionicons.md_football,
+                                  color: Colors.indigoAccent,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Tab(
+                                  text: "Forum",
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 12.0,
+                              right: 12.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  MaterialCommunityIcons.poll,
+                                  color: Colors.indigoAccent,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Tab(
+                                  text: "Polls",
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 12.0,
+                              right: 12.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  MaterialCommunityIcons.vote_outline,
+                                  color: Colors.indigoAccent,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Tab(
+                                  text: "Predictions",
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 12.0,
+                              right: 12.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  EvilIcons.trophy,
+                                  color: Colors.indigoAccent,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Tab(
+                                  text: "Leaderboard",
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    : TabBar(
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.white60,
+                        isScrollable: true,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.transparent,
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFF7232f2),
+                          ),
+                        ),
+                        tabs: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 10.0,
+                              right: 10.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Ionicons.md_football,
+                                  color: Colors.indigoAccent,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Tab(
+                                  text: "Forum",
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 12.0,
+                              right: 12.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  MaterialCommunityIcons.poll,
+                                  color: Colors.indigoAccent,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Tab(
+                                  text: "Polls",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            ForumDetails(
-              forumName: widget.forumName,
-              tagName: widget.tagName,
-              appBar: widget.appBar,
-            ),
-            PollPage(
-              route: widget.forumName,
-            ),
-          ],
-        ),
+        body: widget.length == 4
+            ? TabBarView(
+                children: [
+                  ForumDetails(
+                    forumName: widget.forumName,
+                    tagName: widget.tagName,
+                    appBar: widget.appBar,
+                  ),
+                  PollPage(
+                    route: widget.forumName,
+                  ),
+                  ISLPrediction(),
+                  LearderBoard(),
+                ],
+              )
+            : TabBarView(
+                children: [
+                  ForumDetails(
+                    forumName: widget.forumName,
+                    tagName: widget.tagName,
+                    appBar: widget.appBar,
+                  ),
+                  PollPage(
+                    route: widget.forumName,
+                  ),
+                ],
+              ),
       ),
     );
   }

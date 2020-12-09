@@ -16,22 +16,3 @@ class TMNewsModel {
     this.DateTime,
   });
 }
-
-class GNewsAll {
-  int id;
-  String headlines;
-  String desc;
-  String link;
-  String source;
-  String date;
-  String image;
-  GNewsAll({
-    this.id,
-    this.headlines,
-    this.desc,
-    this.link,
-    this.source,
-    this.date,
-    this.image,
-  });
-}

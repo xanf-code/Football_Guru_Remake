@@ -95,6 +95,29 @@ exports.PollsNotification = functions.firestore.document('/PlayerBattle/{documen
     }
 });
 
+exports.PredictionsNotification = functions.firestore.document('/Prediction/{ID}').onCreate(async(snapshot,context) => {
+    if(snapshot.empty){
+        console.log("No devices");
+        return;
+    }
+    var payload = {
+        notification: {
+            title: 'Predictions: Open Now⚔️⚽',
+            body: "Get your pre-game predictions in🔥",
+        },
+            data: {
+                click_action: 'FLUTTER_NOTIFICATION_CLICK',
+                view: 'Predictions'
+            }
+    }
+    try {
+        const response = await admin.messaging().sendToTopic("all", payload);
+        console.log("Notification sent");
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //

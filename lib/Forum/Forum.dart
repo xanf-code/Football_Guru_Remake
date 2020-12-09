@@ -189,6 +189,7 @@ class _ForumState extends State<Forum> {
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
                                   builder: (context) => ForumMain(
+                                    length: 2,
                                     forumName: "National Team",
                                     tagName: [
                                       'Off topic',
@@ -226,6 +227,7 @@ class _ForumState extends State<Forum> {
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
                                   builder: (context) => ForumMain(
+                                    length: 4,
                                     forumName: "ISL",
                                     tagName: [
                                       'Off topic',
@@ -270,6 +272,7 @@ class _ForumState extends State<Forum> {
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
                                   builder: (context) => ForumMain(
+                                    length: 2,
                                     forumName: "I-League",
                                     tagName: [
                                       'Off topic',

@@ -83,7 +83,7 @@ class _ChatsState extends State<Chats> {
   }
 }
 
-class CurrentUserChatWidget extends StatelessWidget {
+class CurrentUserChatWidget extends StatefulWidget {
   const CurrentUserChatWidget({
     Key key,
     @required this.chat,
@@ -103,6 +103,12 @@ class CurrentUserChatWidget extends StatelessWidget {
   final String url;
   final DateTime time;
   final String ImageUrl;
+
+  @override
+  _CurrentUserChatWidgetState createState() => _CurrentUserChatWidgetState();
+}
+
+class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -110,7 +116,7 @@ class CurrentUserChatWidget extends StatelessWidget {
       child: SwipeTo(
         onLeftSwipe: () {
           HapticFeedback.mediumImpact();
-          removeMessage(ref, messageID);
+          removeMessage(widget.ref, widget.messageID);
         },
         iconOnLeftSwipe: MaterialIcons.delete,
         iconColor: Colors.white,
@@ -123,7 +129,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                 bottom: 5,
               ),
               child: Text(
-                name,
+                widget.name,
                 style: GoogleFonts.rubik(
                   color: Colors.grey[400],
                   fontSize: 12,
@@ -138,7 +144,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                   child: IconButton(
                     splashColor: Colors.transparent,
                     splashRadius: 1,
-                    icon: likes.contains(currentUser.id)
+                    icon: widget.likes.contains(currentUser.id)
                         ? Icon(
                             Ionicons.ios_heart,
                             color: Colors.red,
@@ -150,8 +156,8 @@ class CurrentUserChatWidget extends StatelessWidget {
                     onPressed: () {
                       HapticFeedback.mediumImpact();
                       like(
-                        ref,
-                        messageID,
+                        widget.ref,
+                        widget.messageID,
                       );
                     },
                   ),
@@ -181,7 +187,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ImageUrl != ""
+                              widget.ImageUrl != ""
                                   ? Padding(
                                       padding:
                                           const EdgeInsets.only(bottom: 10.0),
@@ -194,7 +200,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                                             customPageRoute: MorpheusPageRoute(
                                               builder: (context) =>
                                                   DetailScreen(
-                                                image: ImageUrl,
+                                                image: widget.ImageUrl,
                                                 postID: "",
                                               ),
                                               transitionDuration: Duration(
@@ -212,7 +218,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
                                               image: CachedNetworkImageProvider(
-                                                ImageUrl,
+                                                widget.ImageUrl,
                                               ),
                                             ),
                                           ),
@@ -228,7 +234,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                                     throw 'Could not launch $link';
                                   }
                                 },
-                                text: chat,
+                                text: widget.chat,
                                 style: GoogleFonts.rubik(
                                   color: Colors.white,
                                   fontSize: 15,
@@ -244,7 +250,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                       SizedBox(
                         height: 3,
                       ),
-                      likes.length.toString() == 0.toString()
+                      widget.likes.length.toString() == 0.toString()
                           ? SizedBox()
                           : Container(
                               decoration: BoxDecoration(
@@ -270,9 +276,10 @@ class CurrentUserChatWidget extends StatelessWidget {
                                       width: 3,
                                     ),
                                     Text(
-                                      likes.length.toString() == 0.toString()
+                                      widget.likes.length.toString() ==
+                                              0.toString()
                                           ? ""
-                                          : likes.length.toString(),
+                                          : widget.likes.length.toString(),
                                       style: GoogleFonts.rubik(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -298,7 +305,7 @@ class CurrentUserChatWidget extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(url),
+                        image: CachedNetworkImageProvider(widget.url),
                       ),
                     ),
                   ),
@@ -326,7 +333,6 @@ class CurrentUserChatWidget extends StatelessWidget {
     chatImagesReferences.child("post_$messageID.jpg").delete();
   }
 
-//docs.data()["messageID"]
   like(String groupName, String messageID) async {
     DocumentSnapshot docs = await chatsReference
         .doc(groupName)

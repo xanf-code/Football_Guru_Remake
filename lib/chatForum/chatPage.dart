@@ -35,18 +35,47 @@ class _ChatPageState extends State<ChatPage> {
   File fileImage;
   bool uploading = false;
 
+  final ScrollController _scrollController = ScrollController();
+  int _limit = 50;
+  final int _limitIncrement = 20;
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      print("reach the bottom");
+      setState(() {
+        print("reach the bottom");
+        _limit += _limitIncrement;
+      });
+    }
+    if (_scrollController.offset <=
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      print("reach the top");
+      setState(() {
+        print("reach the top");
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
   displayChats() {
-    Timer(
-      Duration(milliseconds: 300),
-      () => _controller.jumpTo(_controller.position.maxScrollExtent),
-    );
+    // Timer(
+    //   Duration(milliseconds: 300),
+    //   () => _controller.jumpTo(_controller.position.maxScrollExtent),
+    // );
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("ChatsCollection")
           .doc(widget.reference)
           .collection("chats")
-          .orderBy("timestamp", descending: false)
-          .limit(100)
+          .orderBy("timestamp", descending: true)
+          .limit(_limit)
           .snapshots(),
       builder: (context, dataSnapshot) {
         if (!dataSnapshot.hasData) {
@@ -63,7 +92,8 @@ class _ChatPageState extends State<ChatPage> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: ListView(
-            controller: _controller,
+            reverse: true,
+            controller: _scrollController,
             physics: ClampingScrollPhysics(),
             children: chats,
           ),
