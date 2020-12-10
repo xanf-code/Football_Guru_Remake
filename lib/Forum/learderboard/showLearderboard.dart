@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:transfer_news/Pages/home.dart';
 
 class LearderBoard extends StatefulWidget {
+  const LearderBoard({Key key}) : super(key: key);
   @override
   _LearderBoardState createState() => _LearderBoardState();
 }

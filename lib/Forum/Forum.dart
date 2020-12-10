@@ -68,73 +68,74 @@ class _ForumState extends State<Forum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Color(0xFF0e0e10),
-      appBar: AppBar(
-        actions: [
-          AvatarGlow(
-            glowColor: Colors.blue,
-            endRadius: 40,
-            duration: Duration(milliseconds: 2000),
-            repeat: true,
-            showTwoGlows: true,
-            repeatPauseDuration: Duration(milliseconds: 100),
-            child: GestureDetector(
-              onTap: () {
-                HapticFeedback.mediumImpact();
-                pushNewScreen(
-                  context,
-                  withNavBar: false,
-                  customPageRoute: MorpheusPageRoute(
-                    builder: (context) => ProfilePage(
-                      userProfileId: currentUser.id,
-                    ),
-                    transitionDuration: Duration(
-                      milliseconds: 200,
-                    ),
-                  ),
-                );
-              },
-              child: CircleAvatar(
-                radius: 16,
-                backgroundImage:
-                    CachedNetworkImageProvider(widget.gCurrentUser.url),
-              ),
-            ),
-          )
-        ],
-        elevation: 0,
+        key: scaffoldKey,
         backgroundColor: Color(0xFF0e0e10),
-        centerTitle: false,
-        title: Text(
-          'Forum',
-          style: GoogleFonts.ubuntu(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.white,
+        appBar: AppBar(
+          actions: [
+            AvatarGlow(
+              glowColor: Colors.blue,
+              endRadius: 40,
+              duration: Duration(milliseconds: 2000),
+              repeat: true,
+              showTwoGlows: true,
+              repeatPauseDuration: Duration(milliseconds: 100),
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  pushNewScreen(
+                    context,
+                    withNavBar: false,
+                    customPageRoute: MorpheusPageRoute(
+                      builder: (context) => ProfilePage(
+                        userProfileId: currentUser.id,
+                      ),
+                      transitionDuration: Duration(
+                        milliseconds: 200,
+                      ),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundImage:
+                      CachedNetworkImageProvider(widget.gCurrentUser.url),
+                ),
+              ),
+            )
+          ],
+          elevation: 0,
+          backgroundColor: Color(0xFF0e0e10),
+          centerTitle: false,
+          title: Text(
+            'Forum',
+            style: GoogleFonts.ubuntu(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: RefreshIndicator(
-        child: file == null ? ForumDisplayPage() : displayUploadFormScreen(),
-        onRefresh: () async {
-          getFeaturedPosts();
-        },
-      ),
-      floatingActionButton:
-          currentUser.isAdmin == true && currentUser.isVerified == true
-              ? FloatingActionButton(
-                  heroTag: null,
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    captureImageWithGallery();
-                  },
-                  child: Icon(Icons.add),
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.white,
-                )
-              : SizedBox(),
-    );
+        body: RefreshIndicator(
+          child: file == null ? ForumDisplayPage() : displayUploadFormScreen(),
+          onRefresh: () async {
+            getFeaturedPosts();
+          },
+        ),
+        floatingActionButton: Visibility(
+          visible: currentUser.isAdmin == true && currentUser.isVerified == true
+              ? true
+              : false,
+          child: FloatingActionButton(
+            heroTag: null,
+            onPressed: () {
+              HapticFeedback.mediumImpact();
+              captureImageWithGallery();
+            },
+            child: Icon(Icons.add),
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.white,
+          ),
+        ));
   }
 
   ForumDisplayPage() {
@@ -216,7 +217,7 @@ class _ForumState extends State<Forum> {
                                   "https://news.cgtn.com/news/3d3d674e3241444e7a457a6333566d54/img/6513d5354b04433a9512a2b1f521465c/6513d5354b04433a9512a2b1f521465c.jpg",
                               views:
                                   "${snapshot.data.docs[2]["counter"].length} Views",
-                              tags: "National Football Teams",
+                              tags: "National Team",
                             ),
                           ),
                           GestureDetector(

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
+import 'package:smart_text_view/smart_text_view.dart';
 import 'package:transfer_news/Forum/CommentsPage/comments.dart';
 import 'package:transfer_news/Forum/RoutePage/addPost.dart';
 import 'package:transfer_news/Pages/home.dart';
@@ -33,6 +34,7 @@ class _ForumDetailsState extends State<ForumDetails>
   int maxMessageToDisplay;
   ScrollController _scrollController;
 
+  @override
   void initState() {
     maxMessageToDisplay = 20;
     _scrollController = ScrollController();
@@ -45,6 +47,12 @@ class _ForumDetailsState extends State<ForumDetails>
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   final String currentUserOnlineId = currentUser?.id;
@@ -113,59 +121,56 @@ class _ForumDetailsState extends State<ForumDetails>
             return Scrollbar(
               thickness: 3,
               radius: Radius.circular(10),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AnimationLimiter(
-                  child: ListView.separated(
-                    cacheExtent: 500.0,
-                    controller: _scrollController,
-                    separatorBuilder: (context, i) {
-                      return Divider(
-                        color: Colors.grey[800],
-                        indent: 10,
-                        endIndent: 10,
-                      );
-                    },
-                    itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context, index) {
-                      DocumentSnapshot posts = snapshot.data.docs[index];
-                      bool isPostOwner =
-                          currentUserOnlineId == posts.data()["ownerID"];
-                      return AnimationConfiguration.staggeredGrid(
-                        position: index,
-                        duration: const Duration(milliseconds: 500),
-                        columnCount: snapshot.data.docs.length,
-                        child: SlideAnimation(
-                          verticalOffset: 50,
-                          child: FadeInAnimation(
-                            child: Stack(
-                              children: [
-                                posts.data()["top25"] == true
-                                    ? Positioned(
-                                        right: 30,
-                                        top: 30,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            HapticFeedback.mediumImpact();
-                                            Fluttertoast.showToast(
-                                              msg: "Top 25 trending",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.BOTTOM,
-                                            );
-                                          },
-                                          child: Icon(
-                                            Feather.trending_up,
-                                            color: Colors.indigoAccent,
-                                          ),
+              child: AnimationLimiter(
+                child: ListView.separated(
+                  cacheExtent: 500.0,
+                  controller: _scrollController,
+                  separatorBuilder: (context, i) {
+                    return Divider(
+                      color: Colors.grey[800],
+                      indent: 10,
+                      endIndent: 10,
+                    );
+                  },
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot posts = snapshot.data.docs[index];
+                    bool isPostOwner =
+                        currentUserOnlineId == posts.data()["ownerID"];
+                    return AnimationConfiguration.staggeredGrid(
+                      position: index,
+                      duration: const Duration(milliseconds: 500),
+                      columnCount: snapshot.data.docs.length,
+                      child: SlideAnimation(
+                        verticalOffset: 50,
+                        child: FadeInAnimation(
+                          child: Stack(
+                            children: [
+                              posts.data()["top25"] == true
+                                  ? Positioned(
+                                      right: 30,
+                                      top: 30,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          HapticFeedback.mediumImpact();
+                                          Fluttertoast.showToast(
+                                            msg: "Top 25 trending",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                          );
+                                        },
+                                        child: Icon(
+                                          Feather.trending_up,
+                                          color: Colors.indigoAccent,
                                         ),
-                                      )
-                                    : SizedBox(),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 12.0,
-                                    right: 12,
-                                    top: 12,
-                                  ),
+                                      ),
+                                    )
+                                  : SizedBox(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.transparent,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -310,24 +315,12 @@ class _ForumDetailsState extends State<ForumDetails>
                                                         .size
                                                         .width /
                                                     1.25,
-                                                child: Linkify(
-                                                  onOpen: (link) async {
-                                                    if (await canLaunch(
-                                                        link.url)) {
-                                                      await launch(link.url);
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                        msg:
-                                                            "Could not launch the link",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.BOTTOM,
-                                                      );
-                                                    }
-                                                  },
+                                                child: SmartText(
                                                   text: posts.data()["caption"],
-                                                  style: GoogleFonts.montserrat(
+                                                  onOpen: (url) {
+                                                    launch(url);
+                                                  },
+                                                  style: GoogleFonts.openSans(
                                                     color: Colors.white,
                                                     height: 1.4,
                                                   ),
@@ -370,27 +363,24 @@ class _ForumDetailsState extends State<ForumDetails>
                                                           ),
                                                         );
                                                       },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                bottom: 8.0),
-                                                        child: Container(
-                                                          height: 250,
-                                                          width: 400,
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              8,
-                                                            ),
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              fit: BoxFit.cover,
-                                                              imageUrl:
-                                                                  posts.data()[
-                                                                      "url"],
-                                                            ),
+                                                      child: Container(
+                                                        height: 250,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            1.25,
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            8,
+                                                          ),
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            fit: BoxFit.cover,
+                                                            imageUrl: posts
+                                                                .data()["url"],
                                                           ),
                                                         ),
                                                       ),
@@ -533,13 +523,13 @@ class _ForumDetailsState extends State<ForumDetails>
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             );

@@ -2,15 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:smart_text_view/smart_text_view.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:transfer_news/Pages/home.dart';
-import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -226,15 +224,11 @@ class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
                                       ),
                                     )
                                   : SizedBox(),
-                              Linkify(
-                                onOpen: (link) async {
-                                  if (await canLaunch(link.url)) {
-                                    await launch(link.url);
-                                  } else {
-                                    throw 'Could not launch $link';
-                                  }
-                                },
+                              SmartText(
                                 text: widget.chat,
+                                onOpen: (url) {
+                                  launch(url);
+                                },
                                 style: GoogleFonts.rubik(
                                   color: Colors.white,
                                   fontSize: 15,
@@ -484,21 +478,17 @@ class NonCurrentUserChatWidget extends StatelessWidget {
                                     ),
                                   )
                                 : SizedBox(),
-                            Linkify(
-                              onOpen: (link) async {
-                                if (await canLaunch(link.url)) {
-                                  await launch(link.url);
-                                } else {
-                                  throw 'Could not launch $link';
-                                }
-                              },
+                            SmartText(
                               text: chat,
+                              onOpen: (url) {
+                                launch(url);
+                              },
                               style: GoogleFonts.rubik(
                                 color: Colors.white,
                                 fontSize: 15,
                               ),
                               linkStyle: TextStyle(
-                                color: Colors.yellow,
+                                color: Colors.blueAccent,
                               ),
                             ),
                           ],

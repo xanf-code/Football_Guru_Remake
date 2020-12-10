@@ -2,70 +2,76 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Forum/Prediction/addEvent.dart';
 import 'package:transfer_news/Pages/home.dart';
-
+import 'package:intl/intl.dart';
 import 'LeaderBoardPoints.dart';
 import 'ShowPredictions.dart';
 
 class ISLPrediction extends StatefulWidget {
+  const ISLPrediction({Key key}) : super(key: key);
   @override
   _ISLPredictionState createState() => _ISLPredictionState();
 }
 
-class _ISLPredictionState extends State<ISLPrediction> {
+class _ISLPredictionState extends State<ISLPrediction>
+    with AutomaticKeepAliveClientMixin<ISLPrediction> {
+  @override
+  bool get wantKeepAlive => true;
   bool isLocked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 12.0),
-        child: currentUser.isAdmin == true
-            ? FloatingActionButton(
-                heroTag: null,
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  child: Icon(
-                    MaterialCommunityIcons.sword_cross,
-                    size: 30,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [
-                        Color(0xffF58529),
-                        Color(0xffFEDA77),
-                        Color(0xffDD2A7B),
-                        Color(0xff8134AF),
-                        Color(0xff515BD4),
-                      ],
-                    ),
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: Visibility(
+            visible: currentUser.isAdmin == true ? true : false,
+            child: FloatingActionButton(
+              heroTag: null,
+              child: Container(
+                width: 60,
+                height: 60,
+                child: Icon(
+                  MaterialCommunityIcons.sword_cross,
+                  size: 30,
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Color(0xffF58529),
+                      Color(0xffFEDA77),
+                      Color(0xffDD2A7B),
+                      Color(0xff8134AF),
+                      Color(0xff515BD4),
+                    ],
                   ),
                 ),
-                onPressed: () {
-                  HapticFeedback.mediumImpact();
-                  pushNewScreen(
-                    context,
-                    withNavBar: false,
-                    customPageRoute: MorpheusPageRoute(
-                      builder: (context) => AddEvent(),
-                      transitionDuration: Duration(
-                        milliseconds: 200,
-                      ),
+              ),
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                pushNewScreen(
+                  context,
+                  withNavBar: false,
+                  customPageRoute: MorpheusPageRoute(
+                    builder: (context) => AddEvent(),
+                    transitionDuration: Duration(
+                      milliseconds: 200,
                     ),
-                  );
-                },
-              )
-            : SizedBox.shrink(),
-      ),
+                  ),
+                );
+              },
+            ),
+          )),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("Prediction").snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -96,151 +102,378 @@ class _ISLPredictionState extends State<ISLPrediction> {
               ),
             );
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                DocumentSnapshot cards = snapshot.data.docs[index];
-                return Stack(
-                  children: [
-                    GestureDetector(
-                      onLongPress: () {
-                        HapticFeedback.mediumImpact();
-                        pushNewScreen(
-                          context,
-                          withNavBar: false,
-                          customPageRoute: MorpheusPageRoute(
-                            builder: (context) => LeaderPoints(
-                              docID: cards.data()["Id"],
-                            ),
-                            transitionDuration: Duration(
-                              milliseconds: 200,
-                            ),
-                          ),
-                        );
-                      },
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        cards.data()["status"] == false
-                            ? pushNewScreen(
-                                context,
-                                withNavBar: false,
-                                customPageRoute: MorpheusPageRoute(
-                                  builder: (context) => PredictNowScreen(
-                                    ID: cards.data()["Id"],
-                                    team1Name: cards.data()["team1Name"],
-                                    team1Logo: cards.data()["team1Logo"],
-                                    team2Name: cards.data()["team2Name"],
-                                    team2Logo: cards.data()["team2Logo"],
-                                    count: cards
-                                        .data()["usersVoted"]
-                                        .length
-                                        .toString(),
+            return AnimationLimiter(
+              child: ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot cards = snapshot.data.docs[index];
+                  return AnimationConfiguration.staggeredGrid(
+                    position: index,
+                    duration: const Duration(milliseconds: 500),
+                    columnCount: snapshot.data.docs.length,
+                    child: SlideAnimation(
+                      verticalOffset: 50,
+                      child: FadeInAnimation(
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: 32,
+                              right: 25,
+                              child: Container(
+                                width: 80,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      const Color(0xFF396afc),
+                                      const Color(0xFF2948ff),
+                                    ],
+                                    begin: const FractionalOffset(0.0, 0.0),
+                                    end: const FractionalOffset(1.0, 0.0),
+                                    stops: [0.0, 1.0],
                                   ),
-                                  transitionDuration: Duration(
-                                    milliseconds: 200,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "PREDICT",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: 2,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ),
-                              )
-                            : CoolAlert.show(
-                                context: context,
-                                type: CoolAlertType.info,
-                                text:
-                                    "Predictions for closed, Leaderboard will be updated soon.",
-                                lottieAsset: '/assets/animation/closed.json',
-                                backgroundColor: Colors.black,
-                              );
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CachedNetworkImage(
-                                height: 50,
-                                imageUrl: cards.data()["team1Logo"],
                               ),
-                              SizedBox(
-                                width: 6,
+                            ),
+                            GestureDetector(
+                              onLongPress: () {
+                                currentUser.isAdmin == true
+                                    ? pushNewScreen(
+                                        context,
+                                        withNavBar: false,
+                                        customPageRoute: MorpheusPageRoute(
+                                          builder: (context) => LeaderPoints(
+                                            docID: cards.data()["Id"],
+                                          ),
+                                          transitionDuration: Duration(
+                                            milliseconds: 200,
+                                          ),
+                                        ),
+                                      )
+                                    : HapticFeedback.mediumImpact();
+                              },
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                cards.data()["status"] == false
+                                    ? pushNewScreen(
+                                        context,
+                                        withNavBar: false,
+                                        customPageRoute: MorpheusPageRoute(
+                                          builder: (context) =>
+                                              PredictNowScreen(
+                                            ID: cards.data()["Id"],
+                                            team1Name:
+                                                cards.data()["team1Name"],
+                                            team1Logo:
+                                                cards.data()["team1Logo"],
+                                            team2Name:
+                                                cards.data()["team2Name"],
+                                            team2Logo:
+                                                cards.data()["team2Logo"],
+                                            count: cards
+                                                .data()["usersVoted"]
+                                                .length
+                                                .toString(),
+                                          ),
+                                          transitionDuration: Duration(
+                                            milliseconds: 200,
+                                          ),
+                                        ),
+                                      )
+                                    : CoolAlert.show(
+                                        context: context,
+                                        type: CoolAlertType.info,
+                                        text:
+                                            "Predictions for closed, Leaderboard will be updated soon.",
+                                        lottieAsset:
+                                            '/assets/animation/closed.json',
+                                        backgroundColor: Colors.black,
+                                      );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 140,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.transparent,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Color(0xFF7232f2),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 12.0,
+                                              top: 12,
+                                              bottom: 12,
+                                            ),
+                                            child: Container(
+                                              width: 70,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                gradient: new LinearGradient(
+                                                  colors: [
+                                                    const Color(0xFFb92b27),
+                                                    const Color(0xFF1565C0),
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  cards.data()["status"] == true
+                                                      ? "CLOSED"
+                                                      : "OPEN",
+                                                  style:
+                                                      GoogleFonts.averageSans(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 2,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              right: 14.0,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  MaterialCommunityIcons.poll,
+                                                  color: Colors.indigoAccent,
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "${NumberFormat.compact().format(cards.data()["usersVoted"].length)} predictions",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[500],
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 12.0,
+                                          bottom: 8,
+                                        ),
+                                        child: Text(
+                                          "${cards.data()["team1Name"]} vs ${cards.data()["team2Name"]}",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 12.0,
+                                          bottom: 8,
+                                        ),
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Color(0xFFe0f2f1),
+                                                  image: DecorationImage(
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      "${cards.data()["team1Logo"]}_xsmall",
+                                                    ),
+                                                  ),
+                                                  border: Border.all(
+                                                    width: 3,
+                                                    color: Color(0xFF7232f2),
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                left: 25,
+                                                child: Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Color(0xFFe0f2f1),
+                                                    image: DecorationImage(
+                                                      image:
+                                                          CachedNetworkImageProvider(
+                                                        "${cards.data()["team2Logo"]}_xsmall",
+                                                      ),
+                                                    ),
+                                                    border: Border.all(
+                                                      width: 3,
+                                                      color: Color(0xFF7232f2),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Text(
-                                cards.data()["team1Name"],
+                            ),
+                            Visibility(
+                              visible:
+                                  currentUser.isAdmin == true ? true : false,
+                              child: Positioned(
+                                top: 15,
+                                left: 90,
+                                child: IconButton(
+                                  icon: cards.data()["status"] == true
+                                      ? Icon(
+                                          Feather.lock,
+                                          color: Colors.red,
+                                          size: 18,
+                                        )
+                                      : Icon(
+                                          Feather.unlock,
+                                          color: Colors.white,
+                                          size: 18,
+                                        ),
+                                  onPressed: () {
+                                    HapticFeedback.mediumImpact();
+                                    //Status : false (UNLOCKED CAN VOTE)
+                                    //Status : true (LOCKED CAN'T VOTE)
+                                    manageLocking(
+                                      cards.data()["Id"],
+                                    );
+                                  },
+                                ),
                               ),
-                              SizedBox(
-                                width: 6,
+                            ),
+                            Visibility(
+                              visible:
+                                  currentUser.isAdmin == true ? true : false,
+                              child: Positioned(
+                                left: 150,
+                                top: 15,
+                                child: IconButton(
+                                  icon: Icon(
+                                    EvilIcons.close_o,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  onPressed: () {
+                                    HapticFeedback.mediumImpact();
+                                    showAlertDialog(
+                                      context,
+                                      cards.data()["Id"],
+                                    );
+                                  },
+                                ),
                               ),
-                              Text(
-                                "VS",
-                              ),
-                              SizedBox(
-                                width: 6,
-                              ),
-                              Text(
-                                cards.data()["team2Name"],
-                              ),
-                              SizedBox(
-                                width: 6,
-                              ),
-                              CachedNetworkImage(
-                                height: 50,
-                                imageUrl: cards.data()["team2Logo"],
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    currentUser.isAdmin == true
-                        ? Positioned(
-                            right: 0,
-                            child: IconButton(
-                              icon: cards.data()["status"] == true
-                                  ? Icon(
-                                      Feather.lock,
-                                      color: Colors.black,
-                                      size: 18,
-                                    )
-                                  : Icon(
-                                      Feather.unlock,
-                                      color: Colors.red,
-                                      size: 18,
-                                    ),
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                //Status : false (UNLOCKED CAN VOTE)
-                                //Status : true (LOCKED CAN'T VOTE)
-                                manageLocking(
-                                  cards.data()["Id"],
-                                );
-                              },
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                    currentUser.isAdmin == true
-                        ? Positioned(
-                            left: 0,
-                            child: IconButton(
-                              icon: Icon(
-                                EvilIcons.close_o,
-                                color: Colors.black,
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                removeEvent(
-                                  cards.data()["Id"],
-                                );
-                              },
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             );
           }
         },
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context, String ID) {
+    Widget cancelButton = FlatButton(
+      child: Text(
+        "No",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      onPressed: () {
+        HapticFeedback.mediumImpact();
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text(
+        "Yes",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      onPressed: () {
+        HapticFeedback.mediumImpact();
+        removeEvent(
+          ID,
+        );
+        Navigator.of(context).pop();
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Colors.black87,
+      title: Text(
+        "Delete",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      content: Text(
+        "Are you sure you want to delete the event?",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

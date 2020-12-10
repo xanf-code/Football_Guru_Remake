@@ -62,6 +62,9 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
                 height: 30,
                 imageUrl: widget.team1Logo,
               ),
+              SizedBox(
+                width: 6,
+              ),
               CachedNetworkImage(
                 height: 30,
                 imageUrl: widget.team2Logo,

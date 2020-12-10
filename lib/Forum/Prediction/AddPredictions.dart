@@ -334,6 +334,7 @@ class _AddPredictionsState extends State<AddPredictions> {
       "team2Logo": widget.teamLogo2,
       "team2Score": score2 == null ? 0 : score2,
       "query": "${score1 == null ? 0 : score1}-${score2 == null ? 0 : score2}",
+      "pointsAssigned": false,
     }).then((result) {
       FirebaseFirestore.instance.collection("Prediction").doc(widget.id).update(
         {

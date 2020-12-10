@@ -483,35 +483,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CachedNetworkImage(
-                height: 50,
-                imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/transferapp-18e5d.appspot.com/o/assets%2Flogo2-removebg-preview.png?alt=media&token=3b4ca3d1-d770-4174-b88c-c7274d7e5d38",
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              CachedNetworkImage(
-                height: 35,
-                imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/transferapp-18e5d.appspot.com/o/assets%2FFinalized%20Logo.png?alt=media&token=9d9d1662-5c18-49cc-9258-aebc88dcc026",
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              CachedNetworkImage(
-                height: 35,
-                imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/transferapp-18e5d.appspot.com/o/assets%2FTechtro%20Sports%20Trust%20Final%20Logo%20Design%202.png?alt=media&token=262bba45-56a5-47c4-9796-ef83c493aef8",
-              ),
-            ],
-          ),
-        ),
         singningIn == true
             ? Align(
                 alignment: Alignment.center,

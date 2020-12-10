@@ -328,13 +328,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.1"
-  flutter_linkify:
-    dependency: "direct main"
-    description:
-      name: flutter_linkify
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -514,7 +507,7 @@ packages:
     source: hosted
     version: "1.1.1"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"
@@ -541,13 +534,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4+2"
-  linkify:
-    dependency: transitive
-    description:
-      name: linkify
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   logging:
     dependency: transitive
     description:
@@ -770,6 +756,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smart_text_view:
+    dependency: "direct main"
+    description:
+      name: smart_text_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   source_span:
     dependency: transitive
     description:

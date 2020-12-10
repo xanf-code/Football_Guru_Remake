@@ -16,6 +16,7 @@ class LeaderPoints extends StatefulWidget {
 class _LeaderPointsState extends State<LeaderPoints> {
   String score1;
   String score2;
+  bool isVisible = true;
   List teamScores = [
     "0",
     "1",
@@ -150,59 +151,63 @@ class _LeaderPointsState extends State<LeaderPoints> {
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
                       DocumentSnapshot docs = snapshot.data.docs[index];
-                      return ListTile(
-                        subtitle: Row(
-                          children: [
-                            CachedNetworkImage(
-                              height: 20,
-                              imageUrl: docs.data()["team1Logo"],
-                            ),
-                            Text(
-                              docs.data()["team1Score"],
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              " - ",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              docs.data()["team2Score"],
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            CachedNetworkImage(
-                              height: 20,
-                              imageUrl: docs.data()["team2Logo"],
-                            ),
-                          ],
-                        ),
-                        leading: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: CachedNetworkImageProvider(
-                            docs.data()["url"],
-                          ),
-                        ),
-                        title: Text(
-                          docs.data()["name"],
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        trailing: FlatButton(
-                          color: Colors.transparent,
-                          child: Text(
-                            "+5",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () {
-                            HapticFeedback.mediumImpact();
-                            incrementPoint(
-                              docs.data()["ownerID"],
-                            );
-                          },
-                        ),
-                      );
+                      return docs.data()["pointsAssigned"] == false
+                          ? ListTile(
+                              subtitle: Row(
+                                children: [
+                                  CachedNetworkImage(
+                                    height: 20,
+                                    imageUrl: docs.data()["team1Logo"],
+                                  ),
+                                  Text(
+                                    docs.data()["team1Score"],
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    " - ",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    docs.data()["team2Score"],
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  CachedNetworkImage(
+                                    height: 20,
+                                    imageUrl: docs.data()["team2Logo"],
+                                  ),
+                                ],
+                              ),
+                              leading: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: CachedNetworkImageProvider(
+                                  docs.data()["url"],
+                                ),
+                              ),
+                              title: Text(
+                                docs.data()["name"],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              trailing: FlatButton(
+                                color: Colors.transparent,
+                                child: Text(
+                                  "+5",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  HapticFeedback.mediumImpact();
+                                  incrementPoint(
+                                    docs.data()["ownerID"],
+                                    widget.docID,
+                                    docs.data()["Id"],
+                                  );
+                                },
+                              ),
+                            )
+                          : SizedBox.shrink();
                     },
                   ),
                 ],
@@ -214,21 +219,25 @@ class _LeaderPointsState extends State<LeaderPoints> {
     );
   }
 
-  incrementPoint(String userID) {
+  incrementPoint(String userID, String predID, String postID) async {
     FirebaseFirestore.instance.collection("LearderBoard").doc(userID).update(
       {
         "points": FieldValue.increment(5),
       },
     ).whenComplete(() {
-      Fluttertoast.showToast(
-        msg: "5 Points added",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.white,
-        textColor: Colors.black,
-        fontSize: 16.0,
+      FirebaseFirestore.instance
+          .collection("Prediction")
+          .doc(predID)
+          .collection("allPredictions")
+          .doc(postID)
+          .update(
+        {
+          "pointsAssigned": true,
+        },
       );
+      setState(() {
+        isVisible = false;
+      });
     });
   }
 }

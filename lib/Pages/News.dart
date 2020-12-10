@@ -17,7 +17,6 @@ import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/ISLNews.dart';
 import 'package:transfer_news/Pages/IleagueNews.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
-import 'package:transfer_news/Pages/categoryPages/categoryIntroPage.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/PlayerPoll/playervotes.dart';
 import 'package:transfer_news/Reels(Beta)/AddReelPage.dart';
