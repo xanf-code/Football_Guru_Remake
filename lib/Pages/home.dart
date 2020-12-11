@@ -43,6 +43,8 @@ final StorageReference chatImagesReferences =
     FirebaseStorage.instance.ref().child("Chats Pictures");
 final StorageReference forumReference =
     FirebaseStorage.instance.ref().child("Public Forum");
+final StorageReference profilePicsReference =
+    FirebaseStorage.instance.ref().child("Profile Pics");
 final StorageReference reelsReference =
     FirebaseStorage.instance.ref().child("Reels");
 final activityReference = FirebaseFirestore.instance.collection("feed");

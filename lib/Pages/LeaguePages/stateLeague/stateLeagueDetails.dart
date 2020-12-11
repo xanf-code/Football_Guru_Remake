@@ -68,7 +68,27 @@ class _StateLeagueDetailsState extends State<StateLeagueDetails>
             StateLeagueGroups(
               reference: widget.reference,
             ),
-            Container(),
+            Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl:
+                          "https://cdn.dribbble.com/users/2612847/screenshots/5515500/____1_0.png",
+                    ),
+                    Text(
+                      "No Stats Found :(",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

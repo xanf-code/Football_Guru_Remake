@@ -90,12 +90,12 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
       "userPic": currentUser.url,
       "commentCount": 0,
     }).then((result) {
-      Navigator.pop(context);
       setState(() {
         uploading = false;
         postId = Uuid().v4();
-        //FlutterVideoCompress().deleteAllCache();
+        FlutterVideoCompress().deleteAllCache();
       });
+      Navigator.pop(context);
     });
   }
 

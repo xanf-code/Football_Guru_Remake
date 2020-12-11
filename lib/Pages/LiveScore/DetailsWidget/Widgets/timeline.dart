@@ -132,18 +132,26 @@ class TimeLineWidget extends StatelessWidget {
                                       imageUrl:
                                           "https://images.vexels.com/media/users/3/146857/isolated/preview/d55e89657228964a776f7dab3c0537ca-football-red-card-icon-by-vexels.png",
                                     )
-                                  : matchFacts[index]["type"] == "Goal"
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 6.0),
-                                          child: CachedNetworkImage(
-                                            height: 30,
-                                            color: Colors.white,
-                                            imageUrl:
-                                                "https://static.thenounproject.com/png/542381-200.png",
-                                          ),
+                                  : matchFacts[index]["type"] == "Card" &&
+                                          matchFacts[index]["card"] ==
+                                              "YellowRed"
+                                      ? CachedNetworkImage(
+                                          height: 30,
+                                          imageUrl:
+                                              "https://images.vexels.com/media/users/3/146857/isolated/preview/d55e89657228964a776f7dab3c0537ca-football-red-card-icon-by-vexels.png",
                                         )
-                                      : SizedBox(),
+                                      : matchFacts[index]["type"] == "Goal"
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 6.0),
+                                              child: CachedNetworkImage(
+                                                height: 30,
+                                                color: Colors.white,
+                                                imageUrl:
+                                                    "https://static.thenounproject.com/png/542381-200.png",
+                                              ),
+                                            )
+                                          : SizedBox(),
                           Container(
                             width: 110,
                             height: 20,

@@ -74,8 +74,7 @@ class _StateLeagueGroupsState extends State<StateLeagueGroups>
               .doc(widget.reference)
               .collection("Group A")
               .orderBy(
-                "Points",
-                descending: true,
+                "position",
               )
               .snapshots(),
           builder: (context, snapshot) {
@@ -288,8 +287,7 @@ class _StateLeagueGroupsState extends State<StateLeagueGroups>
               .doc(widget.reference)
               .collection("Group B")
               .orderBy(
-                "Points",
-                descending: true,
+                "position",
               )
               .snapshots(),
           builder: (context, snapshot) {

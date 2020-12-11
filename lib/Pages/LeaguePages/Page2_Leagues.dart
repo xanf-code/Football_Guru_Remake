@@ -155,8 +155,8 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: islFixtures == null
-                    ? SizedBox()
+                child: islFixtures.isEmpty
+                    ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:
                             "https://upload.wikimedia.org/wikipedia/en/thumb/b/b0/Indian_Super_League_logo.svg/1200px-Indian_Super_League_logo.svg.png",
@@ -192,8 +192,8 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: ileagueFixtures == null
-                    ? SizedBox()
+                child: ileagueFixtures.isEmpty
+                    ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:
                             "https://upload.wikimedia.org/wikipedia/en/thumb/7/72/I-League_logo.svg/1200px-I-League_logo.svg.png",
@@ -230,8 +230,8 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: ileague2ndFixtures == null
-                    ? SizedBox()
+                child: ileague2ndFixtures.isEmpty
+                    ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:
                             "https://upload.wikimedia.org/wikipedia/en/4/47/I-League_2nd_Division_Logo_2015.png",
@@ -265,8 +265,8 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: eliteLeague == null
-                    ? SizedBox()
+                child: eliteLeague == null || eliteLeague.isEmpty
+                    ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:
                             "https://upload.wikimedia.org/wikipedia/en/b/ba/Youth_League_U18_logo.png",
@@ -298,8 +298,8 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: juniorLeague == null
-                    ? SizedBox()
+                child: juniorLeague.isEmpty
+                    ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:
                             "https://www.the-aiff.com/assets/images/testimg.png",
@@ -331,8 +331,8 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: subJuniorLeague == null
-                    ? SizedBox()
+                child: subJuniorLeague.isEmpty
+                    ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:
                             "https://www.the-aiff.com/assets/images/testimg.png",

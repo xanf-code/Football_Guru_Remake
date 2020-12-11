@@ -375,8 +375,7 @@ class _RealTimeUIState extends State<RealTimeUI> {
                                             likePost(state.tweets[i].postID);
                                           },
                                           label: Text(
-                                            state.tweets[i].likes.length
-                                                .toString(),
+                                            "${state.tweets[i].likes.length} Votes",
                                             style: TextStyle(
                                               color: Colors.grey,
                                             ),

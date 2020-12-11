@@ -400,10 +400,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                               likePost(posts.data()["postId"]);
                                             },
                                             label: Text(
-                                              posts
-                                                  .data()["likes"]
-                                                  .length
-                                                  .toString(),
+                                              "${posts.data()["likes"].length} Votes",
                                               style: TextStyle(
                                                 color: Colors.grey,
                                               ),

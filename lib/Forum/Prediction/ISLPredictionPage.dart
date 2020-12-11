@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/tap_bounce_container.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:transfer_news/Forum/Prediction/addEvent.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:intl/intl.dart';
@@ -193,14 +196,13 @@ class _ISLPredictionState extends State<ISLPrediction>
                                           ),
                                         ),
                                       )
-                                    : CoolAlert.show(
-                                        context: context,
-                                        type: CoolAlertType.info,
-                                        text:
-                                            "Predictions for closed, Leaderboard will be updated soon.",
-                                        lottieAsset:
-                                            '/assets/animation/closed.json',
-                                        backgroundColor: Colors.black,
+                                    : showTopSnackBar(
+                                        context,
+                                        CustomSnackBar.error(
+                                          //backgroundColor: tagBorder,
+                                          message:
+                                              "Predictions are closed, LeaderBoard will be updated soon.",
+                                        ),
                                       );
                               },
                               child: Padding(

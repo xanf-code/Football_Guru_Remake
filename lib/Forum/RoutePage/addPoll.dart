@@ -36,276 +36,285 @@ class _AddPollPageState extends State<AddPollPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xFF0e0e10),
-        body: Stack(
-          children: [
-            Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    uploading ? LinearProgressIndicator() : Text(""),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8.0,
-                            ),
-                            child: Container(
-                              child: TextFormField(
-                                controller: question,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Question cannot be empty";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  counterStyle: TextStyle(
+      child: Banner(
+        location: BannerLocation.topEnd,
+        message: 'Beta',
+        child: Scaffold(
+          backgroundColor: Color(0xFF0e0e10),
+          body: Stack(
+            children: [
+              Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      uploading ? LinearProgressIndicator() : Text(""),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 8.0,
+                              ),
+                              child: Container(
+                                child: TextFormField(
+                                  controller: question,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Question cannot be empty";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    counterStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    hintText: "Add your question here...",
+                                    labelStyle: TextStyle(
+                                        color: Colors.white, fontSize: 17),
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 17),
+                                    border: InputBorder.none,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.greenAccent,
+                                          width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
+                                    ),
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                  ),
+                                  style: GoogleFonts.averageSans(
                                     color: Colors.white,
                                   ),
-                                  hintText: "Add your question here...",
-                                  labelStyle: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 17),
-                                  border: InputBorder.none,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.greenAccent, width: 2.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
-                                  ),
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
+                                  maxLines: 1,
+                                  autofocus: false,
                                 ),
-                                style: GoogleFonts.averageSans(
-                                  color: Colors.white,
-                                ),
-                                maxLines: 1,
-                                autofocus: false,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8.0,
-                            ),
-                            child: Container(
-                              child: TextFormField(
-                                controller: option1,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Options cannot be empty";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  counterStyle: TextStyle(
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 8.0,
+                              ),
+                              child: Container(
+                                child: TextFormField(
+                                  controller: option1,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Options cannot be empty";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    counterStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    hintText: "Add your option 1 here...",
+                                    labelStyle: TextStyle(
+                                        color: Colors.white, fontSize: 17),
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 17),
+                                    border: InputBorder.none,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.greenAccent,
+                                          width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
+                                    ),
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                  ),
+                                  style: GoogleFonts.averageSans(
                                     color: Colors.white,
                                   ),
-                                  hintText: "Add your option 1 here...",
-                                  labelStyle: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 17),
-                                  border: InputBorder.none,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.greenAccent, width: 2.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
-                                  ),
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
+                                  maxLines: 1,
+                                  autofocus: false,
                                 ),
-                                style: GoogleFonts.averageSans(
-                                  color: Colors.white,
-                                ),
-                                maxLines: 1,
-                                autofocus: false,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8.0,
-                            ),
-                            child: Container(
-                              child: TextFormField(
-                                controller: option2,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Options cannot be empty";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  counterStyle: TextStyle(
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 8.0,
+                              ),
+                              child: Container(
+                                child: TextFormField(
+                                  controller: option2,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Options cannot be empty";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    counterStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    hintText: "Add your option 2 here...",
+                                    labelStyle: TextStyle(
+                                        color: Colors.white, fontSize: 17),
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 17),
+                                    border: InputBorder.none,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.greenAccent,
+                                          width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
+                                    ),
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                  ),
+                                  style: GoogleFonts.averageSans(
                                     color: Colors.white,
                                   ),
-                                  hintText: "Add your option 2 here...",
-                                  labelStyle: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 17),
-                                  border: InputBorder.none,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.greenAccent, width: 2.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
-                                  ),
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
+                                  maxLines: 1,
+                                  autofocus: false,
                                 ),
-                                style: GoogleFonts.averageSans(
-                                  color: Colors.white,
-                                ),
-                                maxLines: 1,
-                                autofocus: false,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8.0,
-                            ),
-                            child: Container(
-                              child: TextFormField(
-                                controller: option3,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                decoration: InputDecoration(
-                                  counterStyle: TextStyle(
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 8.0,
+                              ),
+                              child: Container(
+                                child: TextFormField(
+                                  controller: option3,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  decoration: InputDecoration(
+                                    counterStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    hintText: "Add your option 3 (optional)",
+                                    labelStyle: TextStyle(
+                                        color: Colors.white, fontSize: 17),
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 17),
+                                    border: InputBorder.none,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.greenAccent,
+                                          width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
+                                    ),
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                  ),
+                                  style: GoogleFonts.averageSans(
                                     color: Colors.white,
                                   ),
-                                  hintText: "Add your option 3 (optional)",
-                                  labelStyle: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 17),
-                                  border: InputBorder.none,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.greenAccent, width: 2.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
-                                  ),
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
+                                  maxLines: 1,
+                                  autofocus: false,
                                 ),
-                                style: GoogleFonts.averageSans(
-                                  color: Colors.white,
-                                ),
-                                maxLines: 1,
-                                autofocus: false,
                               ),
                             ),
-                          ),
-                          Container(
-                            child: DropdownButtonFormField(
-                              dropdownColor: Color(0xFF0e0e10),
-                              style: GoogleFonts.openSans(
-                                fontSize: 16,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold,
-                              ),
-                              value: tag ?? "Off topic",
-                              onChanged: (val) {
-                                setState(() {
-                                  tag = val;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color(0xFF0e0e10),
-                                border: InputBorder.none,
-                                labelText: "Pick a tag",
-                                labelStyle: GoogleFonts.openSans(
+                            Container(
+                              child: DropdownButtonFormField(
+                                dropdownColor: Color(0xFF0e0e10),
+                                style: GoogleFonts.openSans(
                                   fontSize: 16,
                                   color: Colors.white,
                                   //fontWeight: FontWeight.bold,
                                 ),
+                                value: tag ?? "Off topic",
+                                onChanged: (val) {
+                                  setState(() {
+                                    tag = val;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xFF0e0e10),
+                                  border: InputBorder.none,
+                                  labelText: "Pick a tag",
+                                  labelStyle: GoogleFonts.openSans(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    //fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                items: widget.tags.map((team) {
+                                  return DropdownMenuItem(
+                                    child: Text("$team"),
+                                    value: team,
+                                  );
+                                }).toList(),
                               ),
-                              items: widget.tags.map((team) {
-                                return DropdownMenuItem(
-                                  child: Text("$team"),
-                                  value: team,
-                                );
-                              }).toList(),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 18.0),
-                            child: FlatButton(
-                              height: 50,
-                              minWidth: MediaQuery.of(context).size.width / 1.5,
-                              color: Colors.blueAccent,
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                FocusScope.of(context).unfocus();
-                                if (_formKey.currentState.validate()) {
-                                  controlUploadAndSave();
-                                }
-                              },
-                              child: Text(
-                                "Post Poll",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 18.0),
+                              child: FlatButton(
+                                height: 50,
+                                minWidth:
+                                    MediaQuery.of(context).size.width / 1.5,
+                                color: Colors.blueAccent,
+                                onPressed: () {
+                                  HapticFeedback.mediumImpact();
+                                  FocusScope.of(context).unfocus();
+                                  if (_formKey.currentState.validate()) {
+                                    controlUploadAndSave();
+                                  }
+                                },
+                                child: Text(
+                                  "Post Poll",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            uploading
-                ? Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.black,
+              uploading
+                  ? Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                : Text(""),
-          ],
+                    )
+                  : Text(""),
+            ],
+          ),
         ),
       ),
     );
@@ -341,6 +350,7 @@ class _AddPollPageState extends State<AddPollPage> {
       "isVerified": currentUser.isVerified,
       "tags": tag,
       "top25": isTop25,
+      "likes": [],
     }).then((result) {
       Navigator.pop(context);
       setState(() {

@@ -58,7 +58,7 @@ class _IntLeagueCardState extends State<IntLeagueCard> {
                   widget.leagueName,
                   style: GoogleFonts.rubik(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 subtitle: Text(

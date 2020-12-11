@@ -331,6 +331,8 @@ class _ReelsState extends State<Reels> {
       if (document.exists) {
         document.reference.delete();
       }
+    }).whenComplete(() {
+      Navigator.of(context).pop();
     });
 
     reelsReference.child("post_$postID.mp4").delete();
