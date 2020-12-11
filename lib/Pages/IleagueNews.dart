@@ -16,10 +16,12 @@ import 'package:transfer_news/Pages/LiveScore/live.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:html/parser.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ILeagueNews extends StatefulWidget {
+  const ILeagueNews();
   @override
   _ILeagueNewsState createState() => _ILeagueNewsState();
 }
@@ -53,7 +55,7 @@ class _ILeagueNewsState extends State<ILeagueNews>
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
       body: ILeaguenewsData == null
-          ? ShimmerList()
+          ? const ShimmerList()
           : ILeagueNewsWidget(ILeaguenewsData: ILeaguenewsData),
     );
   }
@@ -65,7 +67,7 @@ class _ILeagueNewsState extends State<ILeagueNews>
 class ILeagueNewsWidget extends StatelessWidget {
   const ILeagueNewsWidget({
     Key key,
-    @required this.ILeaguenewsData,
+    this.ILeaguenewsData,
   }) : super(key: key);
 
   final List ILeaguenewsData;
@@ -74,22 +76,22 @@ class ILeagueNewsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: ClampingScrollPhysics(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         children: [
           DelayedDisplay(
             fadingDuration: const Duration(milliseconds: 800),
             slidingCurve: Curves.decelerate,
-            delay: Duration(milliseconds: 200),
-            child: LiveScoreWidget(
+            delay: const Duration(milliseconds: 200),
+            child: const LiveScoreWidget(
               leagueId: 0,
             ),
           ),
           DelayedDisplay(
             fadingDuration: const Duration(milliseconds: 800),
             slidingCurve: Curves.decelerate,
-            delay: Duration(milliseconds: 300),
+            delay: const Duration(milliseconds: 300),
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -105,7 +107,7 @@ class ILeagueNewsWidget extends StatelessWidget {
                         builder: (context) => WebviewScaffold(
                           url: ILeaguenewsData[index]["link"],
                           appBar: AppBar(
-                            backgroundColor: Color(0xFF0e0e10),
+                            backgroundColor: appBG,
                             actions: [
                               GestureDetector(
                                 onTap: () {
@@ -143,13 +145,13 @@ class ILeagueNewsWidget extends StatelessWidget {
                           ),
                           hidden: true,
                           initialChild: Container(
-                            color: Color(0xFF0e0e10),
+                            color: appBG,
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: const CircularProgressIndicator(),
                             ),
                           ),
                         ),
-                        transitionDuration: Duration(
+                        transitionDuration: const Duration(
                           milliseconds: 200,
                         ),
                       ),
@@ -158,7 +160,7 @@ class ILeagueNewsWidget extends StatelessWidget {
                   child: Stack(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 5,
                         ),
                         height: 280,

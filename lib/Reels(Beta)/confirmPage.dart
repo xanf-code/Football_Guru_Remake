@@ -175,7 +175,7 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     GestureDetector(
@@ -219,7 +219,7 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
                           CircularProgressIndicator(
                             backgroundColor: Colors.white,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(

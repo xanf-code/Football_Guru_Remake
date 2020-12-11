@@ -55,7 +55,7 @@ class _CoachesLineUpState extends State<CoachesLineUp>
   Widget build(BuildContext context) {
     return CoachLineup == null
         ? Center(
-            child: SizedBox(),
+            child: const SizedBox(),
           )
         : ListView.builder(
             physics: NeverScrollableScrollPhysics(),

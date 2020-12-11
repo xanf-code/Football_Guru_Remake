@@ -1,25 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_unicons/unicons.dart';
-import 'package:morpheus/page_routes/morpheus_page_route.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:story_view/controller/story_controller.dart';
-import 'package:story_view/widgets/story_view.dart';
 import 'package:transfer_news/Animations/shimmer.dart';
 import 'package:http/http.dart' as http;
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/LiveScore/live.dart';
-import 'package:transfer_news/Pages/Stories/updatePage.dart';
-import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Widgets/NewsCardWidget.dart';
-import 'package:transfer_news/Widgets/storyCard.dart';
-import 'package:timeago/timeago.dart' as tAgo;
+import 'package:transfer_news/Widgets/storiesWidget.dart';
 
 class ISLNews extends StatefulWidget {
   final User gCurrentUser;
@@ -58,27 +47,26 @@ class _ISLNewsState extends State<ISLNews>
   @override
   Widget build(BuildContext context) {
     return ISLnewsData == null
-        ? ShimmerList()
+        ? const ShimmerList()
         : SingleChildScrollView(
             physics: ClampingScrollPhysics(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               children: [
-                //BuildStories(),
-                buildStories(),
+                const Stories(),
                 DelayedDisplay(
                   fadingDuration: const Duration(milliseconds: 800),
                   slidingCurve: Curves.decelerate,
-                  delay: Duration(milliseconds: 200),
-                  child: LiveScoreWidget(
+                  delay: const Duration(milliseconds: 200),
+                  child: const LiveScoreWidget(
                     leagueId: 9478,
                   ),
                 ),
                 DelayedDisplay(
                   fadingDuration: const Duration(milliseconds: 800),
                   slidingCurve: Curves.decelerate,
-                  delay: Duration(milliseconds: 300),
+                  delay: const Duration(milliseconds: 300),
                   child: ISLNewsWidget(ISLnewsData: ISLnewsData),
                 ),
               ],
@@ -86,209 +74,6 @@ class _ISLNewsState extends State<ISLNews>
           );
   }
 
-  buildStories() {
-    return DelayedDisplay(
-      fadingDuration: const Duration(milliseconds: 500),
-      slidingCurve: Curves.decelerate,
-      delay: Duration(milliseconds: 100),
-      child: Container(
-        height: 90,
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("stories")
-              .where(
-                "timestamp",
-                isGreaterThan: DateTime.now().subtract(Duration(hours: 24)),
-              )
-              .orderBy(
-                "timestamp",
-                descending: true,
-              )
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return SizedBox();
-            } else {
-              return SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        pushNewScreen(
-                          context,
-                          withNavBar: false,
-                          customPageRoute: MorpheusPageRoute(
-                            builder: (context) => UploadPage(
-                              gCurrentUser: currentUser,
-                            ),
-                            transitionDuration: Duration(
-                              milliseconds: 200,
-                            ),
-                          ),
-                        );
-                      },
-                      child: StoryDesign(
-                        image: currentUser.url,
-                        name: currentUser.username,
-                        isUpload: true,
-                      ),
-                    ),
-                    ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.docs.length == null
-                          ? 0
-                          : snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        if (snapshot.data == null) {
-                          return SizedBox();
-                        } else {
-                          return InkWell(
-                            onTap: () {
-                              HapticFeedback.mediumImpact();
-                              viewCounter(
-                                snapshot.data.docs[index]["postId"],
-                              );
-                              pushNewScreen(
-                                context,
-                                withNavBar: false,
-                                customPageRoute: MorpheusPageRoute(
-                                  builder: (context) => StoryPage(
-                                    url: snapshot.data.docs[index]["url"],
-                                    caption: snapshot.data.docs[index]
-                                        ["caption"],
-                                    userPic: snapshot.data.docs[index]
-                                        ["userPic"],
-                                    userName: snapshot.data.docs[index]["name"],
-                                    viewCount: snapshot
-                                        .data.docs[index]["viewed"].length
-                                        .toString(),
-                                  ),
-                                  transitionDuration: Duration(
-                                    milliseconds: 200,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: StoryDesign(
-                              image: snapshot.data.docs[index]["url"],
-                              name: snapshot.data.docs[index]["name"],
-                              isUpload: false,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  viewCounter(String docID) async {
-    await FirebaseFirestore.instance.collection("stories").doc(docID).update({
-      'viewed': FieldValue.arrayUnion(
-        [currentUser.id],
-      )
-    });
-  }
-
   @override
   bool get wantKeepAlive => true;
-}
-
-class StoryPage extends StatelessWidget {
-  final storyController = StoryController();
-  final String url;
-  final String caption;
-  final String userName;
-  final String userPic;
-  final String viewCount;
-  StoryPage({
-    Key key,
-    this.url,
-    this.caption,
-    this.userName,
-    this.userPic,
-    this.viewCount,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.height,
-            child: StoryView(
-              controller: storyController,
-              storyItems: [
-                StoryItem.pageImage(
-                  duration: Duration(
-                    seconds: 10,
-                  ),
-                  url: url,
-                  caption: caption,
-                  controller: storyController,
-                ),
-              ],
-              onComplete: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          Positioned(
-            top: 60,
-            left: 15,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(userPic),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  userName,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 15,
-            child: Row(
-              children: [
-                Unicon(
-                  UniconData.uniEye,
-                  color: Colors.white70,
-                ),
-                SizedBox(
-                  width: 6,
-                ),
-                Text(
-                  "${viewCount} Views",
-                  style: TextStyle(
-                    color: Colors.white70,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

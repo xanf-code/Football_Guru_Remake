@@ -13,13 +13,13 @@ import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:html/parser.dart';
 import 'package:share/share.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ISLNewsWidget extends StatelessWidget {
   const ISLNewsWidget({
     Key key,
-    @required this.ISLnewsData,
+    this.ISLnewsData,
   }) : super(key: key);
 
   final List ISLnewsData;
@@ -42,7 +42,7 @@ class ISLNewsWidget extends StatelessWidget {
                 builder: (context) => WebviewScaffold(
                   url: ISLnewsData[index]["link"],
                   appBar: AppBar(
-                    backgroundColor: Color(0xFF0e0e10),
+                    backgroundColor: appBG,
                     actions: [
                       GestureDetector(
                         onTap: () {
@@ -80,13 +80,13 @@ class ISLNewsWidget extends StatelessWidget {
                   ),
                   hidden: true,
                   initialChild: Container(
-                    color: Color(0xFF0e0e10),
+                    color: appBG,
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: const CircularProgressIndicator(),
                     ),
                   ),
                 ),
-                transitionDuration: Duration(
+                transitionDuration: const Duration(
                   milliseconds: 200,
                 ),
               ),

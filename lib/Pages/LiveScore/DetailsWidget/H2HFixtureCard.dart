@@ -76,7 +76,7 @@ class _H2HFixtureCardState extends State<H2HFixtureCard> {
                             imageUrl:
                                 "https://www.fotmob.com/images/team/${widget.team1Logo}",
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(
@@ -110,7 +110,7 @@ class _H2HFixtureCardState extends State<H2HFixtureCard> {
                             imageUrl:
                                 "https://www.fotmob.com/images/team/${widget.team2Logo}",
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(

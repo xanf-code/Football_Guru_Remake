@@ -21,6 +21,7 @@ import 'package:transfer_news/RealTime/CommentPage.dart';
 import 'package:transfer_news/RealTime/bloc/data_bloc/data_bloc.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RealTimeUI extends StatefulWidget {
@@ -42,7 +43,7 @@ class _RealTimeUIState extends State<RealTimeUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0e0e10),
+      backgroundColor: appBG,
       //AppBar
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -79,7 +80,7 @@ class _RealTimeUIState extends State<RealTimeUI> {
           )
         ],
         elevation: 0,
-        backgroundColor: Color(0xFF0e0e10),
+        backgroundColor: appBG,
         centerTitle: false,
         title: Text(
           'Real Time',
@@ -463,7 +464,7 @@ class _RealTimeUIState extends State<RealTimeUI> {
                     },
                     separatorBuilder: (context, i) {
                       return Divider(
-                        color: Colors.grey[800],
+                        color: separatorColor,
                         indent: 10,
                         endIndent: 10,
                       );

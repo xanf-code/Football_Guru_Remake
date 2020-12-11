@@ -122,7 +122,7 @@ class _LiveStatsState extends State<LiveStats>
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(
@@ -132,7 +132,7 @@ class _LiveStatsState extends State<LiveStats>
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(

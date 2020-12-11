@@ -15,6 +15,7 @@ import 'package:story_designer/story_designer.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/ISLNews.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Widgets/StoryPage.dart';
 import 'package:transfer_news/Widgets/storyCard.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:uuid/uuid.dart';
@@ -243,7 +244,7 @@ class _UploadPageState extends State<UploadPage> {
                     shrinkWrap: true,
                     children: [
                       DelayedDisplay(
-                        slidingBeginOffset: Offset(-1, 1),
+                        slidingBeginOffset: const Offset(-1, 1),
                         child: Row(
                           children: [
                             Padding(
@@ -292,7 +293,7 @@ class _UploadPageState extends State<UploadPage> {
                         height: 20,
                       ),
                       DelayedDisplay(
-                        slidingBeginOffset: Offset(2, 0),
+                        slidingBeginOffset: const Offset(2, 0),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: GestureDetector(
@@ -329,7 +330,7 @@ class _UploadPageState extends State<UploadPage> {
                         ),
                       ),
                       DelayedDisplay(
-                        slidingBeginOffset: Offset(3, 0),
+                        slidingBeginOffset: const Offset(3, 0),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: GestureDetector(

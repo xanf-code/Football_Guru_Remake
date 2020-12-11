@@ -108,7 +108,7 @@ class _LiveTickerState extends State<LiveTicker>
                                                 ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   _buildImage(index),
@@ -181,7 +181,7 @@ class _LiveTickerState extends State<LiveTicker>
         ),
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 

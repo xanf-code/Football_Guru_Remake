@@ -4,6 +4,7 @@ import 'package:transfer_news/Forum/Prediction/ISLPredictionPage.dart';
 import 'package:transfer_news/Forum/RoutePage/PollPage.dart';
 import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
 import 'package:transfer_news/Forum/learderboard/showLearderboard.dart';
+import 'package:transfer_news/Utils/constants.dart';
 
 class ForumMain extends StatefulWidget {
   final String forumName;
@@ -23,9 +24,9 @@ class _ForumMainState extends State<ForumMain> {
     return DefaultTabController(
       length: widget.length,
       child: Scaffold(
-        backgroundColor: Color(0xFF0e0e10),
+        backgroundColor: appBG,
         appBar: AppBar(
-          backgroundColor: Color(0xFF0e0e10),
+          backgroundColor: appBG,
           automaticallyImplyLeading: false,
           title: Row(
             children: [
@@ -56,7 +57,7 @@ class _ForumMainState extends State<ForumMain> {
                           color: Colors.transparent,
                           border: Border.all(
                             width: 1,
-                            color: Color(0xFF7232f2),
+                            color: tagBorder,
                           ),
                         ),
                         tabs: [
@@ -69,7 +70,7 @@ class _ForumMainState extends State<ForumMain> {
                               children: [
                                 Icon(
                                   Ionicons.md_football,
-                                  color: Colors.indigoAccent,
+                                  color: IconColor,
                                 ),
                                 SizedBox(
                                   width: 6,
@@ -89,7 +90,7 @@ class _ForumMainState extends State<ForumMain> {
                               children: [
                                 Icon(
                                   MaterialCommunityIcons.poll,
-                                  color: Colors.indigoAccent,
+                                  color: IconColor,
                                 ),
                                 SizedBox(
                                   width: 6,
@@ -109,7 +110,7 @@ class _ForumMainState extends State<ForumMain> {
                               children: [
                                 Icon(
                                   MaterialCommunityIcons.vote_outline,
-                                  color: Colors.indigoAccent,
+                                  color: IconColor,
                                 ),
                                 SizedBox(
                                   width: 6,
@@ -129,7 +130,7 @@ class _ForumMainState extends State<ForumMain> {
                               children: [
                                 Icon(
                                   EvilIcons.trophy,
-                                  color: Colors.indigoAccent,
+                                  color: IconColor,
                                 ),
                                 SizedBox(
                                   width: 6,
@@ -151,7 +152,7 @@ class _ForumMainState extends State<ForumMain> {
                           color: Colors.transparent,
                           border: Border.all(
                             width: 1,
-                            color: Color(0xFF7232f2),
+                            color: tagBorder,
                           ),
                         ),
                         tabs: [
@@ -164,7 +165,7 @@ class _ForumMainState extends State<ForumMain> {
                               children: [
                                 Icon(
                                   Ionicons.md_football,
-                                  color: Colors.indigoAccent,
+                                  color: IconColor,
                                 ),
                                 SizedBox(
                                   width: 6,
@@ -184,7 +185,7 @@ class _ForumMainState extends State<ForumMain> {
                               children: [
                                 Icon(
                                   MaterialCommunityIcons.poll,
-                                  color: Colors.indigoAccent,
+                                  color: IconColor,
                                 ),
                                 SizedBox(
                                   width: 6,

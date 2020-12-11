@@ -82,7 +82,7 @@ class TMNewsWidget extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 11,
                                 ),
                                 Text(
@@ -95,7 +95,7 @@ class TMNewsWidget extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 16,
                                 ),
                                 Row(
@@ -106,7 +106,7 @@ class TMNewsWidget extends StatelessWidget {
                                       height: 22,
                                       width: 22,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 7,
                                     ),
                                     Text(

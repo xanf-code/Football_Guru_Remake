@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerList extends StatelessWidget {
+  const ShimmerList();
   @override
   Widget build(BuildContext context) {
     int offset = 0;
@@ -52,13 +53,13 @@ class ShimmerLayout extends StatelessWidget {
                   width: containerWidth,
                   color: Colors.grey,
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Container(
                   height: 20,
                   width: containerWidth,
                   color: Colors.grey,
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Container(
                   height: 18,
                   width: containerWidth * 0.75,

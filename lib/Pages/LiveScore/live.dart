@@ -11,6 +11,7 @@ import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:transfer_news/Pages/LiveScore/DetailsWidget/DetailsPage.dart';
+import 'package:transfer_news/Utils/constants.dart';
 
 class LiveScoreWidget extends StatefulWidget {
   final int leagueId;
@@ -220,7 +221,7 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
                                                 color: Colors.transparent,
                                                 border: Border.all(
                                                   width: 1,
-                                                  color: Color(0xFF7232f2),
+                                                  color: tagBorder,
                                                 ),
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -277,7 +278,7 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
                                                     ? Shimmer.fromColors(
                                                         baseColor: Colors.white,
                                                         highlightColor:
-                                                            Colors.blueAccent,
+                                                            pollColor,
                                                         child: Text(
                                                           l["status"]
                                                                   ["scoreStr"]
@@ -339,7 +340,7 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
                                                 color: Colors.transparent,
                                                 border: Border.all(
                                                   width: 1,
-                                                  color: Color(0xFF7232f2),
+                                                  color: tagBorder,
                                                 ),
                                                 borderRadius:
                                                     BorderRadius.circular(10),

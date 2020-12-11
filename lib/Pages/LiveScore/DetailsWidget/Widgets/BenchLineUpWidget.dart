@@ -61,7 +61,7 @@ class _BenchPlayersState extends State<BenchPlayers>
   Widget build(BuildContext context) {
     return benchLineUp == null
         ? Center(
-            child: SizedBox(),
+            child: const SizedBox(),
           )
         : ListView.builder(
             physics: NeverScrollableScrollPhysics(),
@@ -227,7 +227,7 @@ class _BenchPlayersState extends State<BenchPlayers>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       Text(

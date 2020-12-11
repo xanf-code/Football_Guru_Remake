@@ -404,7 +404,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     imageUrl:
                         "https://firebasestorage.googleapis.com/v0/b/transferapp-18e5d.appspot.com/o/assets%2Flogo2-removebg-preview.png?alt=media&token=3b4ca3d1-d770-4174-b88c-c7274d7e5d38"),
                 //Spacer(),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 SizedBox(

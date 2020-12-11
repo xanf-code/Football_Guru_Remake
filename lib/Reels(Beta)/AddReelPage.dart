@@ -124,7 +124,7 @@ class _ReelsState extends State<Reels> {
                                             videos.data()["userPic"],
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
@@ -135,7 +135,7 @@ class _ReelsState extends State<Reels> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
@@ -150,7 +150,7 @@ class _ReelsState extends State<Reels> {
                                       color: Colors.white,
                                       endIndent: 20,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 8,
                                     ),
                                     Row(
@@ -181,7 +181,7 @@ class _ReelsState extends State<Reels> {
                                                       //size: 15,
                                                       color: Colors.white,
                                                     ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 2,
                                               ),
                                               Text(
@@ -209,7 +209,7 @@ class _ReelsState extends State<Reels> {
                                                 //size: 15,
                                                 color: Colors.white,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 2,
                                               ),
                                               Text(
@@ -237,7 +237,7 @@ class _ReelsState extends State<Reels> {
                                                       //size: 15,
                                                       color: Colors.white,
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       height: 2,
                                                     ),
                                                     Text(
@@ -260,7 +260,7 @@ class _ReelsState extends State<Reels> {
                                                       //size: 15,
                                                       color: Colors.white,
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       height: 2,
                                                     ),
                                                     Text(
@@ -474,7 +474,7 @@ class _ReelsState extends State<Reels> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return SizedBox();
+          return const SizedBox();
         } else {
           return ListView.separated(
             physics: NeverScrollableScrollPhysics(),
@@ -491,7 +491,7 @@ class _ReelsState extends State<Reels> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(

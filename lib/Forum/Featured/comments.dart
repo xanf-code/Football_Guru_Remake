@@ -74,7 +74,7 @@ class _FeaturedCommentsState extends State<FeaturedComments> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 GestureDetector(
@@ -128,7 +128,7 @@ class _FeaturedCommentsState extends State<FeaturedComments> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return SizedBox();
+          return const SizedBox();
         } else {
           return ListView.builder(
             //physics: NeverScrollableScrollPhysics(),
@@ -156,7 +156,7 @@ class _FeaturedCommentsState extends State<FeaturedComments> {
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(
@@ -281,7 +281,7 @@ class _FeaturedCommentsState extends State<FeaturedComments> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],

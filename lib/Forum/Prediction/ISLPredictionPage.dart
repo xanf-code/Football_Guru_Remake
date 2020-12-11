@@ -11,6 +11,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Forum/Prediction/addEvent.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:intl/intl.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'LeaderBoardPoints.dart';
 import 'ShowPredictions.dart';
 
@@ -28,7 +29,7 @@ class _ISLPredictionState extends State<ISLPrediction>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0e0e10),
+      backgroundColor: appBG,
       floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 12.0),
           child: Visibility(
@@ -212,7 +213,7 @@ class _ISLPredictionState extends State<ISLPrediction>
                                     color: Colors.transparent,
                                     border: Border.all(
                                       width: 1,
-                                      color: Color(0xFF7232f2),
+                                      color: tagBorder,
                                     ),
                                   ),
                                   child: Column(
@@ -267,7 +268,7 @@ class _ISLPredictionState extends State<ISLPrediction>
                                               children: [
                                                 Icon(
                                                   MaterialCommunityIcons.poll,
-                                                  color: Colors.indigoAccent,
+                                                  color: IconColor,
                                                 ),
                                                 SizedBox(
                                                   width: 5,
@@ -323,7 +324,7 @@ class _ISLPredictionState extends State<ISLPrediction>
                                                   ),
                                                   border: Border.all(
                                                     width: 3,
-                                                    color: Color(0xFF7232f2),
+                                                    color: tagBorder,
                                                   ),
                                                 ),
                                               ),
@@ -343,7 +344,7 @@ class _ISLPredictionState extends State<ISLPrediction>
                                                     ),
                                                     border: Border.all(
                                                       width: 3,
-                                                      color: Color(0xFF7232f2),
+                                                      color: tagBorder,
                                                     ),
                                                   ),
                                                 ),

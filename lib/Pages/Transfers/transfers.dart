@@ -185,7 +185,7 @@ class _AllTransfersState extends State<AllTransfers> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 15,
                                             ),
                                             Text(
@@ -221,7 +221,7 @@ class _AllTransfersState extends State<AllTransfers> {
                                           imageUrl:
                                               transfers[index].fromTeamImage,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Icon(
@@ -229,7 +229,7 @@ class _AllTransfersState extends State<AllTransfers> {
                                           color: Colors.white,
                                           size: 21,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         CachedNetworkImage(
@@ -248,7 +248,7 @@ class _AllTransfersState extends State<AllTransfers> {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Icon(
@@ -256,7 +256,7 @@ class _AllTransfersState extends State<AllTransfers> {
                                         color: Colors.white,
                                         size: 12,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Text(

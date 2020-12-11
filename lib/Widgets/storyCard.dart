@@ -71,10 +71,10 @@ class StoryDesign extends StatelessWidget {
                       Icons.add,
                       color: Colors.white,
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(

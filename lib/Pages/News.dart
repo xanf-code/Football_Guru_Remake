@@ -20,6 +20,7 @@ import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/PlayerPoll/playervotes.dart';
 import 'package:transfer_news/Reels(Beta)/AddReelPage.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:transfer_news/Youtube/youtube.dart';
 import 'package:transfer_news/chatForum/chatIntro.dart';
 import 'package:transfer_news/chatForum/chatPage.dart';
@@ -62,7 +63,7 @@ class _NewsPageState extends State<NewsPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: Color(0xFF0e0e10),
+        backgroundColor: appBG,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           //leading: Container(),
@@ -73,7 +74,7 @@ class _NewsPageState extends State<NewsPage> {
               duration: Duration(milliseconds: 2000),
               repeat: true,
               showTwoGlows: true,
-              repeatPauseDuration: Duration(milliseconds: 100),
+              repeatPauseDuration: const Duration(milliseconds: 100),
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.mediumImpact();
@@ -84,7 +85,7 @@ class _NewsPageState extends State<NewsPage> {
                       builder: (context) => ProfilePage(
                         userProfileId: currentUser.id,
                       ),
-                      transitionDuration: Duration(
+                      transitionDuration: const Duration(
                         milliseconds: 200,
                       ),
                     ),
@@ -110,9 +111,9 @@ class _NewsPageState extends State<NewsPage> {
             ),
           ),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(65),
+            preferredSize: const Size.fromHeight(65),
             child: Container(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 right: 12,
                 left: 4,
                 bottom: 12,
@@ -151,7 +152,7 @@ class _NewsPageState extends State<NewsPage> {
             ISLNews(
               gCurrentUser: currentUser,
             ),
-            ILeagueNews(),
+            const ILeagueNews(),
             TMNewsWidget(news: news),
           ],
         ),
@@ -164,10 +165,10 @@ class _NewsPageState extends State<NewsPage> {
                 color: Color(0xFF0e0e10),
                 child: ListView(
                   //mainAxisAlignment: MainAxisAlignment.start,
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.all(0),
                   shrinkWrap: true,
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     GestureDetector(
@@ -192,25 +193,6 @@ class _NewsPageState extends State<NewsPage> {
                         icons: UniconData.uniChatInfo,
                       ),
                     ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     HapticFeedback.mediumImpact();
-                    //     Navigator.pop(context);
-                    //     Navigator.push(
-                    //       context,
-                    //       MorpheusPageRoute(
-                    //         transitionDuration: Duration(milliseconds: 200),
-                    //         builder: (context) => CategoryPage(),
-                    //       ),
-                    //     );
-                    //   },
-                    //   child: DiscordType(
-                    //     height: 50,
-                    //     width: 50,
-                    //     color: Colors.blueGrey[900],
-                    //     icons: UniconData.uniNewspaper,
-                    //   ),
-                    // ),
                     GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();

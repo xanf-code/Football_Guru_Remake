@@ -80,7 +80,7 @@ class _HeadToHeadState extends State<HeadToHead>
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Container(
@@ -122,7 +122,7 @@ class _HeadToHeadState extends State<HeadToHead>
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Container(
@@ -164,7 +164,7 @@ class _HeadToHeadState extends State<HeadToHead>
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Container(

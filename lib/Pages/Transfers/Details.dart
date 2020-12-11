@@ -80,7 +80,7 @@ class TransferDetails extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 15,
                             ),
                             Text(
@@ -114,7 +114,7 @@ class TransferDetails extends StatelessWidget {
                         CachedNetworkImage(
                           imageUrl: this.fromTeamImage,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Icon(
@@ -122,7 +122,7 @@ class TransferDetails extends StatelessWidget {
                           color: Colors.white,
                           size: 21,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         CachedNetworkImage(
@@ -140,7 +140,7 @@ class TransferDetails extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Icon(
@@ -148,7 +148,7 @@ class TransferDetails extends StatelessWidget {
                         color: Colors.white,
                         size: 12,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
@@ -209,7 +209,7 @@ class TransferDetails extends StatelessWidget {
                             CachedNetworkImageProvider(this.playerImage),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     Text(

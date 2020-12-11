@@ -112,35 +112,35 @@ class _StandingsState extends State<Standings> {
                       },
                       destinations: [
                         NavigationRailDestination(
-                          icon: SizedBox.shrink(),
+                          icon: const SizedBox.shrink(),
                           label: RotatedBox(
                             quarterTurns: -1,
                             child: Text("National Team"),
                           ),
                         ),
                         NavigationRailDestination(
-                          icon: SizedBox.shrink(),
+                          icon: const SizedBox.shrink(),
                           label: RotatedBox(
                             quarterTurns: -1,
                             child: Text("National Leagues"),
                           ),
                         ),
                         NavigationRailDestination(
-                          icon: SizedBox.shrink(),
+                          icon: const SizedBox.shrink(),
                           label: RotatedBox(
                             quarterTurns: -1,
                             child: Text("Women's League"),
                           ),
                         ),
                         NavigationRailDestination(
-                          icon: SizedBox.shrink(),
+                          icon: const SizedBox.shrink(),
                           label: RotatedBox(
                             quarterTurns: -1,
                             child: Text("State Leagues"),
                           ),
                         ),
                         NavigationRailDestination(
-                          icon: SizedBox.shrink(),
+                          icon: const SizedBox.shrink(),
                           label: RotatedBox(
                             quarterTurns: -1,
                             child: Text("Continental Tournaments"),

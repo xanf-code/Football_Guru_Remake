@@ -72,7 +72,7 @@ class _ScoresDetailsWidgetState extends State<ScoresDetailsWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(
+                  const SizedBox(
                     height: 14,
                   ),
                   DelayedDisplay(
@@ -281,7 +281,7 @@ class _ScoresDetailsWidgetState extends State<ScoresDetailsWidget> {
       physics: ClampingScrollPhysics(),
       children: [
         team2formation == null
-            ? SizedBox()
+            ? const SizedBox()
             : Container(
                 color: Colors.grey[900],
                 height: 40,
@@ -400,7 +400,7 @@ class _ScoresDetailsWidgetState extends State<ScoresDetailsWidget> {
       physics: ClampingScrollPhysics(),
       children: [
         team1formation == null
-            ? SizedBox()
+            ? const SizedBox()
             : Container(
                 color: Colors.grey[900],
                 height: 40,

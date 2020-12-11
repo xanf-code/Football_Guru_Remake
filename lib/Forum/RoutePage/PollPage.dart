@@ -14,6 +14,7 @@ import 'package:transfer_news/Forum/CommentsPage/commentPollPage.dart';
 import 'package:transfer_news/Forum/RoutePage/addPoll.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PollPage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _PollPageState extends State<PollPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0e0e10),
+      backgroundColor: appBG,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: FloatingActionButton(
@@ -92,13 +93,7 @@ class _PollPageState extends State<PollPage>
               customPageRoute: MorpheusPageRoute(
                 builder: (context) => AddPollPage(
                   route: widget.route,
-                  tags: [
-                    "Off topic",
-                    "I-League",
-                    "Indian Super League",
-                    "National Team",
-                    "Quiz",
-                  ],
+                  tags: pollTags,
                 ),
                 transitionDuration: Duration(
                   milliseconds: 200,
@@ -133,8 +128,8 @@ class _PollPageState extends State<PollPage>
                   cacheExtent: 500.0,
                   controller: _scrollController,
                   separatorBuilder: (context, i) {
-                    return Divider(
-                      color: Colors.grey[800],
+                    return const Divider(
+                      color: separatorColor,
                       indent: 10,
                       endIndent: 10,
                     );
@@ -180,7 +175,7 @@ class _PollPageState extends State<PollPage>
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 13,
                                   ),
                                   Column(
@@ -199,7 +194,7 @@ class _PollPageState extends State<PollPage>
                                             ),
                                           ),
                                           posts.data()["isVerified"] != true
-                                              ? SizedBox()
+                                              ? const SizedBox()
                                               : Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -243,7 +238,7 @@ class _PollPageState extends State<PollPage>
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       Container(
@@ -251,7 +246,7 @@ class _PollPageState extends State<PollPage>
                                           color: Colors.transparent,
                                           border: Border.all(
                                             width: 1,
-                                            color: Color(0xFF7232f2),
+                                            color: tagBorder,
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(3),
@@ -275,7 +270,7 @@ class _PollPageState extends State<PollPage>
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 8,
                                       ),
                                       Container(
@@ -320,7 +315,7 @@ class _PollPageState extends State<PollPage>
                                               color: Colors.transparent,
                                               border: Border.all(
                                                 width: 1,
-                                                color: Color(0xFF7232f2),
+                                                color: tagBorder,
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -348,7 +343,7 @@ class _PollPageState extends State<PollPage>
                                             MediaQuery.of(context).size.width /
                                                 1.2,
                                         percent: percentage1 / 100,
-                                        progressColor: Colors.blueAccent,
+                                        progressColor: pollColor,
                                         animation: true,
                                         lineHeight: 20.0,
                                         animationDuration: 1000,
@@ -386,7 +381,7 @@ class _PollPageState extends State<PollPage>
                                               color: Colors.transparent,
                                               border: Border.all(
                                                 width: 1,
-                                                color: Color(0xFF7232f2),
+                                                color: tagBorder,
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -414,7 +409,7 @@ class _PollPageState extends State<PollPage>
                                             MediaQuery.of(context).size.width /
                                                 1.2,
                                         percent: percentage2 / 100,
-                                        progressColor: Colors.blueAccent,
+                                        progressColor: pollColor,
                                         animation: true,
                                         lineHeight: 20.0,
                                         animationDuration: 1000,
@@ -430,7 +425,7 @@ class _PollPageState extends State<PollPage>
                                             LinearStrokeCap.roundAll,
                                       ),
                                       posts.data()["option3"] == ""
-                                          ? SizedBox.shrink()
+                                          ? const SizedBox.shrink()
                                           : Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -464,8 +459,7 @@ class _PollPageState extends State<PollPage>
                                                             Colors.transparent,
                                                         border: Border.all(
                                                           width: 1,
-                                                          color:
-                                                              Color(0xFF7232f2),
+                                                          color: tagBorder,
                                                         ),
                                                         borderRadius:
                                                             BorderRadius
@@ -502,8 +496,7 @@ class _PollPageState extends State<PollPage>
                                                           .width /
                                                       1.2,
                                                   percent: percentage3 / 100,
-                                                  progressColor:
-                                                      Colors.blueAccent,
+                                                  progressColor: pollColor,
                                                   animation: true,
                                                   lineHeight: 20.0,
                                                   animationDuration: 1000,
@@ -522,7 +515,7 @@ class _PollPageState extends State<PollPage>
                                                 ),
                                               ],
                                             ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 8,
                                       ),
                                       Row(
@@ -582,7 +575,7 @@ class _PollPageState extends State<PollPage>
                                                     );
                                                   },
                                                 )
-                                              : SizedBox.shrink(),
+                                              : const SizedBox.shrink(),
                                         ],
                                       ),
                                     ],

@@ -92,7 +92,7 @@ class Cards extends StatelessWidget {
                               color: Colors.grey,
                               size: 18,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 6,
                             ),
                             Text(

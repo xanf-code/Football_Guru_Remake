@@ -199,7 +199,7 @@ class _VideoPageState extends State<VideoPage> {
       itemCount: alsoWatch.length,
       itemBuilder: (context, index) {
         return alsoWatch == null
-            ? SizedBox()
+            ? const SizedBox()
             : Padding(
                 padding: const EdgeInsets.only(
                   left: 8.0,
@@ -253,7 +253,7 @@ class _VideoPageState extends State<VideoPage> {
                                   ["maxres"]["url"],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Expanded(
@@ -269,7 +269,7 @@ class _VideoPageState extends State<VideoPage> {
                                 fontSize: 16,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             alsoWatch[index]["snippet"]["title"] ==

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +12,10 @@ class LearderBoard extends StatefulWidget {
   _LearderBoardState createState() => _LearderBoardState();
 }
 
-class _LearderBoardState extends State<LearderBoard> {
+class _LearderBoardState extends State<LearderBoard>
+    with AutomaticKeepAliveClientMixin<LearderBoard> {
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +23,7 @@ class _LearderBoardState extends State<LearderBoard> {
       body: ListView(
         //shrinkWrap: true,
         children: [
-          currentUserRank(),
+          const currentRank(),
           Padding(
             padding: const EdgeInsets.only(
               left: 24.0,
@@ -34,13 +38,17 @@ class _LearderBoardState extends State<LearderBoard> {
               ),
             ),
           ),
-          top50Rank(),
+          const top50Rank(),
         ],
       ),
     );
   }
+}
 
-  currentUserRank() {
+class currentRank extends StatelessWidget {
+  const currentRank();
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("LearderBoard")
@@ -134,8 +142,12 @@ class _LearderBoardState extends State<LearderBoard> {
       },
     );
   }
+}
 
-  top50Rank() {
+class top50Rank extends StatelessWidget {
+  const top50Rank();
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("LearderBoard")
@@ -159,60 +171,63 @@ class _LearderBoardState extends State<LearderBoard> {
               DocumentSnapshot leader = snapshot.data.docs[index];
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  leading: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      index == 0
-                          ? Text(
-                              "1",
-                              style: GoogleFonts.openSans(
+                child: DelayedDisplay(
+                  slidingBeginOffset: const Offset(0, 1),
+                  child: ListTile(
+                    leading: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        index == 0
+                            ? Text(
+                                "1",
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                ),
+                              )
+                            : Icon(
+                                Ionicons.md_reorder,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
                               ),
-                            )
-                          : Icon(
-                              Ionicons.md_reorder,
-                              color: Colors.white,
-                            ),
-                      SizedBox(
-                        width: index == 0 ? 20 : 10,
-                      ),
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: CachedNetworkImageProvider(
-                          leader.data()["url"],
+                        SizedBox(
+                          width: index == 0 ? 20 : 10,
                         ),
-                      ),
-                    ],
-                  ),
-                  title: Text(
-                    leader.data()["name"],
-                    style: GoogleFonts.openSans(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: CachedNetworkImageProvider(
+                            leader.data()["url"],
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "${leader.data()["points"]} ",
-                        style: GoogleFonts.openSans(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
+                    title: Text(
+                      leader.data()["name"],
+                      style: GoogleFonts.openSans(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        "PTS",
-                        style: GoogleFonts.openSans(
-                          color: Colors.grey[500],
-                          fontWeight: FontWeight.bold,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "${leader.data()["points"]} ",
+                          style: GoogleFonts.openSans(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          "PTS",
+                          style: GoogleFonts.openSans(
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

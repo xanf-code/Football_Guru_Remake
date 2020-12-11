@@ -17,6 +17,7 @@ import 'package:transfer_news/Forum/RoutePage/addPost.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ForumDetails extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ForumDetailsState extends State<ForumDetails>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0e0e10),
+      backgroundColor: appBG,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: FloatingActionButton(
@@ -115,7 +116,7 @@ class _ForumDetailsState extends State<ForumDetails>
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             );
           } else {
             return Scrollbar(
@@ -127,7 +128,7 @@ class _ForumDetailsState extends State<ForumDetails>
                   controller: _scrollController,
                   separatorBuilder: (context, i) {
                     return Divider(
-                      color: Colors.grey[800],
+                      color: separatorColor,
                       indent: 10,
                       endIndent: 10,
                     );
@@ -165,7 +166,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                         ),
                                       ),
                                     )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
@@ -192,7 +193,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 13,
                                           ),
                                           Column(
@@ -215,7 +216,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                                   ),
                                                   posts.data()["isVerified"] !=
                                                           true
-                                                      ? SizedBox()
+                                                      ? const SizedBox()
                                                       : Padding(
                                                           padding:
                                                               const EdgeInsets
@@ -265,7 +266,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 5,
                                               ),
                                               Container(
@@ -273,7 +274,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                                   color: Colors.transparent,
                                                   border: Border.all(
                                                     width: 1,
-                                                    color: Color(0xFF7232f2),
+                                                    color: tagBorder,
                                                   ),
                                                   borderRadius:
                                                       BorderRadius.circular(3),
@@ -307,7 +308,7 @@ class _ForumDetailsState extends State<ForumDetails>
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 8,
                                               ),
                                               Container(
@@ -330,10 +331,10 @@ class _ForumDetailsState extends State<ForumDetails>
                                                 ),
                                               ),
                                               posts.data()["url"] == ""
-                                                  ? SizedBox(
+                                                  ? const SizedBox(
                                                       height: 0,
                                                     )
-                                                  : SizedBox(
+                                                  : const SizedBox(
                                                       height: 12,
                                                     ),
                                               posts.data()["url"] == ""
@@ -572,10 +573,12 @@ class _ForumDetailsState extends State<ForumDetails>
           color: Colors.transparent,
           child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: new BorderRadius.only(
-                    topLeft: const Radius.circular(10.0),
-                    topRight: const Radius.circular(10.0))),
+              color: Colors.white,
+              borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0),
+              ),
+            ),
             child: GestureDetector(
               onTap: () {
                 HapticFeedback.mediumImpact();

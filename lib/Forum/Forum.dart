@@ -19,6 +19,7 @@ import 'package:transfer_news/Forum/main.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Utils/constants.dart';
 import 'package:transfer_news/Widgets/featuredPostWidget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -192,16 +193,7 @@ class _ForumState extends State<Forum> {
                                   builder: (context) => ForumMain(
                                     length: 2,
                                     forumName: "National Team",
-                                    tagName: [
-                                      'Off topic',
-                                      "Announcement",
-                                      'National Team',
-                                      'Women\'s National Team',
-                                      'U-17 National Team',
-                                      'U-20 National Team',
-                                      'World Cup Qualifiers',
-                                      'FIFA U-17 Women\'s World Cup',
-                                    ],
+                                    tagName: NTTags,
                                     appBar: "National Team",
                                   ),
                                   transitionDuration: Duration(
@@ -230,23 +222,7 @@ class _ForumState extends State<Forum> {
                                   builder: (context) => ForumMain(
                                     length: 4,
                                     forumName: "ISL",
-                                    tagName: [
-                                      'Off topic',
-                                      'Announcement',
-                                      'Transfers',
-                                      'Rumours',
-                                      'Bengaluru FC',
-                                      'Kerala Blasters FC',
-                                      'Jamshedpur FC',
-                                      'ATK Mohun Bagan FC',
-                                      'Mumbai City',
-                                      'NorthEast United FC',
-                                      'Chennaiyin FC',
-                                      'Hyderabad FC',
-                                      'FC Goa',
-                                      'Odisha FC',
-                                      'East Bengal FC',
-                                    ],
+                                    tagName: ISLTags,
                                     appBar: "Indian Super League",
                                   ),
                                   transitionDuration: Duration(
@@ -275,23 +251,7 @@ class _ForumState extends State<Forum> {
                                   builder: (context) => ForumMain(
                                     length: 2,
                                     forumName: "I-League",
-                                    tagName: [
-                                      'Off topic',
-                                      "Announcement",
-                                      'Transfers',
-                                      'Rumours',
-                                      'Aizawl FC',
-                                      'Chennai City FC',
-                                      'Churchill Brothers',
-                                      'Gokulam Kearala',
-                                      'Indian Arrows',
-                                      'Mohammedan Sporting',
-                                      'Neroca FC',
-                                      'Punjab FC',
-                                      'Real Kashmir',
-                                      'Sudeva FC',
-                                      'TRAU',
-                                    ],
+                                    tagName: IleagueTags,
                                     appBar: "I-League",
                                   ),
                                   transitionDuration: Duration(
@@ -321,7 +281,7 @@ class _ForumState extends State<Forum> {
   // Featured Widget
   FeaturedFeed() {
     if (featuredPostList.isEmpty) {
-      return SizedBox();
+      return const SizedBox();
     }
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
@@ -496,7 +456,7 @@ class _ForumState extends State<Forum> {
                   },
                   child: Text("Reset", style: TextStyle(color: Colors.white)),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 16,
                 ),
                 FlatButton(

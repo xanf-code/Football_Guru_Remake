@@ -223,7 +223,7 @@ class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
                                         ),
                                       ),
                                     )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               SmartText(
                                 text: widget.chat,
                                 onOpen: (url) {
@@ -241,11 +241,11 @@ class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 3,
                       ),
                       widget.likes.length.toString() == 0.toString()
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -266,7 +266,7 @@ class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
                                       size: 13,
                                       color: Colors.red,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 3,
                                     ),
                                     Text(
@@ -287,7 +287,7 @@ class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Padding(
@@ -404,7 +404,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Padding(
@@ -477,7 +477,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : SizedBox(),
+                                : const SizedBox(),
                             SmartText(
                               text: chat,
                               onOpen: (url) {
@@ -495,11 +495,11 @@ class NonCurrentUserChatWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 3,
                     ),
                     likes.length.toString() == 0.toString()
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -520,7 +520,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
                                     size: 13,
                                     color: Colors.red,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 3,
                                   ),
                                   Text(

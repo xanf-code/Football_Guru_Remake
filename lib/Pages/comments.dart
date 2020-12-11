@@ -106,7 +106,7 @@ class CommentsPageState extends State<CommentsPage> {
                       ),
                     ),
                     widget.postTag == " "
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Padding(
                             padding: const EdgeInsets.only(
                               left: 8.0,

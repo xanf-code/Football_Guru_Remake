@@ -77,10 +77,10 @@ class _NationalTeamState extends State<NationalTeam>
                   itemBuilder: (context, index) {
                     return worldRankings[index]["team"]["name"] == "India"
                         ? IndiaRanking(context, index)
-                        : SizedBox();
+                        : const SizedBox();
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ListView.builder(
@@ -139,7 +139,7 @@ class _NationalTeamState extends State<NationalTeam>
                     imageUrl:
                         "https://www.sofascore.com/images/team-logo/football_${worldRankings[index]["team"]["id"]}.png",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Column(
@@ -154,7 +154,7 @@ class _NationalTeamState extends State<NationalTeam>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Row(
@@ -163,7 +163,7 @@ class _NationalTeamState extends State<NationalTeam>
                             Ionicons.md_podium,
                             color: Colors.white,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 6,
                           ),
                           Text(

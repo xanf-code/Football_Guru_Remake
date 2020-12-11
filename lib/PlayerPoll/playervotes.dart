@@ -166,7 +166,7 @@ class _PlayerVotesState extends State<PlayerVotes> {
                 );
               },
             )
-          : SizedBox.expand(),
+          : const SizedBox.expand(),
       body: StreamBuilder(
           stream: voteStream,
           builder: (context, snapshot) {
@@ -249,7 +249,7 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Container(
@@ -306,7 +306,7 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Container(
@@ -376,7 +376,7 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                 },
                               ),
                             )
-                          : SizedBox.expand(),
+                          : const SizedBox.expand(),
                     ],
                   );
                 });

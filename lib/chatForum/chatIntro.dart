@@ -59,7 +59,7 @@ class _ChatIntroState extends State<ChatIntro> with TickerProviderStateMixin {
                 );
               },
             )
-          : SizedBox(),
+          : const SizedBox(),
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(
         title: Text("Discussion Rooms"),
@@ -300,7 +300,7 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
                                   widget.logo,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Row(
@@ -315,7 +315,7 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   widget.check == true
@@ -324,7 +324,7 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
                                           imageUrl:
                                               "https://i.pinimg.com/originals/42/ad/0e/42ad0ebff37f0625e34df640dc4ae25d.png",
                                         )
-                                      : SizedBox(),
+                                      : const SizedBox(),
                                 ],
                               ),
                             ],
@@ -379,7 +379,7 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Icon(
@@ -391,7 +391,7 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                   ],
@@ -418,7 +418,7 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
                     MaterialIcons.report_problem,
                     color: Colors.white,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Container(

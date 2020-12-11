@@ -95,7 +95,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
                   checkAndEnter();
                 },
                 child: DelayedDisplay(
-                  slidingBeginOffset: Offset(0, 1),
+                  slidingBeginOffset: const Offset(0, 1),
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2.5,
                     height: 50,
@@ -164,7 +164,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
 
   buildHeader() {
     return DelayedDisplay(
-      slidingBeginOffset: Offset(0, -1),
+      slidingBeginOffset: const Offset(0, -1),
       child: Container(
         width: MediaQuery.of(context).size.width,
         // height: 30,

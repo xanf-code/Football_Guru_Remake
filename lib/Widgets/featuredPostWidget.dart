@@ -111,7 +111,7 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
   Widget build(BuildContext context) {
     isLiked = (likes[currentUserOnlineId] == true);
     return DelayedDisplay(
-      slidingBeginOffset: Offset(0, -1),
+      slidingBeginOffset: const Offset(0, -1),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

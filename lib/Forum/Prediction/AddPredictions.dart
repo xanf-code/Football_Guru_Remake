@@ -62,7 +62,7 @@ class _AddPredictionsState extends State<AddPredictions> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   DelayedDisplay(
-                    slidingBeginOffset: Offset(-1, 0),
+                    slidingBeginOffset: const Offset(-1, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -142,7 +142,7 @@ class _AddPredictionsState extends State<AddPredictions> {
                     ),
                   ),
                   DelayedDisplay(
-                    slidingBeginOffset: Offset(-0.5, -1),
+                    slidingBeginOffset: const Offset(-0.5, -1),
                     child: Padding(
                       padding: const EdgeInsets.only(
                         bottom: 70.0,
@@ -160,7 +160,7 @@ class _AddPredictionsState extends State<AddPredictions> {
                     ),
                   ),
                   DelayedDisplay(
-                    slidingBeginOffset: Offset(1, 0),
+                    slidingBeginOffset: const Offset(1, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -255,7 +255,7 @@ class _AddPredictionsState extends State<AddPredictions> {
                 saveToDatabase();
               },
               child: DelayedDisplay(
-                slidingBeginOffset: Offset(0, 1),
+                slidingBeginOffset: const Offset(0, 1),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2.5,
                   height: 50,
