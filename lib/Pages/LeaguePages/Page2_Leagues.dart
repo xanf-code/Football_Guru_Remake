@@ -230,7 +230,7 @@ class _LeaguePageState extends State<LeaguePage>
                     ),
                   );
                 },
-                child: ileague2ndFixtures.isEmpty
+                child: ileague2ndFixtures.isEmpty || ileague2ndFixtures == null
                     ? const SizedBox.shrink()
                     : LeagueCard(
                         leagueLogo:

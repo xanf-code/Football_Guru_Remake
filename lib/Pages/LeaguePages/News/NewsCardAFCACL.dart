@@ -1,10 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'dart:convert';
+import 'package:html/parser.dart';
+import 'package:share/share.dart';
+import 'package:transfer_news/Utils/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsCardWidget extends StatefulWidget {
   final String url;
@@ -38,29 +46,67 @@ class _NewsCardWidgetState extends State<NewsCardWidget>
 
   @override
   Widget build(BuildContext context) {
-    return newsData == null
+    return newsData == null || newsData.isEmpty
         ? Center(child: CircularProgressIndicator())
         : ListView.builder(
             itemCount: newsData.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(
+                  HapticFeedback.mediumImpact();
+                  pushNewScreen(
                     context,
-                    CupertinoPageRoute(
+                    withNavBar: false,
+                    customPageRoute: MorpheusPageRoute(
                       builder: (context) => WebviewScaffold(
                         url: newsData[index]["page"]["url"],
                         appBar: AppBar(
-                          backgroundColor: Color(0xFF0e0e10),
-                          title: Text(newsData[index]["title"]),
+                          backgroundColor: appBG,
+                          actions: [
+                            GestureDetector(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                Share.share(
+                                  "${parse(newsData[index]["title"]).documentElement.text}"
+                                  " "
+                                  "${newsData[index]["page"]["url"]}",
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 12.0),
+                                child: Icon(
+                                  Ionicons.ios_share_alt,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                launch(
+                                  newsData[index]["page"]["url"],
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Icon(
+                                  Ionicons.ios_globe,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         hidden: true,
                         initialChild: Container(
-                          color: Color(0xFF0e0e10),
+                          color: appBG,
                           child: Center(
-                            child: CircularProgressIndicator(),
+                            child: const CircularProgressIndicator(),
                           ),
                         ),
+                      ),
+                      transitionDuration: const Duration(
+                        milliseconds: 200,
                       ),
                     ),
                   );
@@ -80,7 +126,8 @@ class _NewsCardWidgetState extends State<NewsCardWidget>
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: CachedNetworkImageProvider(
-                                    newsData[index]["imageUrl"]),
+                                  newsData[index]["imageUrl"],
+                                ),
                               ),
                             ),
                           ),

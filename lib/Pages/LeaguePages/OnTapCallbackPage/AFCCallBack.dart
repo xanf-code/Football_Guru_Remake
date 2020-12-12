@@ -4,11 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:http/http.dart' as http;
 import 'package:transfer_news/Pages/LeaguePages/News/NewsCardAFCACL.dart';
-import 'package:transfer_news/Pages/LiveScore/DetailsWidget/DetailsPage.dart';
 import 'package:transfer_news/Pages/Standings/AFCCupStandings.dart';
 import 'dart:convert';
 

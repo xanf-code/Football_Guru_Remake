@@ -32,22 +32,23 @@ class ForumDetails extends StatefulWidget {
 
 class _ForumDetailsState extends State<ForumDetails>
     with AutomaticKeepAliveClientMixin<ForumDetails> {
-  int maxMessageToDisplay;
-  ScrollController _scrollController;
+  final ScrollController _scrollController = ScrollController();
+  int _limit = 7;
+  final int _limitIncrement = 20;
 
-  @override
+  _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      setState(() {
+        _limit += _limitIncrement;
+      });
+    }
+  }
+
   void initState() {
-    maxMessageToDisplay = 20;
-    _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        setState(() {
-          maxMessageToDisplay += 20;
-        });
-      }
-    });
     super.initState();
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -111,7 +112,7 @@ class _ForumDetailsState extends State<ForumDetails>
             .doc(widget.forumName)
             .collection("Posts")
             .orderBy("timestamp", descending: true)
-            .limit(maxMessageToDisplay)
+            .limit(_limit)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -186,10 +187,9 @@ class _ForumDetailsState extends State<ForumDetails>
                                                 const EdgeInsets.only(top: 7.0),
                                             child: CircleAvatar(
                                               radius: 20,
-                                              child: ClipOval(
-                                                child: Image.network(
-                                                  posts.data()["userPic"],
-                                                ),
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                posts.data()["userPic"],
                                               ),
                                             ),
                                           ),

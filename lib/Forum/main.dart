@@ -49,6 +49,7 @@ class _ForumMainState extends State<ForumMain> {
                 alignment: Alignment.centerLeft,
                 child: widget.length == 4
                     ? TabBar(
+                        physics: BouncingScrollPhysics(),
                         labelColor: Colors.white,
                         unselectedLabelColor: Colors.white60,
                         isScrollable: true,

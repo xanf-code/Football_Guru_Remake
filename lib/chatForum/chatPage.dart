@@ -43,18 +43,8 @@ class _ChatPageState extends State<ChatPage> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      print("reach the bottom");
       setState(() {
-        print("reach the bottom");
         _limit += _limitIncrement;
-      });
-    }
-    if (_scrollController.offset <=
-            _scrollController.position.minScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      print("reach the top");
-      setState(() {
-        print("reach the top");
       });
     }
   }

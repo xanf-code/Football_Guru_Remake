@@ -34,22 +34,23 @@ class _PollPageState extends State<PollPage>
   bool get wantKeepAlive => true;
 
   final String currentUserOnlineId = currentUser?.id;
-  int maxPollsToDisplay;
-  ScrollController _scrollController;
+  final ScrollController _scrollController = ScrollController();
+  int _limit = 20;
+  final int _limitIncrement = 20;
 
-  @override
+  _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      setState(() {
+        _limit += _limitIncrement;
+      });
+    }
+  }
+
   void initState() {
-    maxPollsToDisplay = 20;
-    _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        setState(() {
-          maxPollsToDisplay += 20;
-        });
-      }
-    });
     super.initState();
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -112,7 +113,7 @@ class _PollPageState extends State<PollPage>
             .doc(widget.route)
             .collection("Polls")
             .orderBy("timestamp", descending: true)
-            .limit(maxPollsToDisplay)
+            .limit(_limit)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
