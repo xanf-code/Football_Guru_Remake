@@ -271,36 +271,43 @@ class _AddPollPageState extends State<AddPollPage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 18.0),
-                              child: Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width / 1.5,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  gradient: isTyping == true
-                                      ? LinearGradient(
-                                          begin: Alignment.bottomLeft,
-                                          end: Alignment.topRight,
-                                          colors: [
-                                            Color(0xff8134AF),
-                                            Color(0xff515BD4),
-                                          ],
-                                        )
-                                      : LinearGradient(
-                                          begin: Alignment.bottomLeft,
-                                          end: Alignment.topRight,
-                                          colors: [
-                                            Colors.grey[700],
-                                            Colors.grey[800],
-                                          ],
-                                        ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Post Poll",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                              child: GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.mediumImpact();
+                                  savePollToDatabase();
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.5,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: isTyping == true
+                                        ? LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            colors: [
+                                              Color(0xff8134AF),
+                                              Color(0xff515BD4),
+                                            ],
+                                          )
+                                        : LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            colors: [
+                                              Colors.grey[700],
+                                              Colors.grey[800],
+                                            ],
+                                          ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Post Poll",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
