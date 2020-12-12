@@ -149,16 +149,16 @@ class _PollPageState extends State<PollPage>
               thickness: 3,
               radius: Radius.circular(10),
               child: AnimationLimiter(
-                child: ListView.separated(
+                child: ListView.builder(
                   cacheExtent: 500.0,
                   controller: _scrollController,
-                  separatorBuilder: (context, i) {
-                    return const Divider(
-                      color: separatorColor,
-                      indent: 10,
-                      endIndent: 10,
-                    );
-                  },
+                  // separatorBuilder: (context, i) {
+                  //   return const Divider(
+                  //     color: separatorColor,
+                  //     indent: 10,
+                  //     endIndent: 10,
+                  //   );
+                  // },
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot posts = snapshot.data.docs[index];
@@ -180,436 +180,451 @@ class _PollPageState extends State<PollPage>
                       child: SlideAnimation(
                         verticalOffset: 50,
                         child: FadeInAnimation(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 10.0,
-                              right: 10,
-                            ),
-                            child: Column(
-                              children: [
-                                //Header
-                                Container(
-                                  height: 60,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                              posts.data()["userPic"],
+                          child: Card(
+                            color: Colors.black87,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10.0,
+                                right: 10,
+                                top: 3,
+                                bottom: 3,
+                              ),
+                              child: Column(
+                                children: [
+                                  //Header
+                                  Container(
+                                    height: 60,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 20,
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                posts.data()["userPic"],
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    posts.data()["name"],
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                  currentUser.isVerified == true
-                                                      ? Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            left: 3.0,
-                                                          ),
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            height: 15,
-                                                            imageUrl:
-                                                                "https://webstockreview.net/images/confirmation-clipart-verified.png",
-                                                          ),
-                                                        )
-                                                      : const SizedBox.shrink(),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  gradient: new LinearGradient(
-                                                    colors: [
-                                                      const Color(0xFFb92b27),
-                                                      const Color(0xFF1565C0),
-                                                    ],
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      top: 4.0,
-                                                      bottom: 4,
-                                                      left: 6,
-                                                      right: 6,
-                                                    ),
-                                                    child: Text(
-                                                      posts
-                                                          .data()["tags"]
-                                                          .toString()
-                                                          .toUpperCase(),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      posts.data()["name"],
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12,
+                                                            FontWeight.w700,
+                                                      ),
+                                                    ),
+                                                    currentUser.isVerified ==
+                                                            true
+                                                        ? Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              left: 3.0,
+                                                            ),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              height: 15,
+                                                              imageUrl:
+                                                                  "https://webstockreview.net/images/confirmation-clipart-verified.png",
+                                                            ),
+                                                          )
+                                                        : const SizedBox
+                                                            .shrink(),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    gradient:
+                                                        new LinearGradient(
+                                                      colors: [
+                                                        const Color(0xFFb92b27),
+                                                        const Color(0xFF1565C0),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  child: Center(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        top: 4.0,
+                                                        bottom: 4,
+                                                        left: 6,
+                                                        right: 6,
+                                                      ),
+                                                      child: Text(
+                                                        posts
+                                                            .data()["tags"]
+                                                            .toString()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          tAgo.format(
+                                            posts.data()["timestamp"].toDate(),
                                           ),
-                                        ],
-                                      ),
-                                      Text(
-                                        tAgo.format(
-                                          posts.data()["timestamp"].toDate(),
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                //Content
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SmartText(
-                                        text: posts.data()["question"],
-                                        style: GoogleFonts.montserrat(
-                                          color: Colors.white,
-                                          height: 1.4,
-                                          fontSize: 18,
-                                        ),
-                                        linkStyle: TextStyle(
-                                          color: Colors.blue,
-                                        ),
-                                        onOpen: (url) {
-                                          launch(url);
-                                        },
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 8.0,
-                                        bottom: 8,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          HapticFeedback.mediumImpact();
-                                          checkAndAdd(
-                                            posts.data()["postId"],
-                                            "option1Votes",
-                                          );
-                                        },
-                                        child: Center(
-                                          child: ClipRRect(
-                                            child: BackdropFilter(
-                                              filter: new ImageFilter.blur(
-                                                  sigmaX: 10.0, sigmaY: 10.0),
-                                              child: LinearPercentIndicator(
-                                                percent: percentage1 / 100,
-                                                progressColor: pollColor,
-                                                animation: true,
-                                                lineHeight: 50.0,
-                                                animationDuration: 500,
-                                                center: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "${posts.data()["option1"]}",
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${percentage1.toStringAsFixed(1)}%",
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                backgroundColor: Colors.white24,
-                                                linearStrokeCap:
-                                                    LinearStrokeCap.roundAll,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 8.0,
-                                        bottom: 8,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          HapticFeedback.mediumImpact();
-                                          checkAndAdd(
-                                            posts.data()["postId"],
-                                            "option2Votes",
-                                          );
-                                        },
-                                        child: Center(
-                                          child: ClipRRect(
-                                            child: BackdropFilter(
-                                              filter: new ImageFilter.blur(
-                                                  sigmaX: 10.0, sigmaY: 10.0),
-                                              child: LinearPercentIndicator(
-                                                percent: percentage2 / 100,
-                                                progressColor: pollColor,
-                                                animation: true,
-                                                lineHeight: 50.0,
-                                                animationDuration: 500,
-                                                center: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "${posts.data()["option2"]}",
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${percentage2.toStringAsFixed(1)}%",
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                backgroundColor: Colors.white24,
-                                                linearStrokeCap:
-                                                    LinearStrokeCap.roundAll,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    posts.data()["option3"] == ""
-                                        ? const SizedBox.shrink()
-                                        : Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 8.0,
-                                              bottom: 8,
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                HapticFeedback.mediumImpact();
-                                                checkAndAdd(
-                                                  posts.data()["postId"],
-                                                  "option3Votes",
-                                                );
-                                              },
-                                              child: Center(
-                                                child: ClipRRect(
-                                                  child: BackdropFilter(
-                                                    filter:
-                                                        new ImageFilter.blur(
-                                                      sigmaX: 10.0,
-                                                      sigmaY: 10.0,
-                                                    ),
-                                                    child:
-                                                        LinearPercentIndicator(
-                                                      percent:
-                                                          percentage3 / 100,
-                                                      progressColor: pollColor,
-                                                      animation: true,
-                                                      lineHeight: 50.0,
-                                                      animationDuration: 500,
-                                                      center: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "${posts.data()["option3"]}",
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "${percentage3.toStringAsFixed(1)}%",
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.white24,
-                                                      linearStrokeCap:
-                                                          LinearStrokeCap
-                                                              .roundAll,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Text(
-                                        "${posts.data()["usersVoted"].length} poll votes",
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                //Footer
-                                Container(
-                                  height: 50,
-                                  child: Row(
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  //Content
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      FlatButton.icon(
-                                        label: Text(
-                                          posts.data()["likes"].length == 1
-                                              ? "${posts.data()["likes"].length} Vote"
-                                              : "${posts.data()["likes"].length} Votes",
-                                          style: TextStyle(
-                                            color: Colors.grey,
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SmartText(
+                                          text: posts.data()["question"],
+                                          style: GoogleFonts.montserrat(
+                                            color: Colors.white,
+                                            height: 1.4,
+                                            fontSize: 18,
                                           ),
-                                        ),
-                                        icon: posts
-                                                .data()["likes"]
-                                                .contains(currentUser.id)
-                                            ? Unicon(
-                                                UniconData.uniFire,
-                                                color: Colors.blueAccent,
-                                                size: 19,
-                                              )
-                                            : Unicon(
-                                                UniconData.uniFire,
-                                                color: Colors.grey,
-                                                size: 19,
-                                              ),
-                                        onPressed: () {
-                                          HapticFeedback.mediumImpact();
-                                          likePost(
-                                            posts.data()["postId"],
-                                          );
-                                        },
-                                      ),
-                                      FlatButton.icon(
-                                        label: Text(
-                                          "Comments",
-                                          style: TextStyle(
-                                            color: Colors.grey,
+                                          linkStyle: TextStyle(
+                                            color: Colors.blue,
                                           ),
+                                          onOpen: (url) {
+                                            launch(url);
+                                          },
                                         ),
-                                        icon: Icon(
-                                          MaterialCommunityIcons
-                                              .comment_outline,
-                                          color: Colors.grey,
-                                          size: 20,
-                                        ),
-                                        onPressed: () {
-                                          HapticFeedback.mediumImpact();
-                                          pushNewScreen(
-                                            context,
-                                            withNavBar: false,
-                                            customPageRoute: MorpheusPageRoute(
-                                              builder: (context) =>
-                                                  CommentPollPage(
-                                                postID: posts.data()["postId"],
-                                                path: widget.route,
-                                              ),
-                                              transitionDuration: Duration(
-                                                milliseconds: 200,
-                                              ),
-                                            ),
-                                          );
-                                        },
                                       ),
-                                      isPostOwner
-                                          ? FlatButton.icon(
-                                              label: Text(
-                                                "Remove",
-                                                style: GoogleFonts.rubik(
-                                                  color: Colors.white,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 8.0,
+                                          bottom: 8,
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            HapticFeedback.mediumImpact();
+                                            checkAndAdd(
+                                              posts.data()["postId"],
+                                              "option1Votes",
+                                            );
+                                          },
+                                          child: Center(
+                                            child: ClipRRect(
+                                              child: BackdropFilter(
+                                                filter: new ImageFilter.blur(
+                                                    sigmaX: 10.0, sigmaY: 10.0),
+                                                child: LinearPercentIndicator(
+                                                  percent: percentage1 / 100,
+                                                  progressColor: pollColor,
+                                                  animation: true,
+                                                  lineHeight: 50.0,
+                                                  animationDuration: 500,
+                                                  center: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "${posts.data()["option1"]}",
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${percentage1.toStringAsFixed(1)}%",
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.white24,
+                                                  linearStrokeCap:
+                                                      LinearStrokeCap.roundAll,
                                                 ),
                                               ),
-                                              icon: Icon(
-                                                MaterialCommunityIcons
-                                                    .delete_circle_outline,
-                                                color: Colors.grey,
-                                                size: 20,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 8.0,
+                                          bottom: 8,
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            HapticFeedback.mediumImpact();
+                                            checkAndAdd(
+                                              posts.data()["postId"],
+                                              "option2Votes",
+                                            );
+                                          },
+                                          child: Center(
+                                            child: ClipRRect(
+                                              child: BackdropFilter(
+                                                filter: new ImageFilter.blur(
+                                                    sigmaX: 10.0, sigmaY: 10.0),
+                                                child: LinearPercentIndicator(
+                                                  percent: percentage2 / 100,
+                                                  progressColor: pollColor,
+                                                  animation: true,
+                                                  lineHeight: 50.0,
+                                                  animationDuration: 500,
+                                                  center: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "${posts.data()["option2"]}",
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${percentage2.toStringAsFixed(1)}%",
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.white24,
+                                                  linearStrokeCap:
+                                                      LinearStrokeCap.roundAll,
+                                                ),
                                               ),
-                                              onPressed: () {
-                                                HapticFeedback.mediumImpact();
-                                                removePost(
-                                                  posts.data()["postId"],
-                                                );
-                                              },
-                                            )
-                                          : const SizedBox.shrink(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      posts.data()["option3"] == ""
+                                          ? const SizedBox.shrink()
+                                          : Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                                bottom: 8,
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  HapticFeedback.mediumImpact();
+                                                  checkAndAdd(
+                                                    posts.data()["postId"],
+                                                    "option3Votes",
+                                                  );
+                                                },
+                                                child: Center(
+                                                  child: ClipRRect(
+                                                    child: BackdropFilter(
+                                                      filter:
+                                                          new ImageFilter.blur(
+                                                        sigmaX: 10.0,
+                                                        sigmaY: 10.0,
+                                                      ),
+                                                      child:
+                                                          LinearPercentIndicator(
+                                                        percent:
+                                                            percentage3 / 100,
+                                                        progressColor:
+                                                            pollColor,
+                                                        animation: true,
+                                                        lineHeight: 50.0,
+                                                        animationDuration: 500,
+                                                        center: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              "${posts.data()["option3"]}",
+                                                              style: GoogleFonts
+                                                                  .openSans(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              "${percentage3.toStringAsFixed(1)}%",
+                                                              style: GoogleFonts
+                                                                  .openSans(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.white24,
+                                                        linearStrokeCap:
+                                                            LinearStrokeCap
+                                                                .roundAll,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Text(
+                                          "${posts.data()["usersVoted"].length} poll votes",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  //Footer
+                                  Container(
+                                    height: 50,
+                                    child: Row(
+                                      children: [
+                                        FlatButton.icon(
+                                          label: Text(
+                                            posts.data()["likes"].length == 1
+                                                ? "${posts.data()["likes"].length} Vote"
+                                                : "${posts.data()["likes"].length} Votes",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          icon: posts
+                                                  .data()["likes"]
+                                                  .contains(currentUser.id)
+                                              ? Unicon(
+                                                  UniconData.uniFire,
+                                                  color: Colors.blueAccent,
+                                                  size: 19,
+                                                )
+                                              : Unicon(
+                                                  UniconData.uniFire,
+                                                  color: Colors.grey,
+                                                  size: 19,
+                                                ),
+                                          onPressed: () {
+                                            HapticFeedback.mediumImpact();
+                                            likePost(
+                                              posts.data()["postId"],
+                                            );
+                                          },
+                                        ),
+                                        FlatButton.icon(
+                                          label: Text(
+                                            "Comments",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          icon: Icon(
+                                            MaterialCommunityIcons
+                                                .comment_outline,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            HapticFeedback.mediumImpact();
+                                            pushNewScreen(
+                                              context,
+                                              withNavBar: false,
+                                              customPageRoute:
+                                                  MorpheusPageRoute(
+                                                builder: (context) =>
+                                                    CommentPollPage(
+                                                  postID:
+                                                      posts.data()["postId"],
+                                                  path: widget.route,
+                                                ),
+                                                transitionDuration: Duration(
+                                                  milliseconds: 200,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        isPostOwner
+                                            ? FlatButton.icon(
+                                                label: Text(
+                                                  "Remove",
+                                                  style: GoogleFonts.rubik(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                icon: Icon(
+                                                  MaterialCommunityIcons
+                                                      .delete_circle_outline,
+                                                  color: Colors.grey,
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  HapticFeedback.mediumImpact();
+                                                  removePost(
+                                                    posts.data()["postId"],
+                                                  );
+                                                },
+                                              )
+                                            : const SizedBox.shrink(),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
