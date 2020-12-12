@@ -6,11 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/LeaguePages/OnTapCallbackPage/ACLCallBack.dart';
-import 'package:transfer_news/Pages/LeaguePages/OnTapCallbackPage/AFCAsianCup2022Callback.dart';
 import 'package:transfer_news/Pages/LeaguePages/OnTapCallbackPage/AFCCallBack.dart';
-import 'package:transfer_news/Pages/LeaguePages/OnTapCallbackPage/IWLCallBack.dart';
 import 'package:transfer_news/Widgets/LeagueCard.dart';
-import 'package:transfer_news/Widgets/WomensHomeCard.dart';
 
 class ContinentalTournaments extends StatefulWidget {
   @override
@@ -84,7 +81,7 @@ class _ContinentalTournamentsState extends State<ContinentalTournaments>
                     ),
                   );
                 },
-                child: afcFixList == null
+                child: afcFixList.isEmpty || afcFixList == null
                     ? SizedBox()
                     : LeagueCard(
                         leagueLogo:
@@ -117,7 +114,7 @@ class _ContinentalTournamentsState extends State<ContinentalTournaments>
                     ),
                   );
                 },
-                child: aclFixList == null
+                child: aclFixList.isEmpty || aclFixList == null
                     ? SizedBox()
                     : LeagueCard(
                         leagueLogo:

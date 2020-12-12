@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +27,7 @@ class _AddPostToForumState extends State<AddPostToForum> {
   bool isTop25 = false;
   TextEditingController descController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isTyping = false;
 
   void validateAndSave() {
     final FormState form = _formKey.currentState;
@@ -69,14 +71,23 @@ class _AddPostToForumState extends State<AddPostToForum> {
                 width: 80,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                      Color(0xff8134AF),
-                      Color(0xff515BD4),
-                    ],
-                  ),
+                  gradient: isTyping == true
+                      ? LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: [
+                            Color(0xff8134AF),
+                            Color(0xff515BD4),
+                          ],
+                        )
+                      : LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: [
+                            Colors.grey[700],
+                            Colors.grey[800],
+                          ],
+                        ),
                 ),
                 child: Center(
                   child: Text("Post"),
@@ -117,6 +128,11 @@ class _AddPostToForumState extends State<AddPostToForum> {
                         height: 500,
                         width: 400,
                         child: TextFormField(
+                          onChanged: (_) {
+                            setState(() {
+                              isTyping = true;
+                            });
+                          },
                           controller: descController,
                           textCapitalization: TextCapitalization.sentences,
                           maxLength: 500,

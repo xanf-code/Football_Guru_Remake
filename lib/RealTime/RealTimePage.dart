@@ -10,6 +10,7 @@ import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:smart_text_view/smart_text_view.dart';
@@ -375,7 +376,7 @@ class _RealTimeUIState extends State<RealTimeUI> {
                                             likePost(state.tweets[i].postID);
                                           },
                                           label: Text(
-                                            "${state.tweets[i].likes.length} Votes",
+                                            "${NumberFormat.compact().format(state.tweets[i].likes.length)} Votes",
                                             style: TextStyle(
                                               color: Colors.grey,
                                             ),

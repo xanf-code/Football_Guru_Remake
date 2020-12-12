@@ -39,6 +39,16 @@ class _ProfilePageState extends State<ProfilePage> {
   File croppedImage;
   bool uploading = false;
   TextEditingController textFieldController = TextEditingController();
+  Stream profileStream;
+
+  @override
+  void initState() {
+    profileStream = FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.id)
+        .snapshots();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +70,8 @@ class _ProfilePageState extends State<ProfilePage> {
             shrinkWrap: true,
             children: [
               StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(currentUser.id)
-                    .snapshots(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                stream: profileStream,
+                builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
                       shrinkWrap: true,

@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Reels(Beta)/confirmPage.dart';
 import 'package:uuid/uuid.dart';
@@ -185,10 +186,7 @@ class _ReelsState extends State<Reels> {
                                                 height: 2,
                                               ),
                                               Text(
-                                                videos
-                                                    .data()["likes"]
-                                                    .length
-                                                    .toString(),
+                                                "${NumberFormat.compact().format(videos.data()["likes"].length)}",
                                                 style: GoogleFonts.averageSans(
                                                   color: Colors.white,
                                                 ),
@@ -577,7 +575,8 @@ class _ReelsState extends State<Reels> {
                             comments.data()["likes"].length.toString() ==
                                     0.toString()
                                 ? ""
-                                : comments.data()["likes"].length.toString(),
+                                : NumberFormat.compact()
+                                    .format(comments.data()["likes"].length),
                             style: GoogleFonts.rubik(
                               color: Colors.white,
                             ),

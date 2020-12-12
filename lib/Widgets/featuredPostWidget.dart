@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_unicons/unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:morpheus/morpheus.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/comments.dart';
@@ -308,7 +309,7 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
             ),
             Container(
               child: Text(
-                "$likeCount votes",
+                "${NumberFormat.compact().format(likeCount)} votes",
                 style: GoogleFonts.rubik(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

@@ -36,7 +36,7 @@ class _ChatPageState extends State<ChatPage> {
   bool uploading = false;
 
   final ScrollController _scrollController = ScrollController();
-  int _limit = 50;
+  int _limit = 13;
   final int _limitIncrement = 20;
 
   _scrollListener() {
@@ -55,10 +55,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   displayChats() {
-    // Timer(
-    //   Duration(milliseconds: 300),
-    //   () => _controller.jumpTo(_controller.position.maxScrollExtent),
-    // );
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("ChatsCollection")

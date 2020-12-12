@@ -205,7 +205,7 @@ class _BenchPlayersState extends State<BenchPlayers>
                           fit: BoxFit.cover,
                           color: Colors.grey,
                           imageUrl:
-                              "https://www.pinclipart.com/picdir/big/357-3579339_unknown-person-icon-png-wordpress-clipart.png",
+                              "https://ddo0fzhfvians.cloudfront.net/uploads/icons/png/7229900911605810030-512.png",
                         ),
                       ),
                     ),

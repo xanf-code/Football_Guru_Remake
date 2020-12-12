@@ -29,6 +29,15 @@ class _ISLPredictionState extends State<ISLPrediction>
   @override
   bool get wantKeepAlive => true;
   bool isLocked = false;
+  Stream predStream;
+
+  @override
+  void initState() {
+    predStream =
+        FirebaseFirestore.instance.collection("Prediction").snapshots();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,8 +86,8 @@ class _ISLPredictionState extends State<ISLPrediction>
             ),
           )),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("Prediction").snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        stream: predStream,
+        builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),

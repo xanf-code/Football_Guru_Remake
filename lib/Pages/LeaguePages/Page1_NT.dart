@@ -54,8 +54,8 @@ class _NationalTeamState extends State<NationalTeam>
 
   @override
   void initState() {
-    getWorldRankings();
     getFixtures();
+    getWorldRankings();
     super.initState();
   }
 

@@ -85,6 +85,7 @@ dependencies:
   community_material_icon: ^5.4.55
 
   #UI Dependencies
+  smooth_page_indicator: ^0.2.0
   timeline_tile: ^1.0.0
   fluttertoast: ^7.1.1
   story_view: ^0.12.5

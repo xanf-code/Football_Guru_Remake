@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:html_editor/html_editor.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shimmer/shimmer.dart';
@@ -208,7 +209,7 @@ class _ForumState extends State<Forum> {
                               image:
                                   "https://news.cgtn.com/news/3d3d674e3241444e7a457a6333566d54/img/6513d5354b04433a9512a2b1f521465c/6513d5354b04433a9512a2b1f521465c.jpg",
                               views:
-                                  "${snapshot.data.docs[2]["counter"].length} Views",
+                                  "${NumberFormat.compact().format(snapshot.data.docs[2]["counter"].length)} Views",
                               tags: "National Team",
                             ),
                           ),
@@ -237,7 +238,7 @@ class _ForumState extends State<Forum> {
                               image:
                                   "https://www.footballteamnews.com/img/news/news_5aafc5a78b3e5.JPEG",
                               views:
-                                  "${snapshot.data.docs[1]["counter"].length} Views",
+                                  "${NumberFormat.compact().format(snapshot.data.docs[1]["counter"].length)} Views",
                               tags: "Domestic Leagues",
                             ),
                           ),
@@ -266,7 +267,7 @@ class _ForumState extends State<Forum> {
                               image:
                                   "https://images.daznservices.com/di/library/GOAL/1d/cb/i-league-trophy_12jv1cp4di6vk17y4zcone0ndz.jpg?t=150978242&quality=60&w=1200&h=800",
                               views:
-                                  "${snapshot.data.docs[0]["counter"].length} Views",
+                                  "${NumberFormat.compact().format(snapshot.data.docs[0]["counter"].length)} Views",
                               tags: "I-League",
                             ),
                           ),

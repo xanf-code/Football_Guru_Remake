@@ -35,8 +35,17 @@ class PredictNowScreen extends StatefulWidget {
 class _PredictNowScreenState extends State<PredictNowScreen> {
   int maxPredictionsToDisplay;
   ScrollController _scrollController;
-
+  Stream contentStream;
   void initState() {
+    contentStream = FirebaseFirestore.instance
+        .collection("Prediction")
+        .doc(widget.ID)
+        .collection("allPredictions")
+        .orderBy(
+          "timestamp",
+          descending: true,
+        )
+        .snapshots();
     maxPredictionsToDisplay = 30;
     _scrollController = ScrollController();
     _scrollController.addListener(() {
@@ -239,16 +248,8 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
 
   buildContent() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection("Prediction")
-          .doc(widget.ID)
-          .collection("allPredictions")
-          .orderBy(
-            "timestamp",
-            descending: true,
-          )
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: contentStream,
+      builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Padding(
             padding: const EdgeInsets.only(

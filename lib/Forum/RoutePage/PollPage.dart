@@ -37,6 +37,7 @@ class _PollPageState extends State<PollPage>
   final ScrollController _scrollController = ScrollController();
   int _limit = 20;
   final int _limitIncrement = 20;
+  Stream predictionStream;
 
   _scrollListener() {
     if (_scrollController.offset >=

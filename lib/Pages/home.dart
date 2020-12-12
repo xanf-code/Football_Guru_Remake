@@ -192,12 +192,9 @@ class _MyHomePageState extends State<MyHomePage> {
         await usersReference.doc(gCurrentUser.id).get();
 
     if (!documentSnapshot.exists) {
-      await Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => CreateAccountPage(
-            username: userController,
-          ),
+      await NavigationController(
+        CreateAccountPage(
+          username: userController,
         ),
       );
       usersReference.doc(gCurrentUser.id).set({

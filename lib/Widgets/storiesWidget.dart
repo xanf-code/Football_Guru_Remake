@@ -19,7 +19,7 @@ class Stories extends StatelessWidget {
       delay: Duration(milliseconds: 100),
       child: Container(
         height: 90,
-        child: StreamBuilder<QuerySnapshot>(
+        child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("stories")
               .where(

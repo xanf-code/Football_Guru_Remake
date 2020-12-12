@@ -96,7 +96,7 @@ class _WomensPageState extends State<WomensPage>
                     ),
                   );
                 },
-                child: seniorFixture == null
+                child: seniorFixture == null || seniorFixture.isEmpty
                     ? SizedBox()
                     : WomensHomeCard(
                         leagueLogo:
@@ -131,7 +131,7 @@ class _WomensPageState extends State<WomensPage>
                     ),
                   );
                 },
-                child: IWLFixtures == null
+                child: IWLFixtures == null || IWLFixtures.isEmpty
                     ? SizedBox()
                     : WomensHomeCard(
                         leagueLogo: IWLFixtures[0]["tournament_logo"],
@@ -151,35 +151,6 @@ class _WomensPageState extends State<WomensPage>
                             : IWLFixtures[0]["team2_score"].toString(),
                       ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     // Navigator.push(
-              //     //   context,
-              //     //   CupertinoPageRoute(
-              //     //     builder: (context) => ISLCallBack(),
-              //     //   ),
-              //     // );
-              //   },
-              //   child: GoldCup == null
-              //       ? SizedBox()
-              //       : WomensHomeCard(
-              //           leagueLogo: GoldCup[0]["tournament_logo"],
-              //           leagueName: GoldCup[0]["tournament_name"],
-              //           leagueYear: GoldCup[0]["match_date"],
-              //           evenName: GoldCup[0]["tournament_name"],
-              //           eventVenue: GoldCup[0]["venue"],
-              //           team1Logo: GoldCup[0]["team1_logo"],
-              //           team1Name: GoldCup[0]["team1_name"],
-              //           team1Score: GoldCup[0]["team1_score"] == null
-              //               ? "-"
-              //               : GoldCup[0]["team1_score"].toString(),
-              //           team2Logo: GoldCup[0]["team2_logo"],
-              //           team2Name: GoldCup[0]["team2_name"],
-              //           team2Score: GoldCup[0]["team2_score"] == null
-              //               ? "-"
-              //               : GoldCup[0]["team2_score"].toString(),
-              //         ),
-              // ),
             ],
           );
   }
