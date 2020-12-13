@@ -97,188 +97,173 @@ class _AddPostToForumState extends State<AddPostToForum> {
           ),
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              uploading ? LinearProgressIndicator() : Text(""),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 12.0,
-                      top: 12,
-                      right: 12,
-                    ),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: CachedNetworkImageProvider(
-                        currentUser.url,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 500,
-                        width: 400,
-                        child: TextFormField(
-                          onChanged: (_) {
-                            setState(() {
-                              isTyping = true;
-                            });
-                          },
-                          controller: descController,
-                          textCapitalization: TextCapitalization.sentences,
-                          maxLength: 500,
-                          maxLengthEnforced: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Description cannot be empty";
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: InputDecoration(
-                            counterStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                            hintText: "Add your post here...",
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 40.0),
-                            labelStyle:
-                                TextStyle(color: Colors.white, fontSize: 17),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 17),
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                          ),
-                          style: GoogleFonts.averageSans(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                uploading ? LinearProgressIndicator() : Text(""),
+                Column(
+                  children: [
+                    Container(
+                      height: 500,
+                      width: MediaQuery.of(context).size.width,
+                      child: TextFormField(
+                        onChanged: (_) {
+                          setState(() {
+                            isTyping = true;
+                          });
+                        },
+                        controller: descController,
+                        textCapitalization: TextCapitalization.sentences,
+                        maxLength: 500,
+                        maxLengthEnforced: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Description cannot be empty";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: InputDecoration(
+                          counterStyle: TextStyle(
                             color: Colors.white,
                           ),
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 99999,
-                          autofocus: false,
+                          hintText: "Add your post here...",
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 40.0),
+                          labelStyle:
+                              TextStyle(color: Colors.white, fontSize: 17),
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 17),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                         ),
+                        style: GoogleFonts.openSans(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 99999,
+                        autofocus: false,
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width: 400,
-                        child: DropdownButtonFormField(
-                          dropdownColor: Color(0xFF0e0e10),
-                          style: GoogleFonts.openSans(
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: DropdownButtonFormField(
+                        dropdownColor: Color(0xFF0e0e10),
+                        style: GoogleFonts.openSans(
+                          fontSize: 16,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold,
+                        ),
+                        value: tag ?? "Off topic",
+                        onChanged: (val) {
+                          setState(() {
+                            tag = val;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFF0e0e10),
+                          border: InputBorder.none,
+                          labelText: "Pick a tag",
+                          labelStyle: GoogleFonts.openSans(
                             fontSize: 16,
                             color: Colors.white,
                             //fontWeight: FontWeight.bold,
                           ),
-                          value: tag ?? "Off topic",
-                          onChanged: (val) {
-                            setState(() {
-                              tag = val;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color(0xFF0e0e10),
-                            border: InputBorder.none,
-                            labelText: "Pick a tag",
-                            labelStyle: GoogleFonts.openSans(
-                              fontSize: 16,
-                              color: Colors.white,
-                              //fontWeight: FontWeight.bold,
+                        ),
+                        items: widget.tags.map((team) {
+                          return DropdownMenuItem(
+                            child: Text("$team"),
+                            value: team,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                selectedImage == null
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          child: Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Color(0xFF7232f2),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  Icons.add_a_photo,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
-                          items: widget.tags.map((team) {
-                            return DropdownMenuItem(
-                              child: Text("$team"),
-                              value: team,
-                            );
-                          }).toList(),
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            modalBottomSheetMenu();
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              selectedImage == null
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        child: Container(
-                          height: 150,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
+                      )
+                    : Stack(
+                        children: [
+                          Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               height: 150,
                               width: 150,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border.all(
-                                  width: 1,
-                                  color: Color(0xFF7232f2),
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                              color: Colors.black,
+                              child: Image.file(selectedImage),
+                            ),
+                          ),
+                          Positioned(
+                            right: 20,
+                            top: 20,
+                            child: GestureDetector(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                setState(
+                                  () {
+                                    selectedImage = null;
+                                  },
+                                );
+                              },
                               child: Icon(
-                                Icons.add_a_photo,
+                                Icons.clear,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                        ),
-                        onTap: () {
-                          HapticFeedback.mediumImpact();
-                          modalBottomSheetMenu();
-                        },
+                        ],
                       ),
-                    )
-                  : Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: 150,
-                            width: 150,
-                            color: Colors.black,
-                            child: Image.file(selectedImage),
-                          ),
-                        ),
-                        Positioned(
-                          right: 20,
-                          top: 20,
-                          child: GestureDetector(
-                            onTap: () {
-                              HapticFeedback.mediumImpact();
-                              setState(
-                                () {
-                                  selectedImage = null;
-                                },
-                              );
-                            },
-                            child: Icon(
-                              Icons.clear,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

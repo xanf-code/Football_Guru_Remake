@@ -13,6 +13,7 @@ import 'package:http/http.dart' show get;
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:smart_text_view/smart_text_view.dart';
 import 'package:transfer_news/Forum/CommentsPage/comments.dart';
@@ -20,7 +21,9 @@ import 'package:transfer_news/Forum/RoutePage/addPost.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
+import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Utils/constants.dart';
+import 'package:transfer_news/Widgets/readMore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as joinPath;
 
@@ -37,13 +40,12 @@ class ForumDetails extends StatefulWidget {
 class _ForumDetailsState extends State<ForumDetails>
     with AutomaticKeepAliveClientMixin<ForumDetails> {
   final ScrollController _scrollController = ScrollController();
-  int _limit = 7;
+  int _limit = 20;
   final int _limitIncrement = 20;
 
   _scrollListener() {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       setState(() {
         _limit += _limitIncrement;
       });
@@ -111,14 +113,9 @@ class _ForumDetailsState extends State<ForumDetails>
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("Forum")
-            .doc(widget.forumName)
-            .collection("Posts")
-            .orderBy("timestamp", descending: true)
-            .limit(_limit)
-            .snapshots(),
-        builder: (context, snapshot) {
+        stream: context.watch<Repository>().getForum(widget.forumName, _limit),
+        builder: (context, AsyncSnapshot snapshot) {
+          print("building");
           if (!snapshot.hasData) {
             return Center(
               child: const CircularProgressIndicator(),
@@ -145,7 +142,7 @@ class _ForumDetailsState extends State<ForumDetails>
                         child: FadeInAnimation(
                           child: Card(
                             borderOnForeground: true,
-                            color: Colors.black87,
+                            color: Colors.transparent,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             child: Padding(
                               padding: const EdgeInsets.all(2.0),

@@ -177,284 +177,292 @@ class _RealTimeUIState extends State<RealTimeUI> {
                         child: SlideAnimation(
                           verticalOffset: 50,
                           child: FadeInAnimation(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.transparent,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 20,
-                                          child: ClipOval(
-                                            child: Image.network(
-                                              state.tweets[i].userPic,
+                            child: Card(
+                              color: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.transparent,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 20,
+                                            child: ClipOval(
+                                              child: Image.network(
+                                                state.tweets[i].userPic,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 13,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  state.tweets[i].username,
-                                                  style:
-                                                      GoogleFonts.averageSans(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17,
-                                                  ),
-                                                ),
-                                                state.tweets[i].isVerified !=
-                                                        true
-                                                    ? SizedBox()
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          left: 6.0,
-                                                          top: 1,
-                                                        ),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          height: 15,
-                                                          imageUrl:
-                                                              "https://webstockreview.net/images/confirmation-clipart-verified.png",
-                                                        ),
-                                                      ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 8.0,
-                                                    right: 8,
-                                                    bottom: 1,
-                                                  ),
-                                                  child: Text(
-                                                    ".",
-                                                    style: GoogleFonts.rubik(
-                                                      color: Colors.grey,
+                                          SizedBox(
+                                            width: 13,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    state.tweets[i].username,
+                                                    style:
+                                                        GoogleFonts.averageSans(
+                                                      color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
+                                                      fontSize: 17,
                                                     ),
                                                   ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 4),
-                                                  child: Text(
-                                                    tAgo.format(
-                                                      state.tweets[i].timestamp
-                                                          .toDate(),
-                                                    ),
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 3,
-                                            ),
-                                            Text(
-                                              state.tweets[i].role,
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.italic,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.25,
-                                              child: SmartText(
-                                                text: state.tweets[i].caption,
-                                                onOpen: (url) {
-                                                  launch(url);
-                                                },
-                                                style: GoogleFonts.montserrat(
-                                                  color: Colors.white,
-                                                  height: 1.4,
-                                                ),
-                                                linkStyle: TextStyle(
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                            ),
-                                            state.tweets[i].url == ""
-                                                ? SizedBox(
-                                                    height: 0,
-                                                  )
-                                                : SizedBox(
-                                                    height: 12,
-                                                  ),
-                                            state.tweets[i].url == ""
-                                                ? const SizedBox.shrink()
-                                                : GestureDetector(
-                                                    onTap: () {
-                                                      HapticFeedback
-                                                          .mediumImpact();
-                                                      pushNewScreen(
-                                                        context,
-                                                        withNavBar: false,
-                                                        customPageRoute:
-                                                            MorpheusPageRoute(
-                                                          builder: (context) =>
-                                                              DetailScreen(
-                                                            image: state
-                                                                .tweets[i].url,
+                                                  state.tweets[i].isVerified !=
+                                                          true
+                                                      ? SizedBox()
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            left: 6.0,
+                                                            top: 1,
                                                           ),
-                                                          transitionDuration:
-                                                              Duration(
-                                                            milliseconds: 130,
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            height: 15,
+                                                            imageUrl:
+                                                                "https://webstockreview.net/images/confirmation-clipart-verified.png",
                                                           ),
                                                         ),
-                                                      );
-                                                    },
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 8.0),
-                                                      child: Container(
-                                                        height: 250,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width /
-                                                            1.25,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          image:
-                                                              DecorationImage(
-                                                            fit: BoxFit.cover,
-                                                            image:
-                                                                CachedNetworkImageProvider(
-                                                              state.tweets[i]
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 8.0,
+                                                      right: 8,
+                                                      bottom: 1,
+                                                    ),
+                                                    child: Text(
+                                                      ".",
+                                                      style: GoogleFonts.rubik(
+                                                        color: Colors.grey,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4),
+                                                    child: Text(
+                                                      tAgo.format(
+                                                        state
+                                                            .tweets[i].timestamp
+                                                            .toDate(),
+                                                      ),
+                                                      style: TextStyle(
+                                                        color: Colors.grey,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              Text(
+                                                state.tweets[i].role,
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle: FontStyle.italic,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    1.25,
+                                                child: SmartText(
+                                                  text: state.tweets[i].caption,
+                                                  onOpen: (url) {
+                                                    launch(url);
+                                                  },
+                                                  style: GoogleFonts.montserrat(
+                                                    color: Colors.white,
+                                                    height: 1.4,
+                                                  ),
+                                                  linkStyle: TextStyle(
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ),
+                                              state.tweets[i].url == ""
+                                                  ? SizedBox(
+                                                      height: 0,
+                                                    )
+                                                  : SizedBox(
+                                                      height: 12,
+                                                    ),
+                                              state.tweets[i].url == ""
+                                                  ? const SizedBox.shrink()
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        HapticFeedback
+                                                            .mediumImpact();
+                                                        pushNewScreen(
+                                                          context,
+                                                          withNavBar: false,
+                                                          customPageRoute:
+                                                              MorpheusPageRoute(
+                                                            builder: (context) =>
+                                                                DetailScreen(
+                                                              image: state
+                                                                  .tweets[i]
                                                                   .url,
+                                                            ),
+                                                            transitionDuration:
+                                                                Duration(
+                                                              milliseconds: 130,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 8.0),
+                                                        child: Container(
+                                                          height: 250,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              1.25,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image:
+                                                                  CachedNetworkImageProvider(
+                                                                state.tweets[i]
+                                                                    .url,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        FlatButton.icon(
-                                          onPressed: () {
-                                            HapticFeedback.mediumImpact();
-                                            likePost(state.tweets[i].postID);
-                                          },
-                                          label: Text(
-                                            "${NumberFormat.compact().format(state.tweets[i].likes.length)} Votes",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
+                                            ],
                                           ),
-                                          icon: state.tweets[i].likes
-                                                  .contains(currentUser.id)
-                                              ? Unicon(
-                                                  UniconData.uniFire,
-                                                  color: Colors.blueAccent,
-                                                  size: 19,
-                                                )
-                                              : Unicon(
-                                                  UniconData.uniFire,
-                                                  color: Colors.grey,
-                                                  size: 19,
-                                                ),
-                                        ),
-                                        FlatButton.icon(
-                                          onPressed: () {
-                                            HapticFeedback.mediumImpact();
-                                            pushNewScreen(
-                                              context,
-                                              withNavBar: false,
-                                              customPageRoute:
-                                                  MorpheusPageRoute(
-                                                builder: (context) =>
-                                                    CommentRealTime(
-                                                  postID:
-                                                      state.tweets[i].postID,
-                                                ),
-                                                transitionDuration: Duration(
-                                                  milliseconds: 200,
-                                                ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          FlatButton.icon(
+                                            onPressed: () {
+                                              HapticFeedback.mediumImpact();
+                                              likePost(state.tweets[i].postID);
+                                            },
+                                            label: Text(
+                                              "${NumberFormat.compact().format(state.tweets[i].likes.length)} Votes",
+                                              style: TextStyle(
+                                                color: Colors.grey,
                                               ),
-                                            );
-                                          },
-                                          label: Text(
-                                            "Comment",
-                                            style: TextStyle(
+                                            ),
+                                            icon: state.tweets[i].likes
+                                                    .contains(currentUser.id)
+                                                ? Unicon(
+                                                    UniconData.uniFire,
+                                                    color: Colors.blueAccent,
+                                                    size: 19,
+                                                  )
+                                                : Unicon(
+                                                    UniconData.uniFire,
+                                                    color: Colors.grey,
+                                                    size: 19,
+                                                  ),
+                                          ),
+                                          FlatButton.icon(
+                                            onPressed: () {
+                                              HapticFeedback.mediumImpact();
+                                              pushNewScreen(
+                                                context,
+                                                withNavBar: false,
+                                                customPageRoute:
+                                                    MorpheusPageRoute(
+                                                  builder: (context) =>
+                                                      CommentRealTime(
+                                                    postID:
+                                                        state.tweets[i].postID,
+                                                  ),
+                                                  transitionDuration: Duration(
+                                                    milliseconds: 200,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            label: Text(
+                                              "Comment",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            icon: Icon(
+                                              MaterialCommunityIcons
+                                                  .comment_outline,
                                               color: Colors.grey,
+                                              size: 20,
                                             ),
                                           ),
-                                          icon: Icon(
-                                            MaterialCommunityIcons
-                                                .comment_outline,
-                                            color: Colors.grey,
-                                            size: 20,
-                                          ),
-                                        ),
-                                        FlatButton.icon(
-                                          splashColor: Colors.transparent,
-                                          onPressed: () {
-                                            HapticFeedback.mediumImpact();
-                                            Fluttertoast.showToast(
-                                              msg: "Thank you for reporting!",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.BOTTOM,
-                                              timeInSecForIosWeb: 1,
-                                              backgroundColor: Colors.white,
-                                              textColor: Colors.black,
-                                              fontSize: 16.0,
-                                            );
-                                          },
-                                          icon: Icon(
-                                            Feather.flag,
-                                            color: Colors.grey,
-                                            size: 20,
-                                          ),
-                                          label: Text(
-                                            "Report",
-                                            style: TextStyle(
+                                          FlatButton.icon(
+                                            splashColor: Colors.transparent,
+                                            onPressed: () {
+                                              HapticFeedback.mediumImpact();
+                                              Fluttertoast.showToast(
+                                                msg: "Thank you for reporting!",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.white,
+                                                textColor: Colors.black,
+                                                fontSize: 16.0,
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Feather.flag,
                                               color: Colors.grey,
+                                              size: 20,
+                                            ),
+                                            label: Text(
+                                              "Report",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

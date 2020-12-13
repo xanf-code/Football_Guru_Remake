@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:transfer_news/Behaviour/customScrollBehaviour.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/chatForum/databaseModel/chatModel.dart';
 
 const String boxName = 'favs';
@@ -23,18 +26,21 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: Theme.of(context).copyWith(
-        highlightColor: Color(0xFF7232f2),
+    return Provider<Repository>(
+      create: (_) => Repository(FirebaseFirestore.instance),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: Theme.of(context).copyWith(
+          highlightColor: Color(0xFF7232f2),
+        ),
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: child,
+          );
+        },
+        home: MyHomePage(),
       ),
-      builder: (context, child) {
-        return ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: child,
-        );
-      },
-      home: MyHomePage(),
     );
   }
 }

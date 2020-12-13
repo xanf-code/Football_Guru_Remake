@@ -7,9 +7,11 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:smart_text_view/smart_text_view.dart';
 import 'package:transfer_news/Forum/CommentsPage/replyToComments.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/RealTime/ReplyPage.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 
@@ -211,11 +213,17 @@ class _CommentRealTimeState extends State<CommentRealTime> {
                       ),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          comments.data()["comment"],
-                          style: GoogleFonts.montserrat(
-                            height: 1.4,
+                        child: SmartText(
+                          text: comments.data()["comment"],
+                          onOpen: (link) {
+                            launch(link);
+                          },
+                          style: GoogleFonts.rubik(
                             color: Colors.white,
+                            fontSize: 15,
+                          ),
+                          linkStyle: TextStyle(
+                            color: Colors.blueAccent,
                           ),
                         ),
                       ),

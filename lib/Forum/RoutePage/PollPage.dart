@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ import 'package:transfer_news/Forum/CommentsPage/commentPollPage.dart';
 import 'package:transfer_news/Forum/RoutePage/addPoll.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,9 +41,8 @@ class _PollPageState extends State<PollPage>
   Stream predictionStream;
 
   _scrollListener() {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       setState(() {
         _limit += _limitIncrement;
       });
@@ -109,14 +109,8 @@ class _PollPageState extends State<PollPage>
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("Forum")
-            .doc(widget.route)
-            .collection("Polls")
-            .orderBy("timestamp", descending: true)
-            .limit(_limit)
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        stream: context.watch<Repository>().getPoll(widget.route, _limit),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
@@ -181,7 +175,7 @@ class _PollPageState extends State<PollPage>
                         verticalOffset: 50,
                         child: FadeInAnimation(
                           child: Card(
-                            color: Colors.black87,
+                            color: Colors.transparent,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 left: 10.0,

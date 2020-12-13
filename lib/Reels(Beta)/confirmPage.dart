@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:flutter_video_compress/flutter_video_compress.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,21 +62,6 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
     return downloadUrl;
   }
 
-  compressingVideo() async {
-    if (widget.imageSource == ImageSource.gallery) {
-      return widget.videoFile;
-    } else {
-      final compressedVideo = await FlutterVideoCompress().compressVideo(
-        widget.videoPath,
-        quality: VideoQuality.MediumQuality,
-        deleteOrigin: true,
-      );
-      setState(() {
-        widget.videoFile = compressedVideo.file;
-      });
-    }
-  }
-
   createReels({String url}) {
     FirebaseFirestore.instance.collection("reels").doc(postId).set({
       "postId": postId,
@@ -93,7 +77,6 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
       setState(() {
         uploading = false;
         postId = Uuid().v4();
-        FlutterVideoCompress().deleteAllCache();
       });
       Navigator.pop(context);
     });
@@ -103,7 +86,6 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
     setState(() {
       uploading = true;
     });
-    await compressingVideo();
     String downloadVideo = await uploadVideo(widget.videoFile);
     //@API POST http://127.0.0.1:5000/api/postStories/
     createReels(

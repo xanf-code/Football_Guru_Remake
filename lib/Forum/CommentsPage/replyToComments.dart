@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_text_view/smart_text_view.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 
@@ -225,11 +227,17 @@ class _ReplyCommentsState extends State<ReplyComments> {
                       ),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          comments.data()["comment"],
-                          style: GoogleFonts.montserrat(
-                            height: 1.4,
+                        child: SmartText(
+                          text: comments.data()["comment"],
+                          onOpen: (url) {
+                            launch(url);
+                          },
+                          style: GoogleFonts.rubik(
                             color: Colors.white,
+                            fontSize: 15,
+                          ),
+                          linkStyle: TextStyle(
+                            color: Colors.blueAccent,
                           ),
                         ),
                       ),

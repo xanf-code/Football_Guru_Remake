@@ -52,10 +52,6 @@ android {
         multiDexEnabled true
     }
 
-    aaptOptions {
-        ignoreAssetsPattern "!x86:!*ffprobe"
-    }
-
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
