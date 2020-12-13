@@ -66,3 +66,29 @@ const NTTags = const [
   'World Cup Qualifiers',
   'FIFA U-17 Women\'s World Cup',
 ];
+
+const Color facebookBlue = Color(0xFF1777F2);
+
+const LinearGradient createRoomGradient = LinearGradient(
+  colors: [Color(0xFF496AE1), Color(0xFFCE48B1)],
+);
+
+const Color online = Color(0xFF4BCB1F);
+
+const LinearGradient storyGradient = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [Colors.transparent, Colors.black26],
+);
+
+const LinearGradient FABGradient = LinearGradient(
+  begin: Alignment.bottomLeft,
+  end: Alignment.topRight,
+  colors: [
+    Color(0xffF58529),
+    Color(0xffFEDA77),
+    Color(0xffDD2A7B),
+    Color(0xff8134AF),
+    Color(0xff515BD4),
+  ],
+);

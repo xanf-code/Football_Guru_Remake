@@ -24,4 +24,14 @@ class Repository {
         .limit(limit)
         .snapshots();
   }
+
+  Stream getMessages(ref, limit) {
+    return _firestore
+        .collection("ChatsCollection")
+        .doc(ref)
+        .collection("chats")
+        .orderBy("timestamp", descending: true)
+        .limit(limit)
+        .snapshots();
+  }
 }

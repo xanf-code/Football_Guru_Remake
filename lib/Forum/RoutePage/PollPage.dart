@@ -77,17 +77,7 @@ class _PollPageState extends State<PollPage>
             ),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: [
-                  Color(0xffF58529),
-                  Color(0xffFEDA77),
-                  Color(0xffDD2A7B),
-                  Color(0xff8134AF),
-                  Color(0xff515BD4),
-                ],
-              ),
+              gradient: FABGradient,
             ),
           ),
           onPressed: () {
@@ -146,13 +136,6 @@ class _PollPageState extends State<PollPage>
                 child: ListView.builder(
                   cacheExtent: 500.0,
                   controller: _scrollController,
-                  // separatorBuilder: (context, i) {
-                  //   return const Divider(
-                  //     color: separatorColor,
-                  //     indent: 10,
-                  //     endIndent: 10,
-                  //   );
-                  // },
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot posts = snapshot.data.docs[index];

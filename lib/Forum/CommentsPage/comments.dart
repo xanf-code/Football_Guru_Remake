@@ -136,10 +136,19 @@ class _CommentsForumPageState extends State<CommentsForumPage> {
       "userId": currentUser.id,
       "commentID": commentID,
       "replyCount": 0,
-    });
-    setState(() {
-      commentController.clear();
-      commentID = Uuid().v4();
+    }).whenComplete(() {
+      setState(() {
+        commentController.clear();
+        commentID = Uuid().v4();
+      });
+      FirebaseFirestore.instance
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postID)
+          .update({
+        'commentCount': FieldValue.increment(1),
+      });
     });
   }
 
@@ -410,6 +419,15 @@ class _CommentsForumPageState extends State<CommentsForumPage> {
       if (document.exists) {
         document.reference.delete();
       }
+    }).whenComplete(() {
+      FirebaseFirestore.instance
+          .collection("Forum")
+          .doc(widget.path)
+          .collection("Posts")
+          .doc(widget.postID)
+          .update({
+        'commentCount': FieldValue.increment(-1),
+      });
     });
   }
 }

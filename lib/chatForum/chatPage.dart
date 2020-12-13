@@ -10,8 +10,10 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Widgets/allChatWidgets.dart';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
   final String reference;
@@ -56,14 +58,8 @@ class _ChatPageState extends State<ChatPage> {
 
   displayChats() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection("ChatsCollection")
-          .doc(widget.reference)
-          .collection("chats")
-          .orderBy("timestamp", descending: true)
-          .limit(_limit)
-          .snapshots(),
-      builder: (context, dataSnapshot) {
+      stream: context.watch<Repository>().getMessages(widget.reference, _limit),
+      builder: (context, AsyncSnapshot dataSnapshot) {
         if (!dataSnapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
