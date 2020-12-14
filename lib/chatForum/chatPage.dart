@@ -38,7 +38,7 @@ class _ChatPageState extends State<ChatPage> {
   bool uploading = false;
 
   final ScrollController _scrollController = ScrollController();
-  int _limit = 13;
+  int _limit = 20;
   final int _limitIncrement = 20;
 
   _scrollListener() {

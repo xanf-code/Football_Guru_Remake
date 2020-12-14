@@ -5,8 +5,12 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:transfer_news/Behaviour/customScrollBehaviour.dart';
+import 'package:transfer_news/Forum/Widgets/PollContainer.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Forum/Logics/forumLogic.dart';
+import 'package:transfer_news/Forum/Logics/logics.dart';
 import 'package:transfer_news/Repo/repo.dart';
+import 'package:transfer_news/Widgets/storiesWidget.dart';
 import 'package:transfer_news/chatForum/databaseModel/chatModel.dart';
 
 const String boxName = 'favs';
@@ -26,8 +30,21 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<Repository>(
-      create: (_) => Repository(FirebaseFirestore.instance),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Repository(FirebaseFirestore.instance),
+        ),
+        ChangeNotifierProvider.value(
+          value: PollContainer(),
+        ),
+        ChangeNotifierProvider.value(
+          value: PollLogic(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ForumLogic(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: Theme.of(context).copyWith(

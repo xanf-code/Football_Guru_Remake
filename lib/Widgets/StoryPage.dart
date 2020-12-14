@@ -79,7 +79,7 @@ class StoryPage extends StatelessWidget {
                   width: 6,
                 ),
                 Text(
-                  "${viewCount} Views",
+                  "$viewCount Views",
                   style: TextStyle(
                     color: Colors.white70,
                   ),

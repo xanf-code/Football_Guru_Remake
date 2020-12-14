@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
-class Repository {
+class Repository extends ChangeNotifier {
   Repository(this._firestore) : assert(_firestore != null);
 
   final FirebaseFirestore _firestore;

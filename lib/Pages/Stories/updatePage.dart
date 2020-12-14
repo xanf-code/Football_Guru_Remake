@@ -565,6 +565,11 @@ class _UploadPageState extends State<UploadPage> {
                               builder: (context) => StoryPage(
                                 url: snapshot.data.docs[index]["url"],
                                 caption: snapshot.data.docs[index]["caption"],
+                                userPic: snapshot.data.docs[index]["userPic"],
+                                userName: snapshot.data.docs[index]["name"],
+                                viewCount: snapshot
+                                    .data.docs[index]["viewed"].length
+                                    .toString(),
                               ),
                               transitionDuration: Duration(
                                 milliseconds: 200,

@@ -214,8 +214,8 @@ class _ForumMainState extends State<ForumMain> {
                   PollPage(
                     route: widget.forumName,
                   ),
-                  ISLPrediction(),
-                  LearderBoard(),
+                  const ISLPrediction(),
+                  const LearderBoard(),
                 ],
               )
             : TabBarView(

@@ -87,9 +87,10 @@ class _ForumDetailsState extends State<ForumDetails>
         ),
       ),
       body: StreamBuilder(
-        stream: context.watch<Repository>().getForum(widget.forumName, _limit),
+        stream: Provider.of<Repository>(
+          context,
+        ).getForum(widget.forumName, _limit),
         builder: (context, AsyncSnapshot snapshot) {
-          print("building");
           if (!snapshot.hasData) {
             return Center(
               child: const CircularProgressIndicator(),

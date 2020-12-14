@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_unicons/unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' show get;
-import 'package:path/path.dart' as joinPath;
 import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
 import 'package:transfer_news/Forum/CommentsPage/comments.dart';
@@ -20,6 +15,7 @@ import 'package:transfer_news/Forum/Widgets/profileAvatar.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
+import 'package:transfer_news/Forum/Logics/forumLogic.dart';
 import 'package:transfer_news/Utils/constants.dart';
 
 class PostContainer extends StatelessWidget {
@@ -242,7 +238,7 @@ class Stats extends StatelessWidget {
 
   Stats({Key key, @required this.posts, @required this.forumName})
       : super(key: key);
-  var documentDirectory;
+
   @override
   Widget build(BuildContext context) {
     final String currentUserOnlineId = currentUser?.id;
@@ -311,9 +307,7 @@ class Stats extends StatelessWidget {
               ),
               onPressed: () {
                 HapticFeedback.mediumImpact();
-                likePost(
-                  posts.data()["postId"],
-                );
+                ForumLogic().likePost(posts.data()["postId"], forumName);
               },
             ),
             FlatButton.icon(
@@ -363,7 +357,7 @@ class Stats extends StatelessWidget {
                     ? Share.share(
                         "${posts.data()["caption"]} \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.indianfootball.transferNews",
                       )
-                    : imageDownload(
+                    : ForumLogic().imageDownload(
                         posts.data()["url"],
                         posts.data()["caption"],
                         posts.data()["postId"],
@@ -402,25 +396,13 @@ class Stats extends StatelessWidget {
                     ),
                     onPressed: () {
                       HapticFeedback.mediumImpact();
-                      reportPost(
-                        posts.data()["postId"],
-                      );
+                      ForumLogic()
+                          .reportPost(posts.data()["postId"], forumName);
                     },
                   ),
           ],
         ),
       ],
-    );
-  }
-
-  imageDownload(String url, String text, String postID) async {
-    var response = await get(url);
-    documentDirectory = await getTemporaryDirectory();
-    File file = new File(joinPath.join(documentDirectory.path, '$postID.png'));
-    file.writeAsBytesSync(response.bodyBytes);
-    Share.shareFiles(
-      [file.path],
-      text: text,
     );
   }
 
@@ -443,7 +425,7 @@ class Stats extends StatelessWidget {
               onTap: () {
                 HapticFeedback.mediumImpact();
                 Navigator.of(context).pop();
-                removePost(snapshot);
+                ForumLogic().removePost(snapshot, forumName);
               },
               child: ListTile(
                 leading: Icon(
@@ -462,87 +444,5 @@ class Stats extends StatelessWidget {
         );
       },
     );
-  }
-
-  removePost(postID) async {
-    FirebaseFirestore.instance
-        .collection("Forum")
-        .doc(forumName)
-        .collection("Posts")
-        .doc(postID)
-        .get()
-        .then((document) {
-      if (document.exists) {
-        document.reference.delete();
-      }
-    });
-    //Delete Post Pic from Storage
-    forumReference.child("post_$postID.jpg").delete();
-
-    // Post Individual
-    FirebaseFirestore.instance
-        .collection("Individual Tweets")
-        .doc(currentUser.id)
-        .collection("Forum Posts")
-        .doc(postID)
-        .get()
-        .then((document) {
-      if (document.exists) {
-        document.reference.delete();
-      }
-    });
-  }
-
-  reportPost(postId) {
-    FirebaseFirestore.instance
-        .collection("Forum")
-        .doc(forumName)
-        .collection("Reports")
-        .add({
-      "postId": postId,
-      "ownerID": currentUser.id,
-      "timestamp": DateTime.now(),
-      "name": currentUser.username,
-    }).then((result) {
-      Fluttertoast.showToast(
-        msg: "Thank you for reporting!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.white,
-        textColor: Colors.black,
-        fontSize: 16.0,
-      );
-    });
-  }
-
-  likePost(String id) async {
-    DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("Forum")
-        .doc(forumName)
-        .collection("Posts")
-        .doc(id)
-        .get();
-    if (docs.data()['likes'].contains(currentUser.id)) {
-      FirebaseFirestore.instance
-          .collection("Forum")
-          .doc(forumName)
-          .collection("Posts")
-          .doc(id)
-          .update({
-        'likes': FieldValue.arrayRemove(
-          [currentUser.id],
-        )
-      });
-    } else {
-      FirebaseFirestore.instance
-          .collection("Forum")
-          .doc(forumName)
-          .collection("Posts")
-          .doc(id)
-          .update({
-        'likes': FieldValue.arrayUnion([currentUser.id])
-      });
-    }
   }
 }
