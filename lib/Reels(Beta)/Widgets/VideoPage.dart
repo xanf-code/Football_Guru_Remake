@@ -58,11 +58,13 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     super.initState();
     controller = CachedVideoPlayerController.network(
       widget.videoUrl,
-    )..initialize().then((_) {
-        controller.play();
-        controller.setLooping(true);
-        setState(() {});
-      });
+    )..initialize().then(
+        (_) {
+          controller.play();
+          controller.setLooping(true);
+          setState(() {});
+        },
+      );
   }
 
   @override
@@ -101,17 +103,16 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                   }
                 },
                 child: VisibilityDetector(
-                    key: Key("unique key"),
-                    onVisibilityChanged: (VisibilityInfo info) {
-                      debugPrint(
-                          "${info.visibleFraction} of my widget is visible");
-                      if (info.visibleFraction == 0) {
-                        controller.pause();
-                      } else {
-                        controller.play();
-                      }
-                    },
-                    child: CachedVideoPlayer(controller)),
+                  key: Key("unique key"),
+                  onVisibilityChanged: (VisibilityInfo info) {
+                    if (info.visibleFraction == 0) {
+                      controller.pause();
+                    } else {
+                      controller.play();
+                    }
+                  },
+                  child: CachedVideoPlayer(controller),
+                ),
               ),
             )
           : Container(

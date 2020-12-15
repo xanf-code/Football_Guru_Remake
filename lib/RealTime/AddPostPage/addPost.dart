@@ -91,106 +91,91 @@ class _AddRealTimeState extends State<AddRealTime> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               uploading ? LinearProgressIndicator() : Text(""),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 12.0,
-                      top: 12,
-                      right: 12,
-                    ),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: CachedNetworkImageProvider(
-                        currentUser.url,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 500,
-                        width: 400,
-                        child: TextFormField(
-                          controller: descController,
-                          textCapitalization: TextCapitalization.sentences,
-                          maxLength: 500,
-                          maxLengthEnforced: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Description cannot be empty";
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: InputDecoration(
-                            counterStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                            hintText: "Add your post here...",
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 40.0),
-                            labelStyle:
-                                TextStyle(color: Colors.white, fontSize: 17),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 17),
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                          ),
-                          style: GoogleFonts.averageSans(
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 500,
+                      width: MediaQuery.of(context).size.width,
+                      child: TextFormField(
+                        controller: descController,
+                        textCapitalization: TextCapitalization.sentences,
+                        maxLength: 300,
+                        maxLengthEnforced: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Description cannot be empty";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: InputDecoration(
+                          counterStyle: TextStyle(
                             color: Colors.white,
                           ),
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 99999,
-                          autofocus: false,
+                          hintText: "Add your post here...",
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 40.0),
+                          labelStyle:
+                              TextStyle(color: Colors.white, fontSize: 17),
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 17),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                         ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 99999,
+                        autofocus: false,
                       ),
-                      Container(
-                        width: 400,
-                        child: TextFormField(
-                          controller: correspondentController,
-                          textCapitalization: TextCapitalization.sentences,
-                          maxLength: 35,
-                          maxLengthEnforced: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Field cannot be empty";
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: InputDecoration(
-                            counterStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                            hintText: "Eg: Correspondent at IFTWC",
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 40.0),
-                            labelStyle:
-                                TextStyle(color: Colors.white, fontSize: 17),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 17),
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                          ),
-                          style: GoogleFonts.averageSans(
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: TextFormField(
+                        controller: correspondentController,
+                        textCapitalization: TextCapitalization.sentences,
+                        maxLength: 35,
+                        maxLengthEnforced: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Field cannot be empty";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: InputDecoration(
+                          counterStyle: TextStyle(
                             color: Colors.white,
                           ),
-                          maxLines: 1,
-                          autofocus: false,
+                          hintText: "Eg: Correspondent at IFTWC",
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 40.0),
+                          labelStyle:
+                              TextStyle(color: Colors.white, fontSize: 17),
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 17),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                         ),
+                        style: GoogleFonts.averageSans(
+                          color: Colors.white,
+                        ),
+                        maxLines: 1,
+                        autofocus: false,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
               selectedImage == null
                   ? Padding(

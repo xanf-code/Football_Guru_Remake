@@ -9,6 +9,7 @@ import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class ConfirmedPage extends StatefulWidget {
   File videoFile;
@@ -102,15 +103,21 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
         backgroundColor: Color(0xFF0e0e10),
         body: Stack(
           children: [
-            Stack(
-              children: [
-                Center(
-                  child: AspectRatio(
-                    aspectRatio: controller.value.aspectRatio,
-                    child: VideoPlayer(controller),
-                  ),
+            Center(
+              child: AspectRatio(
+                aspectRatio: controller.value.aspectRatio,
+                child: VisibilityDetector(
+                  key: Key("unique key"),
+                  onVisibilityChanged: (VisibilityInfo info) {
+                    if (info.visibleFraction == 0) {
+                      controller.pause();
+                    } else {
+                      controller.play();
+                    }
+                  },
+                  child: VideoPlayer(controller),
                 ),
-              ],
+              ),
             ),
             Positioned(
               bottom: 15,
@@ -191,34 +198,40 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
               ),
             ),
             uploading
-                ? Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(10),
+                ? Stack(
+                    children: [
+                      Container(
+                        color: Colors.white.withOpacity(0.3),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            backgroundColor: Colors.white,
+                      Center(
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          const SizedBox(
-                            height: 10,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(
+                                backgroundColor: Colors.white,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Loading..",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "Loading..",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   )
                 : Text(""),
           ],
