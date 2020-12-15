@@ -3,26 +3,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_unicons/unicons.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
-import 'package:transfer_news/Forum/CommentsPage/comments.dart';
+import 'package:transfer_news/Forum/Logics/forumLogic.dart';
 import 'package:transfer_news/Forum/Widgets/ExpandableText.dart';
 import 'package:transfer_news/Forum/Widgets/profileAvatar.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/RealTime/CommentPage.dart';
+import 'package:transfer_news/RealTime/Logic/RTLogics.dart';
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
-import 'package:transfer_news/Forum/Logics/forumLogic.dart';
 import 'package:transfer_news/Utils/constants.dart';
 
-class PostContainer extends StatelessWidget {
-  final DocumentSnapshot post;
-  final String route;
-  const PostContainer({Key key, @required this.post, @required this.route})
-      : super(key: key);
+class RTContainer extends StatelessWidget {
+  final String image;
+  final String name;
+  final Timestamp time;
+  final bool isVerified;
+  final String tag;
+  final String caption;
+  final String postImage;
+  final String postID;
+  final likes;
+  const RTContainer({
+    Key key,
+    this.image,
+    this.name,
+    this.time,
+    this.isVerified,
+    this.tag,
+    this.caption,
+    this.postImage,
+    this.postID,
+    this.likes,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,25 +46,30 @@ class PostContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       color: Colors.black,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 12.0,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Header(
-                  post: post,
-                  forumName: route,
+                  imageUrl: image,
+                  username: name,
+                  timeAgo: time,
+                  isVerified: isVerified,
+                  tags: tag,
                 ),
                 const SizedBox(
                   height: 12,
                 ),
                 ExpandableText(
-                  post.data()["caption"],
+                  caption,
                 ),
-                post.data()["url"] != ""
+                postImage != ""
                     ? const SizedBox.shrink()
                     : const SizedBox(
                         height: 6,
@@ -56,7 +77,7 @@ class PostContainer extends StatelessWidget {
               ],
             ),
           ),
-          post.data()["url"] != ""
+          postImage != ""
               ? Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 12.0,
@@ -69,8 +90,8 @@ class PostContainer extends StatelessWidget {
                         withNavBar: false,
                         customPageRoute: MorpheusPageRoute(
                           builder: (context) => DetailScreen(
-                            image: post.data()["url"],
-                            postID: post.data()["postId"],
+                            image: postImage,
+                            postID: postID,
                           ),
                           transitionDuration: Duration(
                             milliseconds: 200,
@@ -78,15 +99,13 @@ class PostContainer extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Container(
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: post.data()["url"],
-                          placeholder: (context, url) => Center(
-                            child: const CircularProgressIndicator(),
-                          ),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: postImage,
+                        placeholder: (context, url) => Center(
+                          child: const CircularProgressIndicator(),
                         ),
                       ),
                     ),
@@ -100,8 +119,10 @@ class PostContainer extends StatelessWidget {
               top: 8,
             ),
             child: Stats(
-              posts: post,
-              forumName: route,
+              likes: likes,
+              postId: postID,
+              postUrl: postImage,
+              caption: caption,
             ),
           ),
         ],
@@ -111,19 +132,25 @@ class PostContainer extends StatelessWidget {
 }
 
 class Header extends StatelessWidget {
-  final DocumentSnapshot post;
-  final String forumName;
-  const Header({
-    Key key,
-    @required this.post,
-    this.forumName,
-  }) : super(key: key);
+  final String imageUrl;
+  final String username;
+  final timeAgo;
+  final bool isVerified;
+  final String tags;
+  const Header(
+      {Key key,
+      this.imageUrl,
+      this.username,
+      this.timeAgo,
+      this.isVerified,
+      this.tags})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         ProfileAvatar(
-          imageUrl: post.data()["userPic"],
+          imageUrl: imageUrl,
           //hasBorder: true,
         ),
         const SizedBox(
@@ -136,7 +163,7 @@ class Header extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    post.data()["name"],
+                    username,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -145,7 +172,7 @@ class Header extends StatelessWidget {
                   SizedBox(
                     width: 3,
                   ),
-                  post.data()["isVerified"] == true
+                  isVerified == true
                       ? CachedNetworkImage(
                           height: 13,
                           imageUrl:
@@ -158,7 +185,7 @@ class Header extends StatelessWidget {
                 children: [
                   Text(
                     "${tAgo.format(
-                      post.data()["timestamp"].toDate(),
+                      timeAgo.toDate(),
                     )} • ",
                     style: TextStyle(
                       color: Colors.grey,
@@ -197,7 +224,7 @@ class Header extends StatelessWidget {
                     right: 6,
                   ),
                   child: Text(
-                    post.data()["tags"].toString().toUpperCase(),
+                    tags.toString().toUpperCase(),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -207,36 +234,6 @@ class Header extends StatelessWidget {
                 ),
               ),
             ),
-            post.data()["top25"] == true
-                ? GestureDetector(
-                    onTap: () {
-                      HapticFeedback.mediumImpact();
-                      Fluttertoast.showToast(
-                        msg: "Top 25 trending",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 8.0,
-                        left: 8,
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: tagBorder,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Feather.trending_up,
-                          size: 10.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
-                : SizedBox.shrink(),
           ],
         ),
       ],
@@ -245,16 +242,20 @@ class Header extends StatelessWidget {
 }
 
 class Stats extends StatelessWidget {
-  final DocumentSnapshot posts;
-  final String forumName;
+  final likes;
+  final String postId;
+  final String postUrl;
+  final String caption;
 
-  Stats({Key key, @required this.posts, @required this.forumName})
-      : super(key: key);
-
+  const Stats({
+    Key key,
+    this.likes,
+    this.postId,
+    this.postUrl,
+    this.caption,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final String currentUserOnlineId = currentUser?.id;
-    bool isPostOwner = currentUserOnlineId == posts.data()["ownerID"];
     return Column(
       children: [
         Padding(
@@ -276,18 +277,11 @@ class Stats extends StatelessWidget {
               const SizedBox(width: 5.0),
               Expanded(
                 child: Text(
-                  '${NumberFormat.compact().format(posts.data()["likes"].length)} Votes',
+                  '${NumberFormat.compact().format(likes.length)} Votes',
                   style: TextStyle(
                     color: Colors.white70,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-              ),
-              Text(
-                '${NumberFormat.compact().format(posts.data()["commentCount"])} Comments',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -297,10 +291,10 @@ class Stats extends StatelessWidget {
           height: 5,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FlatButton.icon(
-              icon: posts.data()["likes"].contains(currentUser.id)
+              icon: likes.contains(currentUser.id)
                   ? Unicon(
                       UniconData.uniFire,
                       color: Colors.blueAccent,
@@ -319,7 +313,7 @@ class Stats extends StatelessWidget {
               ),
               onPressed: () {
                 HapticFeedback.mediumImpact();
-                ForumLogic().likePost(posts.data()["postId"], forumName);
+                RTLogics().likePost(postId);
               },
             ),
             FlatButton.icon(
@@ -340,9 +334,8 @@ class Stats extends StatelessWidget {
                   context,
                   withNavBar: false,
                   customPageRoute: MorpheusPageRoute(
-                    builder: (context) => CommentsForumPage(
-                      postID: posts.data()["postId"],
-                      path: forumName,
+                    builder: (context) => CommentRealTime(
+                      postID: postId,
                     ),
                     transitionDuration: Duration(
                       milliseconds: 200,
@@ -365,96 +358,20 @@ class Stats extends StatelessWidget {
               ),
               onPressed: () {
                 HapticFeedback.mediumImpact();
-                posts.data()["url"] == ""
+                postUrl == ""
                     ? Share.share(
-                        "${posts.data()["caption"]} \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.indianfootball.transferNews",
+                        "$caption \nDownload Football Guru App to join the conversation https://play.google.com/store/apps/details?id=com.indianfootball.transferNews",
                       )
                     : ForumLogic().imageDownload(
-                        posts.data()["url"],
-                        posts.data()["caption"],
-                        posts.data()["postId"],
+                        postUrl,
+                        caption,
+                        postId,
                       );
               },
             ),
-            isPostOwner
-                ? FlatButton.icon(
-                    icon: Unicon(
-                      UniconData.uniSetting,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    label: Text(
-                      "More",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      HapticFeedback.mediumImpact();
-                      modalBottomSheetMenu(posts.data()["postId"], context);
-                    },
-                  )
-                : FlatButton.icon(
-                    icon: Icon(
-                      Feather.flag,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    label: Text(
-                      "Report",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      HapticFeedback.mediumImpact();
-                      ForumLogic()
-                          .reportPost(posts.data()["postId"], forumName);
-                    },
-                  ),
           ],
         ),
       ],
-    );
-  }
-
-  modalBottomSheetMenu(snapshot, context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (builder) {
-        return Container(
-          height: 60,
-          color: Colors.black87,
-          child: new Container(
-            decoration: new BoxDecoration(
-              color: Colors.black87,
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(10.0),
-                topRight: const Radius.circular(10.0),
-              ),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                HapticFeedback.mediumImpact();
-                Navigator.of(context).pop();
-                ForumLogic().removePost(snapshot, forumName);
-              },
-              child: ListTile(
-                leading: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Delete Post",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

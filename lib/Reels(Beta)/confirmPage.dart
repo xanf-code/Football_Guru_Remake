@@ -93,6 +93,8 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
     );
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -114,73 +116,77 @@ class _ConfirmedPageState extends State<ConfirmedPage> {
               bottom: 15,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      height: 60,
-                      child: TextFormField(
-                        controller: descTextEditingController,
-                        decoration: new InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                child: Form(
+                  key: _formKey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        height: 60,
+                        child: TextFormField(
+                          controller: descTextEditingController,
+                          decoration: new InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            prefixIcon: Icon(
+                              Octicons.pencil,
+                              color: Colors.grey,
+                            ),
+                            filled: true,
+                            labelText: "Enter Caption",
+                            hintStyle: GoogleFonts.rubik(
+                              color: Colors.white,
+                            ),
+                            labelStyle: GoogleFonts.rubik(
+                              color: Colors.grey,
+                            ),
+                            fillColor: Colors.grey[900],
+                            border: InputBorder.none,
+                            //fillColor: Colors.green
                           ),
-                          prefixIcon: Icon(
-                            Octicons.pencil,
-                            color: Colors.grey,
-                          ),
-                          filled: true,
-                          labelText: "Enter Caption",
-                          hintStyle: GoogleFonts.rubik(
+                          validator: (val) {
+                            if (val.length == 0) {
+                              return "Caption cannot be empty";
+                            }
+                            if (val.length > 30) {
+                              return "Caption cannot be more than 30 words";
+                            } else {
+                              return null;
+                            }
+                          },
+                          style: GoogleFonts.rubik(
                             color: Colors.white,
                           ),
-                          labelStyle: GoogleFonts.rubik(
-                            color: Colors.grey,
-                          ),
-                          fillColor: Colors.grey[900],
-                          border: InputBorder.none,
-                          //fillColor: Colors.green
                         ),
-                        validator: (val) {
-                          if (val.length == 0) {
-                            return "Caption cannot be empty";
-                          }
-                          if (val.length > 30) {
-                            return "Caption cannot be more than 30";
-                          } else {
-                            return null;
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (_formKey.currentState.validate()) {
+                            controllUploadAndSave();
                           }
                         },
-                        style: GoogleFonts.rubik(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await controllUploadAndSave();
-                      },
-                      //uploading ? null : () => var resp = await controllUploadAndSave(),
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFFe0f2f1),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Ionicons.ios_send,
-                            size: 20,
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFe0f2f1),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Ionicons.ios_send,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

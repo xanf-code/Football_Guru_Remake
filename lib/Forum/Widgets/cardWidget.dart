@@ -3,7 +3,6 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class Cards extends StatelessWidget {
   final String image;
@@ -45,6 +44,9 @@ class Cards extends StatelessWidget {
                         fit: BoxFit.cover,
                         useOldImageOnUrlChange: true,
                         imageUrl: image,
+                        placeholder: (context, url) => Center(
+                          child: const CircularProgressIndicator(),
+                        ),
                       ),
                     ),
                   ),

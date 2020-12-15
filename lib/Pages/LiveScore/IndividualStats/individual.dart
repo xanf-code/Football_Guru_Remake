@@ -13,7 +13,6 @@ class IndStats extends StatelessWidget {
   final String passes;
   final String success;
   final String chances;
-  final String ratings;
   final String shotacc;
   final String offTarget;
   final String onTarget;
@@ -47,7 +46,6 @@ class IndStats extends StatelessWidget {
       this.passes,
       this.success,
       this.chances,
-      this.ratings,
       this.shotacc,
       this.offTarget,
       this.onTarget,
@@ -108,7 +106,7 @@ class IndStats extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: image,
                 fadeInCurve: Curves.easeIn,
-                placeholder: (context, url) => new CachedNetworkImage(
+                placeholder: (context, url) => CachedNetworkImage(
                   fit: BoxFit.cover,
                   color: Colors.grey,
                   imageUrl:
@@ -132,25 +130,6 @@ class IndStats extends StatelessWidget {
           ),
           SizedBox(
             height: 6,
-          ),
-          Center(
-            child: Container(
-              height: 30,
-              width: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.red,
-              ),
-              child: Center(
-                child: Text(
-                  ratings,
-                  style: GoogleFonts.rubik(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
           ),
           Divider(
             color: Colors.grey[800],

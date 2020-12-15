@@ -210,12 +210,11 @@ class PollContainer extends ChangeNotifier {
           child: GestureDetector(
             onTap: () {
               HapticFeedback.mediumImpact();
-              PollLogic()
-                  .checkAndAdd(posts.data()["postId"], "option1Votes", route);
-              // checkAndAdd(
-              //   posts.data()["postId"],
-              //   "option1Votes",
-              // );
+              PollLogic().checkAndAdd(
+                posts.data()["postId"],
+                "option1Votes",
+                route,
+              );
             },
             child: Center(
               child: ClipRRect(

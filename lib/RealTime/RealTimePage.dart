@@ -1,29 +1,21 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:smart_text_view/smart_text_view.dart';
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/RealTime/AddPostPage/addPost.dart';
-import 'package:transfer_news/RealTime/CommentPage.dart';
+import 'package:transfer_news/RealTime/Widget/RTContainer.dart';
 import 'package:transfer_news/RealTime/bloc/data_bloc/data_bloc.dart';
-import 'package:timeago/timeago.dart' as tAgo;
-import 'package:transfer_news/RealTime/imageDetailScreen.dart';
 import 'package:transfer_news/Utils/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class RealTimeUI extends StatefulWidget {
   final User gCurrentUser;
@@ -150,333 +142,49 @@ class _RealTimeUIState extends State<RealTimeUI> {
               thickness: 3,
               radius: Radius.circular(10),
               child: AnimationLimiter(
-                child: ListView.separated(
-                    itemCount: state.hasMoreData
-                        ? state.tweets.length + 1
-                        : state.tweets.length,
-                    itemBuilder: (context, i) {
-                      if (i >= state.tweets.length) {
-                        _dataBloc.add(
-                          DataEventFetchMore(),
-                        );
-                        return Container(
-                          margin: EdgeInsets.only(top: 15),
-                          height: 30,
-                          width: 30,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      return AnimationConfiguration.staggeredGrid(
-                        position: i,
-                        duration: const Duration(milliseconds: 500),
-                        columnCount: state.hasMoreData
-                            ? state.tweets.length + 1
-                            : state.tweets.length,
-                        child: SlideAnimation(
-                          verticalOffset: 50,
-                          child: FadeInAnimation(
-                            child: Card(
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  color: Colors.transparent,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 20,
-                                            child: ClipOval(
-                                              child: Image.network(
-                                                state.tweets[i].userPic,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 13,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    state.tweets[i].username,
-                                                    style:
-                                                        GoogleFonts.averageSans(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                  state.tweets[i].isVerified !=
-                                                          true
-                                                      ? SizedBox()
-                                                      : Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            left: 6.0,
-                                                            top: 1,
-                                                          ),
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            height: 15,
-                                                            imageUrl:
-                                                                "https://webstockreview.net/images/confirmation-clipart-verified.png",
-                                                          ),
-                                                        ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 8.0,
-                                                      right: 8,
-                                                      bottom: 1,
-                                                    ),
-                                                    child: Text(
-                                                      ".",
-                                                      style: GoogleFonts.rubik(
-                                                        color: Colors.grey,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 4),
-                                                    child: Text(
-                                                      tAgo.format(
-                                                        state
-                                                            .tweets[i].timestamp
-                                                            .toDate(),
-                                                      ),
-                                                      style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                state.tweets[i].role,
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.italic,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    1.25,
-                                                child: SmartText(
-                                                  text: state.tweets[i].caption,
-                                                  onOpen: (url) {
-                                                    launch(url);
-                                                  },
-                                                  style: GoogleFonts.montserrat(
-                                                    color: Colors.white,
-                                                    height: 1.4,
-                                                  ),
-                                                  linkStyle: TextStyle(
-                                                    color: Colors.blue,
-                                                  ),
-                                                ),
-                                              ),
-                                              state.tweets[i].url == ""
-                                                  ? SizedBox(
-                                                      height: 0,
-                                                    )
-                                                  : SizedBox(
-                                                      height: 12,
-                                                    ),
-                                              state.tweets[i].url == ""
-                                                  ? const SizedBox.shrink()
-                                                  : GestureDetector(
-                                                      onTap: () {
-                                                        HapticFeedback
-                                                            .mediumImpact();
-                                                        pushNewScreen(
-                                                          context,
-                                                          withNavBar: false,
-                                                          customPageRoute:
-                                                              MorpheusPageRoute(
-                                                            builder: (context) =>
-                                                                DetailScreen(
-                                                              image: state
-                                                                  .tweets[i]
-                                                                  .url,
-                                                            ),
-                                                            transitionDuration:
-                                                                Duration(
-                                                              milliseconds: 130,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                bottom: 8.0),
-                                                        child: Container(
-                                                          height: 250,
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              1.25,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            image:
-                                                                DecorationImage(
-                                                              fit: BoxFit.cover,
-                                                              image:
-                                                                  CachedNetworkImageProvider(
-                                                                state.tweets[i]
-                                                                    .url,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          FlatButton.icon(
-                                            onPressed: () {
-                                              HapticFeedback.mediumImpact();
-                                              likePost(state.tweets[i].postID);
-                                            },
-                                            label: Text(
-                                              "${NumberFormat.compact().format(state.tweets[i].likes.length)} Votes",
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            icon: state.tweets[i].likes
-                                                    .contains(currentUser.id)
-                                                ? Unicon(
-                                                    UniconData.uniFire,
-                                                    color: Colors.blueAccent,
-                                                    size: 19,
-                                                  )
-                                                : Unicon(
-                                                    UniconData.uniFire,
-                                                    color: Colors.grey,
-                                                    size: 19,
-                                                  ),
-                                          ),
-                                          FlatButton.icon(
-                                            onPressed: () {
-                                              HapticFeedback.mediumImpact();
-                                              pushNewScreen(
-                                                context,
-                                                withNavBar: false,
-                                                customPageRoute:
-                                                    MorpheusPageRoute(
-                                                  builder: (context) =>
-                                                      CommentRealTime(
-                                                    postID:
-                                                        state.tweets[i].postID,
-                                                  ),
-                                                  transitionDuration: Duration(
-                                                    milliseconds: 200,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            label: Text(
-                                              "Comment",
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            icon: Icon(
-                                              MaterialCommunityIcons
-                                                  .comment_outline,
-                                              color: Colors.grey,
-                                              size: 20,
-                                            ),
-                                          ),
-                                          FlatButton.icon(
-                                            splashColor: Colors.transparent,
-                                            onPressed: () {
-                                              HapticFeedback.mediumImpact();
-                                              Fluttertoast.showToast(
-                                                msg: "Thank you for reporting!",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 1,
-                                                backgroundColor: Colors.white,
-                                                textColor: Colors.black,
-                                                fontSize: 16.0,
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Feather.flag,
-                                              color: Colors.grey,
-                                              size: 20,
-                                            ),
-                                            label: Text(
-                                              "Report",
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                child: ListView.builder(
+                  itemCount: state.hasMoreData
+                      ? state.tweets.length + 1
+                      : state.tweets.length,
+                  itemBuilder: (context, i) {
+                    if (i >= state.tweets.length) {
+                      _dataBloc.add(
+                        DataEventFetchMore(),
+                      );
+                      return Container(
+                        margin: EdgeInsets.only(top: 15),
+                        height: 30,
+                        width: 30,
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
                       );
-                    },
-                    separatorBuilder: (context, i) {
-                      return Divider(
-                        color: separatorColor,
-                        indent: 10,
-                        endIndent: 10,
-                      );
-                    }),
+                    }
+                    return AnimationConfiguration.staggeredGrid(
+                      position: i,
+                      duration: const Duration(milliseconds: 500),
+                      columnCount: state.hasMoreData
+                          ? state.tweets.length + 1
+                          : state.tweets.length,
+                      child: SlideAnimation(
+                        verticalOffset: 50,
+                        child: FadeInAnimation(
+                          child: RTContainer(
+                            image: state.tweets[i].userPic,
+                            name: state.tweets[i].username,
+                            tag: state.tweets[i].role,
+                            time: state.tweets[i].timestamp,
+                            caption: state.tweets[i].caption,
+                            postImage: state.tweets[i].url,
+                            isVerified: state.tweets[i].isVerified,
+                            postID: state.tweets[i].postID,
+                            likes: state.tweets[i].likes,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           } else {
@@ -491,23 +199,5 @@ class _RealTimeUIState extends State<RealTimeUI> {
   void dispose() {
     _dataBloc.close();
     super.dispose();
-  }
-
-  likePost(String id) async {
-    DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("realTimeTweets")
-        .doc(id)
-        .get();
-    if (docs.data()['likes'].contains(currentUser.id)) {
-      FirebaseFirestore.instance.collection("realTimeTweets").doc(id).update({
-        'likes': FieldValue.arrayRemove(
-          [currentUser.id],
-        )
-      });
-    } else {
-      FirebaseFirestore.instance.collection("realTimeTweets").doc(id).update({
-        'likes': FieldValue.arrayUnion([currentUser.id])
-      });
-    }
   }
 }

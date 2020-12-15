@@ -52,6 +52,7 @@ dependencies:
   flutter_launcher_icons: ^0.8.1
   percent_indicator: "^2.1.7+2"
   swipe_to: ^0.0.1+8
+  visibility_detector: ^0.1.5
 
   #Web-dependencies
   flutter_webview_plugin: ^0.3.11

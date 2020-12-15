@@ -11,7 +11,6 @@ class Tweets extends Equatable {
   final String username;
   final String userPic;
   final Timestamp timestamp;
-
   const Tweets(
     this.caption,
     this.postID,

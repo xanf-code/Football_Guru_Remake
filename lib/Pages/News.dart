@@ -21,6 +21,7 @@ import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/PlayerPoll/playervotes.dart';
 import 'package:transfer_news/Reels(Beta)/AddReelPage.dart';
 import 'package:transfer_news/Utils/constants.dart';
+import 'package:transfer_news/Utils/gradient.dart';
 import 'package:transfer_news/Youtube/youtube.dart';
 import 'package:transfer_news/chatForum/chatIntro.dart';
 import 'package:transfer_news/chatForum/chatPage.dart';
@@ -68,6 +69,30 @@ class _NewsPageState extends State<NewsPage> {
           automaticallyImplyLeading: false,
           //leading: Container(),
           actions: [
+            IconButton(
+              splashRadius: 1,
+              splashColor: Colors.transparent,
+              icon: RadiantGradientMask(
+                child: Icon(
+                  MaterialCommunityIcons.play_speed,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                pushNewScreen(
+                  context,
+                  withNavBar: false,
+                  customPageRoute: MorpheusPageRoute(
+                    builder: (context) => Reels(),
+                    transitionDuration: Duration(
+                      milliseconds: 200,
+                    ),
+                  ),
+                );
+              },
+            ),
             AvatarGlow(
               glowColor: Colors.blue,
               endRadius: 40,
@@ -191,28 +216,6 @@ class _NewsPageState extends State<NewsPage> {
                         width: 50,
                         color: Colors.blueGrey[900],
                         icons: UniconData.uniChatInfo,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        Navigator.pop(context);
-                        pushNewScreen(
-                          context,
-                          withNavBar: false,
-                          customPageRoute: MorpheusPageRoute(
-                            builder: (context) => Reels(),
-                            transitionDuration: Duration(
-                              milliseconds: 200,
-                            ),
-                          ),
-                        );
-                      },
-                      child: DiscordType(
-                        height: 50,
-                        width: 50,
-                        color: Colors.blueGrey[900],
-                        icons: UniconData.uniVideo,
                       ),
                     ),
                     GestureDetector(

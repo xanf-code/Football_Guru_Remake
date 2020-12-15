@@ -219,10 +219,11 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
                 Container(
                   height: 500,
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(url),
+                  child: CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Center(
+                      child: const CircularProgressIndicator(),
                     ),
                   ),
                 ),

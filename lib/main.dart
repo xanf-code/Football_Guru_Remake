@@ -9,6 +9,10 @@ import 'package:transfer_news/Forum/Widgets/PollContainer.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Forum/Logics/forumLogic.dart';
 import 'package:transfer_news/Forum/Logics/logics.dart';
+import 'package:transfer_news/RealTime/Logic/RTLogics.dart';
+import 'package:transfer_news/Reels(Beta)/Widgets/Logics.dart';
+import 'package:transfer_news/Reels(Beta)/Widgets/videoPlayerItems.dart';
+import 'package:transfer_news/Reels(Beta)/AddReelPage.dart';
 import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Widgets/storiesWidget.dart';
 import 'package:transfer_news/chatForum/databaseModel/chatModel.dart';
@@ -43,6 +47,15 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: ForumLogic(),
+        ),
+        ChangeNotifierProvider.value(
+          value: RTLogics(),
+        ),
+        ChangeNotifierProvider.value(
+          value: VideoPlayerItems(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ReelsLogic(),
         ),
       ],
       child: MaterialApp(

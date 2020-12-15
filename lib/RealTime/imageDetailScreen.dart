@@ -22,12 +22,6 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   @override
-  void initState() {
-    // TODO: implement initState
-    requestPermission();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +34,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 imageUrl: widget.image,
               ),
             ),
-            onTap: () {
+            onHorizontalDragDown: (_) {
               HapticFeedback.mediumImpact();
               Navigator.pop(context);
             },
@@ -57,6 +51,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
               onPressed: () {
                 HapticFeedback.mediumImpact();
+                requestPermission();
                 saveImage();
                 Fluttertoast.showToast(
                   msg: "Image Saved to Gallery",
@@ -88,8 +83,5 @@ class _DetailScreenState extends State<DetailScreen> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
     ].request();
-
-    final info = statuses[Permission.storage].toString();
-    print(info);
   }
 }

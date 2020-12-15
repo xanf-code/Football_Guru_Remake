@@ -106,10 +106,6 @@ class _LinupsState extends State<Linups> {
                                               passes: l["stats"]["0"]
                                                       ["Saves inside box"]
                                                   .toString(),
-                                              ratings:
-                                                  l["rating"]["num"] == null
-                                                      ? '-'
-                                                      : l["rating"]["num"],
                                               shotacc: l["stats"]["0"]["Throws"]
                                                   .toString(),
                                               onTarget: l["stats"]["1"]
@@ -196,8 +192,6 @@ class _LinupsState extends State<Linups> {
                                               passes: l["stats"]["0"]
                                                       ["Accurate passes"]
                                                   .toString(),
-                                              ratings:
-                                                  l["rating"]["num"] ?? "-",
                                               shotacc: l["stats"]["1"]
                                                       ["Shot accuracy"]
                                                   .toString(),

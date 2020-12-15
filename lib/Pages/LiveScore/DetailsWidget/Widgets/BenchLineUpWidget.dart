@@ -97,13 +97,6 @@ class _BenchPlayersState extends State<BenchPlayers>
                               played: benchLineUp[widget.teamIndex]["bench"]
                                       [index]["stats"]["0"]["Minutes played"]
                                   .toString(),
-                              ratings: benchLineUp[widget.teamIndex]["bench"]
-                                          [index]["rating"]["num"] ==
-                                      null
-                                  ? "-"
-                                  : benchLineUp[widget.teamIndex]["bench"]
-                                          [index]["rating"]["num"]
-                                      .toString(),
                               goals: benchLineUp[widget.teamIndex]["bench"]
                                       [index]["stats"]["0"]["Goals"]
                                   .toString(),

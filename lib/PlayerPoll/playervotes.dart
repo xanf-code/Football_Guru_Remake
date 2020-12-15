@@ -173,7 +173,6 @@ class _PlayerVotesState extends State<PlayerVotes> {
                 PageView.builder(
                     controller: _pageController,
                     scrollDirection: Axis.horizontal,
-                    // physics: NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
                       DocumentSnapshot votes = snapshot.data.docs[index];

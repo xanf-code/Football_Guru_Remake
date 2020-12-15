@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:smart_text_view/smart_text_view.dart';
-import 'package:transfer_news/Forum/CommentsPage/replyToComments.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/RealTime/ReplyPage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -155,7 +154,6 @@ class _CommentRealTimeState extends State<CommentRealTime> {
           return SizedBox();
         } else {
           return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index) {
