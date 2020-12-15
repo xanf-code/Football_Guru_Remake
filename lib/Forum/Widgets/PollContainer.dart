@@ -371,11 +371,36 @@ class PollContainer extends ChangeNotifier {
                 ),
               ),
               const SizedBox(width: 5.0),
-              Text(
-                "${NumberFormat.compact().format(posts.data()["usersVoted"].length)} poll votes",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Row(
+                  children: [
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(
+                          child: child,
+                          scale: animation,
+                        );
+                      },
+                      child: Text(
+                        '${NumberFormat.compact().format(polls.data()["usersVoted"].length)} ',
+                        key: ValueKey<String>(
+                            '${NumberFormat.compact().format(polls.data()["usersVoted"].length)} '),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      'poll votes',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

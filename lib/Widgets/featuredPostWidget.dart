@@ -309,12 +309,35 @@ class _FeaturedPostWidgetState extends State<FeaturedPostWidget> {
                     ),
             ),
             Container(
-              child: Text(
-                "${NumberFormat.compact().format(likeCount)} votes",
-                style: GoogleFonts.rubik(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Row(
+                children: [
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 200),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        child: child,
+                        scale: animation,
+                      );
+                    },
+                    child: Text(
+                      '${NumberFormat.compact().format(likeCount)} ',
+                      key: ValueKey<String>(
+                          '${NumberFormat.compact().format(likeCount)} '),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    'Votes',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

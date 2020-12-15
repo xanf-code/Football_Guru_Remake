@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Reels(Beta)/CommentsPage.dart';
+import 'package:transfer_news/Reels(Beta)/Widgets/Logics.dart';
 import 'package:transfer_news/Reels(Beta)/Widgets/videoPlayerItems.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -45,7 +46,11 @@ class VideoPlayer extends StatelessWidget {
 class VideoPlayerItem extends StatefulWidget {
   final String videoUrl;
   final String id;
-  const VideoPlayerItem({Key key, this.videoUrl, this.id}) : super(key: key);
+  const VideoPlayerItem({
+    Key key,
+    this.videoUrl,
+    this.id,
+  }) : super(key: key);
   @override
   _VideoPlayerItemState createState() => _VideoPlayerItemState();
 }
@@ -80,11 +85,15 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
           ? AspectRatio(
               aspectRatio: controller.value.aspectRatio,
               child: GestureDetector(
-                onTap: () {
+                onDoubleTap: () {
                   HapticFeedback.mediumImpact();
-                  controller.value.isPlaying
-                      ? controller.pause()
-                      : controller.play();
+                  ReelsLogic().likes(widget.id);
+                },
+                onLongPressStart: (_) {
+                  controller.pause();
+                },
+                onLongPressEnd: (_) {
+                  controller.play();
                 },
                 onPanUpdate: (details) {
                   if (details.delta.dx < 0) {

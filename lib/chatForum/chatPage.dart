@@ -31,7 +31,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   TextEditingController chatTextEditingController = TextEditingController();
   var _formKey = GlobalKey<FormState>();
-  final _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
   String msgID = Uuid().v4();
   File selectedImage;
   File fileImage;
@@ -42,9 +42,8 @@ class _ChatPageState extends State<ChatPage> {
   final int _limitIncrement = 20;
 
   _scrollListener() {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       setState(() {
         _limit += _limitIncrement;
       });
@@ -93,6 +92,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("called");
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(

@@ -275,12 +275,35 @@ class Stats extends StatelessWidget {
               ),
               const SizedBox(width: 5.0),
               Expanded(
-                child: Text(
-                  '${NumberFormat.compact().format(posts.data()["likes"].length)} Votes',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: [
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(
+                          child: child,
+                          scale: animation,
+                        );
+                      },
+                      child: Text(
+                        '${NumberFormat.compact().format(posts.data()["likes"].length)} ',
+                        key: ValueKey<String>(
+                            '${NumberFormat.compact().format(posts.data()["likes"].length)} '),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      'Votes',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Text(

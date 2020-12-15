@@ -136,9 +136,10 @@ class _AllTransfersState extends State<AllTransfers> {
                         child: GestureDetector(
                           onTap: () {
                             HapticFeedback.mediumImpact();
-                            Navigator.push(
+                            pushNewScreen(
                               context,
-                              CupertinoPageRoute(
+                              withNavBar: false,
+                              customPageRoute: MorpheusPageRoute(
                                 builder: (context) => TransferDetails(
                                   name: transfers[index].name,
                                   playername: transfers[index].name,
@@ -150,6 +151,9 @@ class _AllTransfersState extends State<AllTransfers> {
                                   toTeam: transfers[index].toTeam,
                                   toTeamImage: transfers[index].toTeamImage,
                                   fee: transfers[index].fee,
+                                ),
+                                transitionDuration: Duration(
+                                  milliseconds: 200,
                                 ),
                               ),
                             );
