@@ -487,7 +487,46 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 30,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          AntDesign.team,
+                          color: Colors.green,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "About Us",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 15,
+                      thickness: 2,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        launch(
+                          "https://www.iftwc.com/about-us/",
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ProfileWidget(
+                          title: "About us",
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
                     ),
                     Center(
                       child: FlatButton(

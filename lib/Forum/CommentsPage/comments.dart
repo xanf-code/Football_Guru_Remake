@@ -7,6 +7,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:realtime_pagination/realtime_pagination.dart';
 import 'package:smart_text_view/smart_text_view.dart';
 import 'package:transfer_news/Forum/CommentsPage/replyToComments.dart';
 import 'package:transfer_news/Pages/home.dart';
@@ -153,188 +154,174 @@ class _CommentsForumPageState extends State<CommentsForumPage> {
   }
 
   displayComment() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
+    return RealtimePagination(
+      query: FirebaseFirestore.instance
           .collection("Forum")
           .doc(widget.path)
           .collection("Posts")
           .doc(widget.postID)
           .collection("comments")
-          .orderBy("timestamp", descending: true)
-          .limit(75)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SizedBox();
-        } else {
-          return ListView.builder(
-            //physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context, index) {
-              DocumentSnapshot comments = snapshot.data.docs[index];
-              bool isPostOwner =
-                  currentUserOnlineId == comments.data()["userId"];
-              return ListView(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8,
+          .orderBy("timestamp", descending: true),
+      itemsPerPage: 30,
+      itemBuilder: (index, context, docSnapshot) {
+        DocumentSnapshot comments = docSnapshot;
+        bool isPostOwner = currentUserOnlineId == comments.data()["userId"];
+        return ListView(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+                right: 8,
+              ),
+              child: ListTile(
+                title: Row(
+                  children: [
+                    Text(
+                      comments.data()["username"],
+                      style: GoogleFonts.openSans(
+                        color: Colors.white,
+                      ),
                     ),
-                    child: ListTile(
-                      title: Row(
-                        children: [
-                          Text(
-                            comments.data()["username"],
-                            style: GoogleFonts.openSans(
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            tAgo.format(
-                              comments.data()["timestamp"].toDate(),
-                            ),
-                            style: GoogleFonts.openSans(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      tAgo.format(
+                        comments.data()["timestamp"].toDate(),
                       ),
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  comments.data()["url"],
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
+                      style: GoogleFonts.openSans(
+                        color: Colors.grey[500],
                       ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: SmartText(
-                          text: comments.data()["comment"],
-                          onOpen: (url) {
-                            launch(url);
-                          },
-                          style: GoogleFonts.rubik(
-                            color: Colors.white,
-                            fontSize: 15,
+                    ),
+                  ],
+                ),
+                leading: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            comments.data()["url"],
                           ),
-                          linkStyle: TextStyle(
-                            color: Colors.blueAccent,
-                          ),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      trailing: isPostOwner
-                          ? IconButton(
-                              splashRadius: 1,
-                              splashColor: Colors.transparent,
-                              icon: Icon(
-                                Entypo.dots_three_vertical,
-                                color: Colors.grey,
-                                size: 14,
-                              ),
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                modalBottomSheetMenu(
-                                  comments.data()["commentID"],
-                                );
-                              },
-                            )
-                          : Text(""),
+                    ),
+                  ],
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: SmartText(
+                    text: comments.data()["comment"],
+                    onOpen: (url) {
+                      launch(url);
+                    },
+                    style: GoogleFonts.rubik(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                    linkStyle: TextStyle(
+                      color: Colors.blueAccent,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50.0),
-                        child: FlatButton.icon(
-                          onPressed: () {
-                            HapticFeedback.mediumImpact();
-                            pushNewScreen(
-                              context,
-                              withNavBar: false,
-                              customPageRoute: MorpheusPageRoute(
-                                builder: (context) => ReplyComments(
-                                  path: widget.path,
-                                  postid: widget.postID,
-                                  commentID: comments.data()["commentID"],
-                                ),
-                                transitionDuration: Duration(
-                                  milliseconds: 200,
-                                ),
-                              ),
-                            );
-                          },
-                          icon: Unicon(
-                            UniconData.uniCommentAlt,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                          label: Text(
-                            comments.data()["replyCount"].toString() == "null"
-                                ? ""
-                                : comments.data()["replyCount"].toString(),
-                            style: GoogleFonts.rubik(
-                              color: Colors.white,
-                            ),
-                          ),
+                ),
+                trailing: isPostOwner
+                    ? IconButton(
+                        splashRadius: 1,
+                        splashColor: Colors.transparent,
+                        icon: Icon(
+                          Entypo.dots_three_vertical,
+                          color: Colors.grey,
+                          size: 14,
                         ),
-                      ),
-                      FlatButton.icon(
                         onPressed: () {
                           HapticFeedback.mediumImpact();
-                          likeComment(
+                          modalBottomSheetMenu(
                             comments.data()["commentID"],
                           );
                         },
-                        icon: comments.data()["likes"].contains(currentUser.id)
-                            ? Icon(
-                                AntDesign.heart,
-                                color: Colors.red,
-                                size: 20,
-                              )
-                            : Icon(
-                                Feather.heart,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                        label: Text(
-                          comments.data()["likes"].length.toString() ==
-                                  0.toString()
-                              ? ""
-                              : comments.data()["likes"].length.toString(),
-                          style: GoogleFonts.rubik(
-                            color: Colors.white,
+                      )
+                    : Text(""),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 50.0),
+                  child: FlatButton.icon(
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      pushNewScreen(
+                        context,
+                        withNavBar: false,
+                        customPageRoute: MorpheusPageRoute(
+                          builder: (context) => ReplyComments(
+                            path: widget.path,
+                            postid: widget.postID,
+                            commentID: comments.data()["commentID"],
+                          ),
+                          transitionDuration: Duration(
+                            milliseconds: 200,
                           ),
                         ),
+                      );
+                    },
+                    icon: Unicon(
+                      UniconData.uniCommentAlt,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                    label: Text(
+                      comments.data()["replyCount"].toString() == "null"
+                          ? ""
+                          : comments.data()["replyCount"].toString(),
+                      style: GoogleFonts.rubik(
+                        color: Colors.white,
                       ),
-                    ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+                FlatButton.icon(
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    likeComment(
+                      comments.data()["commentID"],
+                    );
+                  },
+                  icon: comments.data()["likes"].contains(currentUser.id)
+                      ? Icon(
+                          AntDesign.heart,
+                          color: Colors.red,
+                          size: 20,
+                        )
+                      : Icon(
+                          Feather.heart,
+                          color: Colors.grey,
+                          size: 20,
+                        ),
+                  label: Text(
+                    comments.data()["likes"].length.toString() == 0.toString()
+                        ? ""
+                        : comments.data()["likes"].length.toString(),
+                    style: GoogleFonts.rubik(
+                      color: Colors.white,
+                    ),
                   ),
-                ],
-              );
-            },
-          );
-        }
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        );
       },
     );
   }

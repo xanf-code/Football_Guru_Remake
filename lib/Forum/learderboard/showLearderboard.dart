@@ -18,6 +18,7 @@ class _LearderBoardState extends State<LearderBoard>
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
       body: ListView(

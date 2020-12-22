@@ -197,7 +197,7 @@ class _NationalTeamState extends State<NationalTeam>
               iconType: Ionicons.md_arrow_down,
             ),
             RankingCards(
-              type: "Previous FIFA Ranking :",
+              type: "Previous FIFA Points :",
               rank: worldRankings[index]["previousPoints"].toString(),
               iconType: Ionicons.md_arrow_down,
             ),

@@ -121,20 +121,43 @@ class VideoPlayerItems extends ChangeNotifier {
                       size: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
-                  Text(
-                    "${NumberFormat.compact().format(likes.length)} Votes",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      AnimatedSwitcher(
+                        duration: Duration(milliseconds: 200),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return ScaleTransition(
+                            child: child,
+                            scale: animation,
+                          );
+                        },
+                        child: Text(
+                          '${NumberFormat.compact().format(likes.length)} ',
+                          key: ValueKey<String>(
+                              '${NumberFormat.compact().format(likes.length)} '),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        'Votes',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 12,
             ),
             GestureDetector(

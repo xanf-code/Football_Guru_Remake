@@ -40,6 +40,7 @@ class _ISLPredictionState extends State<ISLPrediction>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: appBG,
       floatingActionButton: Padding(

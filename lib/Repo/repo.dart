@@ -6,24 +6,20 @@ class Repository extends ChangeNotifier {
 
   final FirebaseFirestore _firestore;
 
-  Stream getForum(forumName, limit) {
+  getForum(forumName) {
     return _firestore
         .collection("Forum")
         .doc(forumName)
         .collection("Posts")
-        .orderBy("timestamp", descending: true)
-        .limit(limit)
-        .snapshots();
+        .orderBy("timestamp", descending: true);
   }
 
-  Stream getPoll(forumName, limit) {
+  getPoll(forumName) {
     return _firestore
         .collection("Forum")
         .doc(forumName)
         .collection("Polls")
-        .orderBy("timestamp", descending: true)
-        .limit(limit)
-        .snapshots();
+        .orderBy("timestamp", descending: true);
   }
 
   Stream getMessages(ref, limit) {

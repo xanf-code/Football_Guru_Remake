@@ -15,9 +15,6 @@ class ShimmerList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           offset += 5;
           time = 800 + offset;
-
-          print(time);
-
           return Shimmer.fromColors(
             highlightColor: Color(0xFF7232f2),
             baseColor: Colors.black,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:realtime_pagination/realtime_pagination.dart';
 import 'package:smart_text_view/smart_text_view.dart';
 import 'package:timeago/timeago.dart' as tAgo;
 import 'package:transfer_news/Pages/home.dart';
@@ -108,156 +109,142 @@ class _ReelsCommentsPageState extends State<ReelsCommentsPage> {
   }
 
   DisplayComments(String id) {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection("reels")
-          .doc(id)
-          .collection("comments")
-          .orderBy("timestamp", descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const SizedBox();
-        } else {
-          return ListView.builder(
-            //physics: NeverScrollableScrollPhysics(),
+    return RealtimePagination(
+        query: FirebaseFirestore.instance
+            .collection("reels")
+            .doc(id)
+            .collection("comments")
+            .orderBy("timestamp", descending: true),
+        itemsPerPage: 10,
+        itemBuilder: (index, context, snapshot) {
+          DocumentSnapshot comments = snapshot;
+          bool isPostOwner = currentUserOnlineId == comments.data()["userId"];
+          return ListView(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context, index) {
-              DocumentSnapshot comments = snapshot.data.docs[index];
-              bool isPostOwner =
-                  currentUserOnlineId == comments.data()["userId"];
-              return ListView(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8,
-                    ),
-                    child: ListTile(
-                      title: Row(
-                        children: [
-                          Text(
-                            comments.data()["username"],
-                            style: GoogleFonts.openSans(
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            tAgo.format(
-                              comments.data()["timestamp"].toDate(),
-                            ),
-                            style: GoogleFonts.openSans(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ],
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8,
+                ),
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        comments.data()["username"],
+                        style: GoogleFonts.openSans(
+                          color: Colors.white,
+                        ),
                       ),
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  comments.data()["url"],
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
+                      SizedBox(
+                        width: 10,
                       ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: SmartText(
-                          text: comments.data()["comment"],
-                          onOpen: (link) {
-                            launch(link);
-                          },
-                          style: GoogleFonts.rubik(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                          linkStyle: TextStyle(
-                            color: Colors.blueAccent,
+                      Text(
+                        tAgo.format(
+                          comments.data()["timestamp"].toDate(),
+                        ),
+                        style: GoogleFonts.openSans(
+                          color: Colors.grey[500],
+                        ),
+                      ),
+                    ],
+                  ),
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              comments.data()["url"],
+                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      trailing: isPostOwner
-                          ? IconButton(
-                              splashRadius: 1,
-                              splashColor: Colors.transparent,
-                              icon: Icon(
-                                Entypo.dots_three_vertical,
-                                color: Colors.grey,
-                                size: 14,
-                              ),
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                modalBottomSheetMenu(
-                                  comments.data()["ref"],
-                                );
-                              },
-                            )
-                          : Text(""),
+                    ],
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: SmartText(
+                      text: comments.data()["comment"],
+                      onOpen: (link) {
+                        launch(link);
+                      },
+                      style: GoogleFonts.rubik(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                      linkStyle: TextStyle(
+                        color: Colors.blueAccent,
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 50.0),
-                    child: Row(
-                      children: [
-                        FlatButton.icon(
+                  trailing: isPostOwner
+                      ? IconButton(
+                          splashRadius: 1,
+                          splashColor: Colors.transparent,
+                          icon: Icon(
+                            Entypo.dots_three_vertical,
+                            color: Colors.grey,
+                            size: 14,
+                          ),
                           onPressed: () {
                             HapticFeedback.mediumImpact();
-                            likeComment(
-                              comments.data()["commentID"],
+                            modalBottomSheetMenu(
                               comments.data()["ref"],
                             );
                           },
-                          icon:
-                              comments.data()["likes"].contains(currentUser.id)
-                                  ? Icon(
-                                      AntDesign.heart,
-                                      color: Colors.red,
-                                      size: 20,
-                                    )
-                                  : Icon(
-                                      Feather.heart,
-                                      color: Colors.grey,
-                                      size: 20,
-                                    ),
-                          label: Text(
-                            comments.data()["likes"].length.toString() ==
-                                    0.toString()
-                                ? ""
-                                : comments.data()["likes"].length.toString(),
-                            style: GoogleFonts.rubik(
-                              color: Colors.white,
+                        )
+                      : Text(""),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50.0),
+                child: Row(
+                  children: [
+                    FlatButton.icon(
+                      onPressed: () {
+                        HapticFeedback.mediumImpact();
+                        likeComment(
+                          comments.data()["commentID"],
+                          comments.data()["ref"],
+                        );
+                      },
+                      icon: comments.data()["likes"].contains(currentUser.id)
+                          ? Icon(
+                              AntDesign.heart,
+                              color: Colors.red,
+                              size: 20,
+                            )
+                          : Icon(
+                              Feather.heart,
+                              color: Colors.grey,
+                              size: 20,
                             ),
-                          ),
+                      label: Text(
+                        comments.data()["likes"].length.toString() ==
+                                0.toString()
+                            ? ""
+                            : comments.data()["likes"].length.toString(),
+                        style: GoogleFonts.rubik(
+                          color: Colors.white,
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-              );
-            },
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
           );
-        }
-      },
-    );
+        });
   }
 
   String postID2 = Uuid().v1();

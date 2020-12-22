@@ -14,7 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
 import 'package:transfer_news/Forum/Widgets/cardWidget.dart';
 import 'package:transfer_news/Forum/main.dart';
 import 'package:transfer_news/Model/usermodel.dart';
