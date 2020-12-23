@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:realtime_pagination/realtime_pagination.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Widgets/allChatWidgets.dart';
@@ -92,7 +93,6 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("called");
     return Scaffold(
       backgroundColor: Color(0xFF0e0e10),
       appBar: AppBar(

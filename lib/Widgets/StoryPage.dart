@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_unicons/unicons.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:story_view/controller/story_controller.dart';
 import 'package:story_view/widgets/story_view.dart';
 
