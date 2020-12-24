@@ -93,18 +93,26 @@ class _ILeagueCallBackPageState extends State<ILeagueCallBackPage> {
                         date: allFixtures[index]["status"]["startDateStr"],
                         month: "",
                         day: "",
-                        eventVenue: allFixtures[index]["status"]["reason"]
-                            ["long"],
+                        eventVenue: allFixtures[index]["status"]["reason"] ==
+                                null
+                            ? ""
+                            : allFixtures[index]["status"]["reason"]["long"],
                         team1Logo:
                             "https://www.fotmob.com/images/team/${allFixtures[index]["home"]["id"]}_small",
                         team1Name: allFixtures[index]["home"]["name"],
-                        team1Score:
-                            allFixtures[index]["home"]["score"].toString(),
+                        team1Score: allFixtures[index]["home"]["score"]
+                                    .toString() ==
+                                "null"
+                            ? "-"
+                            : allFixtures[index]["home"]["score"].toString(),
                         team2Logo:
                             "https://www.fotmob.com/images/team/${allFixtures[index]["away"]["id"]}_small",
                         team2Name: allFixtures[index]["away"]["name"],
-                        team2Score:
-                            allFixtures[index]["away"]["score"].toString(),
+                        team2Score: allFixtures[index]["away"]["score"]
+                                    .toString() ==
+                                "null"
+                            ? "-"
+                            : allFixtures[index]["away"]["score"].toString(),
                       );
                     },
                   ),

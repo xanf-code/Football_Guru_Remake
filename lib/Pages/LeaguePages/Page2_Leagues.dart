@@ -200,11 +200,17 @@ class _LeaguePageState extends State<LeaguePage>
                   team1Logo:
                       "https://www.fotmob.com/images/team/${ileagueFixtures[0]["home"]["id"]}_small",
                   team1Name: ileagueFixtures[0]["home"]["name"],
-                  team1Score: ileagueFixtures[0]["home"]["score"].toString(),
+                  team1Score:
+                      ileagueFixtures[0]["home"]["score"].toString() == "null"
+                          ? "-"
+                          : ileagueFixtures[0]["home"]["score"].toString(),
                   team2Logo:
                       "https://www.fotmob.com/images/team/${ileagueFixtures[0]["away"]["id"]}_small",
                   team2Name: ileagueFixtures[0]["away"]["name"],
-                  team2Score: ileagueFixtures[0]["away"]["score"].toString(),
+                  team2Score:
+                      ileagueFixtures[0]["away"]["score"].toString() == "null"
+                          ? "-"
+                          : ileagueFixtures[0]["away"]["score"].toString(),
                 ),
         ),
         GestureDetector(

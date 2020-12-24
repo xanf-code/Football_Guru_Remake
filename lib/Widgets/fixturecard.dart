@@ -53,7 +53,7 @@ class _FixtureCardState extends State<FixtureCard> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 5),
                       child: Text(
-                        "${widget.date} ${widget.month}, ${widget.day}",
+                        "${widget.date} ${widget.month} ${widget.day}",
                         style: GoogleFonts.rubik(
                           color: Colors.white,
                         ),

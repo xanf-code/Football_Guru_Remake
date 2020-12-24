@@ -97,7 +97,7 @@ dependencies:
   tab_indicator_styler: ^1.0.0
   flutter_speed_dial: ^1.2.5
 
- #Cache Management
+  #Cache Management
   flutter_cache_manager: ^2.0.0
   cached_network_image: ^2.3.3
   transparent_image: ^1.0.0

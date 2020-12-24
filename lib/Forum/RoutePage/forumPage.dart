@@ -63,48 +63,6 @@ class _ForumDetailsState extends State<ForumDetails>
           },
         ),
       ),
-      // body: StreamBuilder(
-      //   stream: Provider.of<Repository>(
-      //     context,
-      //   ).getForum(widget.forumName, _limit),
-      //   builder: (context, AsyncSnapshot snapshot) {
-      //     if (!snapshot.hasData) {
-      //       return Center(
-      //         child: const CircularProgressIndicator(),
-      //       );
-      //     } else {
-      //       return Scrollbar(
-      //         controller: ScrollController(),
-      //         thickness: 3,
-      //         radius: Radius.circular(10),
-      //         child: AnimationLimiter(
-      //           child: ListView.builder(
-      //             cacheExtent: 500.0,
-      //             controller: _scrollController,
-      //             itemCount: snapshot.data.docs.length,
-      //             itemBuilder: (context, index) {
-      //               final DocumentSnapshot posts = snapshot.data.docs[index];
-      //               return AnimationConfiguration.staggeredGrid(
-      //                 position: index,
-      //                 duration: const Duration(milliseconds: 500),
-      //                 columnCount: snapshot.data.docs.length,
-      //                 child: SlideAnimation(
-      //                   verticalOffset: 50,
-      //                   child: FadeInAnimation(
-      //                     child: PostContainer(
-      //                       post: posts,
-      //                       route: widget.forumName,
-      //                     ),
-      //                   ),
-      //                 ),
-      //               );
-      //             },
-      //           ),
-      //         ),
-      //       );
-      //     }
-      //   },
-      // ),
       body: Scrollbar(
         controller: ScrollController(),
         thickness: 3,

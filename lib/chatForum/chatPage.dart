@@ -111,6 +111,62 @@ class _ChatPageState extends State<ChatPage> {
             Text(widget.title),
           ],
         ),
+        actions: [
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("ChatsCollection")
+                .doc(widget.reference)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return SizedBox();
+              }
+              return snapshot.data["lockChat"] == false
+                  ? Visibility(
+                      visible: snapshot.data["groupCreatorID"] == currentUser.id
+                          ? true
+                          : false,
+                      child: IconButton(
+                        icon: Icon(
+                          Feather.unlock,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          HapticFeedback.heavyImpact();
+                          FirebaseFirestore.instance
+                              .collection("ChatsCollection")
+                              .doc(widget.reference)
+                              .update({
+                            "lockChat": true,
+                          });
+                        },
+                      ),
+                    )
+                  : Visibility(
+                      visible: snapshot.data["groupCreatorID"] == currentUser.id
+                          ? true
+                          : false,
+                      child: IconButton(
+                        icon: Icon(
+                          Feather.lock,
+                          size: 20,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          HapticFeedback.heavyImpact();
+                          FirebaseFirestore.instance
+                              .collection("ChatsCollection")
+                              .doc(widget.reference)
+                              .update({
+                            "lockChat": false,
+                          });
+                        },
+                      ),
+                    );
+            },
+          ),
+        ],
       ),
       body: selectedImage == null
           ? Form(
@@ -125,102 +181,144 @@ class _ChatPageState extends State<ChatPage> {
                   Expanded(
                     child: displayChats(),
                   ),
-                  ListTile(
-                    title: TextFormField(
-                      textCapitalization: TextCapitalization.sentences,
-                      keyboardType: TextInputType.multiline,
-                      style: GoogleFonts.rubik(
-                        color: Colors.white,
-                      ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return "This field cannot be empty!";
-                        } else {
-                          return null;
-                        }
-                      },
-                      controller: chatTextEditingController,
-                      decoration: InputDecoration(
-                        hintText: "Type a message",
-                        hintStyle: GoogleFonts.rubik(color: Colors.white),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(50),
-                            ),
-                            borderSide: BorderSide.none),
-                        // focusedBorder: InputBorder.none,
-                        // enabledBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 5,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[900],
-                      ),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (_formKey.currentState.validate()) {
-                            saveChat(url: "");
-                          }
-                        });
-                        //FocusScope.of(context).unfocus();
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          _controller.animateTo(
-                            _controller.position.maxScrollExtent,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeOut,
-                          );
-                        });
-                      },
-                      child: Container(
-                        height: 45,
-                        width: 45,
-                        decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: new LinearGradient(
-                            colors: [
-                              const Color(0xFF3366FF),
-                              const Color(0xFF00CCFF),
-                            ],
-                          ),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            FontAwesome.send_o,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    leading: GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        captureImageWithGallery();
-                      },
-                      child: Container(
-                        height: 45,
-                        width: 45,
-                        decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: new LinearGradient(
-                            colors: [
-                              const Color(0xFF3366FF),
-                              const Color(0xFF00BCFF),
-                            ],
-                          ),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Feather.image,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                    ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("ChatsCollection")
+                        .doc(widget.reference)
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return SizedBox();
+                      }
+                      return snapshot.data["lockChat"] == false
+                          ? ListTile(
+                              title: TextFormField(
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                style: GoogleFonts.rubik(
+                                  color: Colors.white,
+                                ),
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return "This field cannot be empty!";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: chatTextEditingController,
+                                decoration: InputDecoration(
+                                  hintText: "Type a message",
+                                  hintStyle:
+                                      GoogleFonts.rubik(color: Colors.white),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
+                                      ),
+                                      borderSide: BorderSide.none),
+                                  // focusedBorder: InputBorder.none,
+                                  // enabledBorder: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 5,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[900],
+                                ),
+                              ),
+                              trailing: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (_formKey.currentState.validate()) {
+                                      saveChat(url: "");
+                                    }
+                                  });
+                                  //FocusScope.of(context).unfocus();
+                                  SchedulerBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    _controller.animateTo(
+                                      _controller.position.maxScrollExtent,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                  });
+                                },
+                                child: Container(
+                                  height: 45,
+                                  width: 45,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: new LinearGradient(
+                                      colors: [
+                                        const Color(0xFF3366FF),
+                                        const Color(0xFF00CCFF),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      FontAwesome.send_o,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              leading: GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.mediumImpact();
+                                  captureImageWithGallery();
+                                },
+                                child: Container(
+                                  height: 45,
+                                  width: 45,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: new LinearGradient(
+                                      colors: [
+                                        const Color(0xFF3366FF),
+                                        const Color(0xFF00BCFF),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Feather.image,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                              ),
+                              child: SizedBox(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.lock,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                    SizedBox(
+                                      width: 6,
+                                    ),
+                                    Text(
+                                      "No one can send message here",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                    },
                   ),
                 ],
               ),

@@ -226,6 +226,7 @@ class _CardPageWidgetState extends State<CardPageWidget> {
       "groupID": chatGroupID,
       "users": [],
       "totalMembers": 0,
+      "lockChat": false,
     }).whenComplete(() {
       setState(() {
         groupLogoController.clear();
