@@ -319,7 +319,7 @@ class _AddPredictionsState extends State<AddPredictions> {
 
   saveToDatabase() async {
     FirebaseFirestore.instance
-        .collection("Prediction")
+        .collection("ISLPrediction")
         .doc(widget.id)
         .collection("allPredictions")
         .doc(ID)
@@ -336,7 +336,10 @@ class _AddPredictionsState extends State<AddPredictions> {
       "query": "${score1 == null ? 0 : score1}-${score2 == null ? 0 : score2}",
       "pointsAssigned": false,
     }).then((result) {
-      FirebaseFirestore.instance.collection("Prediction").doc(widget.id).update(
+      FirebaseFirestore.instance
+          .collection("ISLPrediction")
+          .doc(widget.id)
+          .update(
         {
           'usersVoted': FieldValue.arrayUnion(
             [currentUser.id],

@@ -34,7 +34,7 @@ class _ISLPredictionState extends State<ISLPrediction>
   @override
   void initState() {
     predStream =
-        FirebaseFirestore.instance.collection("Prediction").snapshots();
+        FirebaseFirestore.instance.collection("ISLPrediction").snapshots();
     super.initState();
   }
 
@@ -492,7 +492,7 @@ class _ISLPredictionState extends State<ISLPrediction>
 
   removeEvent(String ID) {
     FirebaseFirestore.instance
-        .collection('Prediction')
+        .collection('ISLPrediction')
         .doc(ID)
         .collection("allPredictions")
         .get()
@@ -504,7 +504,7 @@ class _ISLPredictionState extends State<ISLPrediction>
       }
     }).whenComplete(() {
       FirebaseFirestore.instance
-          .collection('Prediction')
+          .collection('ISLPrediction')
           .doc(ID)
           .get()
           .then((document) {
@@ -516,14 +516,16 @@ class _ISLPredictionState extends State<ISLPrediction>
   }
 
   manageLocking(String id) async {
-    DocumentSnapshot docs =
-        await FirebaseFirestore.instance.collection("Prediction").doc(id).get();
+    DocumentSnapshot docs = await FirebaseFirestore.instance
+        .collection("ISLPrediction")
+        .doc(id)
+        .get();
     if (docs.data()["status"] == true) {
-      FirebaseFirestore.instance.collection("Prediction").doc(id).update({
+      FirebaseFirestore.instance.collection("ISLPrediction").doc(id).update({
         'status': false,
       });
     } else {
-      FirebaseFirestore.instance.collection("Prediction").doc(id).update({
+      FirebaseFirestore.instance.collection("ISLPrediction").doc(id).update({
         'status': true,
       });
     }

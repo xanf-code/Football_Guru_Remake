@@ -37,7 +37,7 @@ class _LeaderPointsState extends State<LeaderPoints> {
         backgroundColor: Color(0xFF0e0e10),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection("Prediction")
+              .collection("ISLPrediction")
               .doc(widget.docID)
               .collection("allPredictions")
               .where("query", isEqualTo: "${score1}-${score2}")
@@ -226,7 +226,7 @@ class _LeaderPointsState extends State<LeaderPoints> {
       },
     ).whenComplete(() {
       FirebaseFirestore.instance
-          .collection("Prediction")
+          .collection("ISLPrediction")
           .doc(predID)
           .collection("allPredictions")
           .doc(postID)

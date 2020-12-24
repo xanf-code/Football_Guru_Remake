@@ -38,7 +38,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
   Stream contentStream;
   void initState() {
     contentStream = FirebaseFirestore.instance
-        .collection("Prediction")
+        .collection("ISLPrediction")
         .doc(widget.ID)
         .collection("allPredictions")
         .orderBy(
@@ -142,7 +142,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
 
   checkAndEnter() async {
     DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("Prediction")
+        .collection("ISLPrediction")
         .doc(widget.ID)
         .get();
     if (docs.data()['usersVoted'].contains(currentUser.id)) {
@@ -332,15 +332,6 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  // Expanded(
-                                  //   child: Text(
-                                  //     "${predictions.data()["name"]} has predicted ${widget.team1Name} ${predictions.data()["team1Score"]} - ${predictions.data()["team2Score"]} ${widget.team2Name}",
-                                  //     style: GoogleFonts.openSans(
-                                  //       color: Colors.white,
-                                  //       fontWeight: FontWeight.bold,
-                                  //     ),
-                                  //   ),
-                                  // ),
                                   Expanded(
                                     child: RichText(
                                       text: TextSpan(
@@ -365,60 +356,6 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
                                       ),
                                     ),
                                   ),
-                                  // Row(
-                                  //   children: [
-                                  //     Text(
-                                  //       "${predictions.data()["name"]} has predicted",
-                                  //       style: GoogleFonts.openSans(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     CachedNetworkImage(
-                                  //       height: 20,
-                                  //       imageUrl: predictions.data()["team1Logo"],
-                                  //     ),
-                                  //     Text(
-                                  //       " ${widget.team1Name} ",
-                                  //       style: GoogleFonts.openSans(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     Text(
-                                  //       " ${predictions.data()["team1Score"]} ",
-                                  //       style: GoogleFonts.openSans(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     Text(
-                                  //       "-",
-                                  //       style: GoogleFonts.openSans(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     Text(
-                                  //       " ${predictions.data()["team2Score"]} ",
-                                  //       style: GoogleFonts.openSans(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     Text(
-                                  //       " ${widget.team2Name} ",
-                                  //       style: GoogleFonts.openSans(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     CachedNetworkImage(
-                                  //       height: 20,
-                                  //       imageUrl: predictions.data()["team2Logo"],
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ],
                               ),
                             ),

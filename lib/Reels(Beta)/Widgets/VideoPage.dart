@@ -95,22 +95,6 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                 onLongPressEnd: (_) {
                   controller.play();
                 },
-                onPanUpdate: (details) {
-                  if (details.delta.dx < 0) {
-                    pushNewScreen(
-                      context,
-                      withNavBar: false,
-                      customPageRoute: MorpheusPageRoute(
-                        builder: (context) => ReelsCommentsPage(
-                          postId: widget.id,
-                        ),
-                        transitionDuration: Duration(
-                          milliseconds: 200,
-                        ),
-                      ),
-                    );
-                  }
-                },
                 child: VisibilityDetector(
                   key: Key("unique key"),
                   onVisibilityChanged: (VisibilityInfo info) {

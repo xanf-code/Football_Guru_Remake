@@ -91,7 +91,7 @@ class _ILeagueCallBackPageState extends State<ILeagueCallBackPage> {
                     itemBuilder: (context, index) {
                       return FixtureCard(
                         date: allFixtures[index]["status"]["startDateStr"],
-                        month: "",
+                        month: ", 2021",
                         day: "",
                         eventVenue: allFixtures[index]["status"]["reason"] ==
                                 null

@@ -254,7 +254,7 @@ class _AddEventState extends State<AddEvent> {
   }
 
   saveToDatabase() {
-    FirebaseFirestore.instance.collection("Prediction").doc(ID).set({
+    FirebaseFirestore.instance.collection("ISLPrediction").doc(ID).set({
       "Id": ID,
       "ownerID": currentUser.id,
       "timestamp": DateTime.now(),
