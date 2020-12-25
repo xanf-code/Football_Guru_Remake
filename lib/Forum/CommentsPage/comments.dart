@@ -162,6 +162,29 @@ class _CommentsForumPageState extends State<CommentsForumPage> {
           .doc(widget.postID)
           .collection("comments")
           .orderBy("timestamp", descending: true),
+      emptyDisplay: Center(
+        child: Text(
+          "Say something :(",
+          style: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+          ),
+        ),
+      ),
+      initialLoading: Center(
+        child: Container(
+          height: 80,
+          width: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey.shade900,
+          ),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
       itemsPerPage: 30,
       itemBuilder: (index, context, docSnapshot) {
         DocumentSnapshot comments = docSnapshot;

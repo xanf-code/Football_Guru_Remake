@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:parallax_image/parallax_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Utils/constants.dart';
@@ -179,19 +180,21 @@ class _PlayerVotesState extends State<PlayerVotes> {
                       return Stack(
                         children: [
                           Container(
-                            height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.15),
-                                    BlendMode.dstATop),
+                            height: MediaQuery.of(context).size.height,
+                            child: Opacity(
+                              opacity: 0.25,
+                              child: ParallaxImage(
+                                extent: 100,
                                 image: CachedNetworkImageProvider(
                                   votes.data()["backgroundImage"],
                                 ),
                               ),
                             ),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
                             child: Column(
                               //shrinkWrap: true,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -249,12 +252,11 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                           Container(
                                             height: 200,
                                             width: 200,
-                                            decoration: BoxDecoration(
-                                              //color: Colors.white,
+                                            child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
+                                              child: ParallaxImage(
+                                                extent: 100,
                                                 image:
                                                     CachedNetworkImageProvider(
                                                   votes.data()["option1Image"],
@@ -304,12 +306,11 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                           Container(
                                             height: 200,
                                             width: 200,
-                                            decoration: BoxDecoration(
-                                              //color: Colors.white,
+                                            child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
+                                              child: ParallaxImage(
+                                                extent: 100,
                                                 image:
                                                     CachedNetworkImageProvider(
                                                   votes.data()["option2Image"],

@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:transfer_news/Animations/shimmer.dart';
 import 'package:http/http.dart' as http;
 import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/LiveScore/live.dart';
+import 'package:transfer_news/Repo/Widgets.dart';
+import 'package:transfer_news/Widgets/NTBlocWidget.dart';
 import 'package:transfer_news/Widgets/NewsCardWidget.dart';
 import 'package:transfer_news/Widgets/storiesWidget.dart';
 
@@ -23,6 +26,7 @@ class _ISLNewsState extends State<ISLNews>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   List ISLnewsData;
+  List NatnewsData = [];
 
   Future<String> getISLNews() async {
     var response = await http.get(
@@ -38,8 +42,23 @@ class _ISLNewsState extends State<ISLNews>
     }
   }
 
+  Future<String> getNatNews() async {
+    var response = await http.get(
+      "https://iftwc.com/wp-json/wp/v2/posts?categories=133",
+    );
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      setState(() {
+        NatnewsData = jsonResponse;
+      });
+    } else {
+      print(response.statusCode);
+    }
+  }
+
   @override
   void initState() {
+    getNatNews();
     getISLNews();
     super.initState();
   }
@@ -54,15 +73,37 @@ class _ISLNewsState extends State<ISLNews>
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               children: [
-                const Stories(),
                 DelayedDisplay(
+                  slidingBeginOffset: const Offset(0, -1),
+                  fadingDuration: const Duration(milliseconds: 800),
+                  slidingCurve: Curves.decelerate,
+                  delay: const Duration(milliseconds: 200),
+                  child: const Stories(),
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                DelayedDisplay(
+                  slidingBeginOffset: Offset(1, 0),
                   fadingDuration: const Duration(milliseconds: 800),
                   slidingCurve: Curves.decelerate,
                   delay: const Duration(milliseconds: 200),
                   child: const LiveScoreWidget(
-                    leagueId: 9478,
+                    leagueId: 9478, //165,
+                    //9478
                   ),
                 ),
+                Provider.of<HomeWidgets>(context).topStories(),
+                DelayedDisplay(
+                  slidingBeginOffset: Offset(-1, 0),
+                  fadingDuration: const Duration(milliseconds: 800),
+                  slidingCurve: Curves.decelerate,
+                  delay: const Duration(milliseconds: 300),
+                  child: NationalTeamBloc(
+                    natNews: NatnewsData,
+                  ),
+                ),
+                Provider.of<HomeWidgets>(context).topISL(),
                 DelayedDisplay(
                   fadingDuration: const Duration(milliseconds: 800),
                   slidingCurve: Curves.decelerate,
@@ -77,3 +118,22 @@ class _ISLNewsState extends State<ISLNews>
   @override
   bool get wantKeepAlive => true;
 }
+// Container(
+//                   height: MediaQuery.of(context).size.width / 1.3,
+//                   child: ListView.builder(
+//                     scrollDirection: Axis.horizontal,
+//                     itemCount: 10,
+//                     itemBuilder: (context, index) {
+//                       return Padding(
+//                         padding: const EdgeInsets.all(8.0),
+//                         child: Container(
+//                           width: MediaQuery.of(context).size.width / 1.8,
+//                           decoration: BoxDecoration(
+//                             color: Colors.white,
+//                           ),
+//                           child: Text(postMdl.post.title),
+//                         ),
+//                       );
+//                     },
+//                   ),
+//                 ),

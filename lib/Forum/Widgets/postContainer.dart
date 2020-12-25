@@ -7,6 +7,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:parallax_image/parallax_image.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
 import 'package:transfer_news/Forum/CommentsPage/comments.dart';
@@ -81,13 +82,19 @@ class PostContainer extends StatelessWidget {
                     child: Container(
                       child: AspectRatio(
                         aspectRatio: 16 / 9,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: post.data()["url"],
-                          placeholder: (context, url) => Center(
-                            child: const CircularProgressIndicator(),
+                        child: ParallaxImage(
+                          extent: 150,
+                          image: CachedNetworkImageProvider(
+                            post.data()["url"],
                           ),
                         ),
+                        // child: CachedNetworkImage(
+                        //   fit: BoxFit.cover,
+                        //   imageUrl: post.data()["url"],
+                        //   placeholder: (context, url) => Center(
+                        //     child: const CircularProgressIndicator(),
+                        //   ),
+                        // ),
                       ),
                     ),
                   ),

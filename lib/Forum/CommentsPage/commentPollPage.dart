@@ -2,14 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:morpheus/page_routes/morpheus_page_route.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:realtime_pagination/realtime_pagination.dart';
 import 'package:smart_text_view/smart_text_view.dart';
-import 'package:transfer_news/Forum/CommentsPage/replyToComments.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -154,6 +150,29 @@ class _CommentPollPageState extends State<CommentPollPage> {
           .collection("comments")
           .orderBy("timestamp", descending: true),
       itemsPerPage: 30,
+      initialLoading: Center(
+        child: Container(
+          height: 80,
+          width: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey.shade900,
+          ),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
+      emptyDisplay: Center(
+        child: Text(
+          "Say something :(",
+          style: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+          ),
+        ),
+      ),
       itemBuilder: (index, context, docSnapshot) {
         DocumentSnapshot comments = docSnapshot;
         bool isPostOwner = currentUserOnlineId == comments.data()["userId"];
