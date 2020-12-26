@@ -118,22 +118,3 @@ class _ISLNewsState extends State<ISLNews>
   @override
   bool get wantKeepAlive => true;
 }
-// Container(
-//                   height: MediaQuery.of(context).size.width / 1.3,
-//                   child: ListView.builder(
-//                     scrollDirection: Axis.horizontal,
-//                     itemCount: 10,
-//                     itemBuilder: (context, index) {
-//                       return Padding(
-//                         padding: const EdgeInsets.all(8.0),
-//                         child: Container(
-//                           width: MediaQuery.of(context).size.width / 1.8,
-//                           decoration: BoxDecoration(
-//                             color: Colors.white,
-//                           ),
-//                           child: Text(postMdl.post.title),
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ),

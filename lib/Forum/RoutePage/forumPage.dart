@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -72,6 +73,7 @@ class _ForumDetailsState extends State<ForumDetails>
               context,
             ).getForum(widget.forumName),
             itemsPerPage: 10,
+            bottomLoader: CupertinoActivityIndicator(),
             itemBuilder: (index, context, docSnapshot) {
               final DocumentSnapshot posts = docSnapshot;
               return PostContainer(

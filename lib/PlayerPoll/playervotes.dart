@@ -26,10 +26,9 @@ class _PlayerVotesState extends State<PlayerVotes> {
   String postId = Uuid().v4();
 
   uploadToFirestore() async {
-    var currentId = currentUser.id;
     votesReference.doc(postId).set({
       "username": currentUser.username,
-      "uid": currentId,
+      "uid": currentUser.id,
       "postID": postId,
       "profilePic": currentUser.url,
       "likes1Option": [],
@@ -73,6 +72,7 @@ class _PlayerVotesState extends State<PlayerVotes> {
       backgroundColor: Color(0xFF0e0e10),
       floatingActionButton: currentUser.isAdmin == true
           ? FloatingActionButton(
+              heroTag: null,
               child: Icon(
                 Icons.add,
                 color: Colors.white,
@@ -280,12 +280,26 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                               );
                                             },
                                           ),
-                                          Text(
-                                            "${NumberFormat.compact().format(votes.data()["likes1Option"].length)}",
-                                            style: GoogleFonts.rubik(
-                                              color: Colors.white,
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
+                                          AnimatedSwitcher(
+                                            duration:
+                                                Duration(milliseconds: 200),
+                                            transitionBuilder: (Widget child,
+                                                Animation<double> animation) {
+                                              return ScaleTransition(
+                                                child: child,
+                                                scale: animation,
+                                              );
+                                            },
+                                            child: Text(
+                                              "${NumberFormat.compact().format(votes.data()["likes1Option"].length)}",
+                                              key: ValueKey<String>(
+                                                "${NumberFormat.compact().format(votes.data()["likes1Option"].length)}",
+                                              ),
+                                              style: GoogleFonts.rubik(
+                                                color: Colors.white,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -334,12 +348,26 @@ class _PlayerVotesState extends State<PlayerVotes> {
                                               );
                                             },
                                           ),
-                                          Text(
-                                            "${NumberFormat.compact().format(votes.data()["likes2Option"].length)}",
-                                            style: GoogleFonts.rubik(
-                                              color: Colors.white,
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
+                                          AnimatedSwitcher(
+                                            duration:
+                                                Duration(milliseconds: 200),
+                                            transitionBuilder: (Widget child,
+                                                Animation<double> animation) {
+                                              return ScaleTransition(
+                                                child: child,
+                                                scale: animation,
+                                              );
+                                            },
+                                            child: Text(
+                                              "${NumberFormat.compact().format(votes.data()["likes2Option"].length)}",
+                                              key: ValueKey<String>(
+                                                "${NumberFormat.compact().format(votes.data()["likes2Option"].length)}",
+                                              ),
+                                              style: GoogleFonts.rubik(
+                                                color: Colors.white,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ],

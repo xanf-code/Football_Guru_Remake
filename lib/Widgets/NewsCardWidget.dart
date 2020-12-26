@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +13,13 @@ import 'package:jiffy/jiffy.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:html/parser.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:transfer_news/Pages/Podcast/addPodcast.dart';
+import 'package:transfer_news/Repo/Widgets.dart';
 import 'package:transfer_news/Utils/constants.dart';
+import 'package:transfer_news/Widgets/NTBlocWidget.dart';
+import 'package:transfer_news/Widgets/PodcastWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ISLNewsWidget extends StatelessWidget {
@@ -26,7 +32,20 @@ class ISLNewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) {
+        return index == 4
+            ? Column(
+                children: [
+                  const AddPodcast(),
+                  PodcastWidget(),
+                  SizedBox(
+                    height: 12,
+                  ),
+                ],
+              )
+            : SizedBox.shrink();
+      },
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: ISLnewsData.length,

@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -40,6 +40,10 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+    }
+
+    aaptOptions {
+        ignoreAssetsPattern "!x86:!*ffprobe"
     }
 
     defaultConfig {
@@ -65,7 +69,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
 
     buildTypes {
         release {

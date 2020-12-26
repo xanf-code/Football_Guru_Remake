@@ -2,9 +2,6 @@ import 'package:cached_video_player/cached_video_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:morpheus/page_routes/morpheus_page_route.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:transfer_news/Reels(Beta)/CommentsPage.dart';
 import 'package:transfer_news/Reels(Beta)/Widgets/Logics.dart';
 import 'package:transfer_news/Reels(Beta)/Widgets/videoPlayerItems.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -67,7 +64,6 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
         (_) {
           controller.play();
           controller.setLooping(true);
-          setState(() {});
         },
       );
   }

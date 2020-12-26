@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeWidgets extends ChangeNotifier {
@@ -16,7 +18,7 @@ class HomeWidgets extends ChangeNotifier {
             padding: const EdgeInsets.only(
               //bottom: 20,
               top: 12,
-              left: 10,
+              left: 8,
             ),
             child: Text(
               "National Team: Top Stories 🇮🇳",

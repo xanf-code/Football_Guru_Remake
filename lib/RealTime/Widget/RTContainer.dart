@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_unicons/unicons.dart';
 import 'package:intl/intl.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:parallax_image/parallax_image.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
 import 'package:transfer_news/Forum/Logics/forumLogic.dart';
@@ -101,11 +102,10 @@ class RTContainer extends StatelessWidget {
                     },
                     child: AspectRatio(
                       aspectRatio: 16 / 9,
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: postImage,
-                        placeholder: (context, url) => Center(
-                          child: const CircularProgressIndicator(),
+                      child: ParallaxImage(
+                        extent: 150,
+                        image: CachedNetworkImageProvider(
+                          postImage,
                         ),
                       ),
                     ),

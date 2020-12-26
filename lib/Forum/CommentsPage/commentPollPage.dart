@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -149,7 +150,7 @@ class _CommentPollPageState extends State<CommentPollPage> {
           .doc(widget.postID)
           .collection("comments")
           .orderBy("timestamp", descending: true),
-      itemsPerPage: 30,
+      itemsPerPage: 10,
       initialLoading: Center(
         child: Container(
           height: 80,
@@ -162,6 +163,9 @@ class _CommentPollPageState extends State<CommentPollPage> {
             child: CircularProgressIndicator(),
           ),
         ),
+      ),
+      bottomLoader: Center(
+        child: CupertinoActivityIndicator(),
       ),
       emptyDisplay: Center(
         child: Text(

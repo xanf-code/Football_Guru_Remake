@@ -79,22 +79,13 @@ class PostContainer extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Container(
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: ParallaxImage(
-                          extent: 150,
-                          image: CachedNetworkImageProvider(
-                            post.data()["url"],
-                          ),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: ParallaxImage(
+                        extent: 150,
+                        image: CachedNetworkImageProvider(
+                          post.data()["url"],
                         ),
-                        // child: CachedNetworkImage(
-                        //   fit: BoxFit.cover,
-                        //   imageUrl: post.data()["url"],
-                        //   placeholder: (context, url) => Center(
-                        //     child: const CircularProgressIndicator(),
-                        //   ),
-                        // ),
                       ),
                     ),
                   ),
