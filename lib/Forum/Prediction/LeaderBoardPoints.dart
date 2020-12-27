@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LeaderPoints extends StatefulWidget {
+  final String type;
   final String docID;
 
-  const LeaderPoints({Key key, this.docID}) : super(key: key);
+  const LeaderPoints({Key key, this.docID, this.type}) : super(key: key);
   @override
   _LeaderPointsState createState() => _LeaderPointsState();
 }
@@ -37,7 +37,7 @@ class _LeaderPointsState extends State<LeaderPoints> {
         backgroundColor: Color(0xFF0e0e10),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection("ISLPrediction")
+              .collection(widget.type)
               .doc(widget.docID)
               .collection("allPredictions")
               .where("query", isEqualTo: "${score1}-${score2}")
@@ -226,7 +226,7 @@ class _LeaderPointsState extends State<LeaderPoints> {
       },
     ).whenComplete(() {
       FirebaseFirestore.instance
-          .collection("ISLPrediction")
+          .collection(widget.type)
           .doc(predID)
           .collection("allPredictions")
           .doc(postID)

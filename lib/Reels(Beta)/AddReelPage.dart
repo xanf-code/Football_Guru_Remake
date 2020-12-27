@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:transfer_news/Reels(Beta)/VideoEditor.dart';
+import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Reels(Beta)/Widgets/VideoPage.dart';
+import 'package:transfer_news/Reels(Beta)/confirmPage.dart';
 import 'package:transfer_news/Utils/constants.dart';
 
 class Reels extends StatefulWidget {
@@ -103,8 +104,11 @@ class _ReelsState extends State<Reels> {
         context,
         withNavBar: false,
         customPageRoute: MorpheusPageRoute(
-          builder: (context) => VideoEditor(
-            file: File(video.path),
+          builder: (context) => ConfirmedPage(
+            videoFile: File(video.path),
+            imageSource: ImageSource.gallery,
+            videoPath: video.path,
+            gCurrentUser: currentUser,
           ),
           transitionDuration: const Duration(
             milliseconds: 200,

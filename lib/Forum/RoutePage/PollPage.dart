@@ -72,6 +72,16 @@ class _PollPageState extends State<PollPage>
           query: Provider.of<Repository>(
             context,
           ).getPoll(widget.route),
+          emptyDisplay: Center(
+            child: Text(
+              "Nothing Found here :(",
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+              ),
+            ),
+          ),
           itemsPerPage: 10,
           itemBuilder: (index, context, docSnapshot) {
             final DocumentSnapshot polls = docSnapshot;
@@ -83,60 +93,6 @@ class _PollPageState extends State<PollPage>
           },
         ),
       ),
-      // StreamBuilder(
-      //   stream: Provider.of<Repository>(
-      //     context,
-      //   ).getPoll(widget.route),
-      //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-      //     if (!snapshot.hasData) {
-      //       return Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //     if (snapshot.data.docs.isEmpty) {
-      //       return Column(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         crossAxisAlignment: CrossAxisAlignment.center,
-      //         children: [
-      //           Center(
-      //             child: CachedNetworkImage(
-      //               imageUrl:
-      //                   "https://ouch-cdn.icons8.com/preview/606/90c1f2d7-b42f-4d7e-9d17-e183179862b7.png",
-      //               width: 400,
-      //             ),
-      //           ),
-      //           Text(
-      //             "Post something :<",
-      //             style: TextStyle(
-      //               color: Colors.grey,
-      //               fontWeight: FontWeight.w500,
-      //               fontSize: 20,
-      //             ),
-      //           ),
-      //         ],
-      //       );
-      //     } else {
-      //       return Scrollbar(
-      //         controller: ScrollController(),
-      //         thickness: 3,
-      //         radius: Radius.circular(10),
-      //         child: ListView.builder(
-      //           cacheExtent: 500.0,
-      //           controller: _scrollController,
-      //           itemCount: snapshot.data.docs.length,
-      //           itemBuilder: (context, index) {
-      //             DocumentSnapshot polls = snapshot.data.docs[index];
-      //             return PollContainer(
-      //               polls: polls,
-      //               route: widget.route,
-      //               context: context,
-      //             ).pollBox();
-      //           },
-      //         ),
-      //       );
-      //     }
-      //   },
-      // ),
     );
   }
 }

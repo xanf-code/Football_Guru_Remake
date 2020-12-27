@@ -47,7 +47,9 @@ class _ISLNewsState extends State<ISLNews>
       "https://iftwc.com/wp-json/wp/v2/posts?categories=133",
     );
     if (response.statusCode == 200) {
-      var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      var jsonResponse = json.decode(
+        utf8.decode(response.bodyBytes),
+      );
       setState(() {
         NatnewsData = jsonResponse;
       });

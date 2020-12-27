@@ -64,6 +64,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
         (_) {
           controller.play();
           controller.setLooping(true);
+          setState(() {});
         },
       );
   }

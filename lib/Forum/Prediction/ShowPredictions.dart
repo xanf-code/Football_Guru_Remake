@@ -13,6 +13,7 @@ import 'package:transfer_news/Forum/Prediction/AddPredictions.dart';
 import 'package:transfer_news/Pages/home.dart';
 
 class PredictNowScreen extends StatefulWidget {
+  final String type;
   final String ID;
   final String team1Name;
   final String team1Logo;
@@ -26,7 +27,8 @@ class PredictNowScreen extends StatefulWidget {
       this.team1Logo,
       this.team2Name,
       this.team2Logo,
-      this.count})
+      this.count,
+      this.type})
       : super(key: key);
   @override
   _PredictNowScreenState createState() => _PredictNowScreenState();
@@ -38,7 +40,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
   Stream contentStream;
   void initState() {
     contentStream = FirebaseFirestore.instance
-        .collection("ISLPrediction")
+        .collection(widget.type)
         .doc(widget.ID)
         .collection("allPredictions")
         .orderBy(
@@ -142,7 +144,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
 
   checkAndEnter() async {
     DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("ISLPrediction")
+        .collection(widget.type)
         .doc(widget.ID)
         .get();
     if (docs.data()['usersVoted'].contains(currentUser.id)) {
@@ -157,6 +159,7 @@ class _PredictNowScreenState extends State<PredictNowScreen> {
         withNavBar: false,
         customPageRoute: MorpheusPageRoute(
           builder: (context) => AddPredictions(
+            type: widget.type,
             teamLogo1: widget.team1Logo,
             teamLogo2: widget.team2Logo,
             id: widget.ID,

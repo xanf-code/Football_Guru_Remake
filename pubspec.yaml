@@ -97,7 +97,7 @@ dependencies:
   tab_indicator_styler: ^1.0.0
   flutter_speed_dial: ^1.2.5
   parallax_image: ^0.3.1+1
-  video_editor: ^1.0.0+1
+  dotted_border: ^1.0.7
 
   #Cache Management
   flutter_cache_manager: ^2.0.0

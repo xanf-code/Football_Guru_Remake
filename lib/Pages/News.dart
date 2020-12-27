@@ -262,25 +262,6 @@ class _NewsPageState extends State<NewsPage> {
                         icons: UniconData.uniYoutubeMonochrome,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MorpheusPageRoute(
-                            transitionDuration: Duration(milliseconds: 200),
-                            builder: (context) => ProfilePage(),
-                          ),
-                        );
-                      },
-                      child: DiscordType(
-                        height: 50,
-                        width: 50,
-                        color: Colors.blueGrey[900],
-                        icons: UniconData.uniSetting,
-                      ),
-                    ),
                     ValueListenableBuilder(
                       valueListenable: favBox.listenable(),
                       builder: (context, Box<Favourites> favs, _) {

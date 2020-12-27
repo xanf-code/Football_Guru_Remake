@@ -16,9 +16,12 @@ class ConfirmedPage extends StatefulWidget {
   final String videoPath;
   final ImageSource imageSource;
   final User gCurrentUser;
-
-  ConfirmedPage(
-      {this.videoFile, this.videoPath, this.imageSource, this.gCurrentUser});
+  ConfirmedPage({
+    this.videoFile,
+    this.videoPath,
+    this.imageSource,
+    this.gCurrentUser,
+  });
   @override
   _ConfirmedPageState createState() => _ConfirmedPageState();
 }

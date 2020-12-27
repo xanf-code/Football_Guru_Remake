@@ -10,6 +10,7 @@ import 'package:transfer_news/Pages/home.dart';
 import 'package:uuid/uuid.dart';
 
 class AddPredictions extends StatefulWidget {
+  final String type;
   final String teamLogo1;
   final String teamLogo2;
   final String team1Name;
@@ -22,7 +23,8 @@ class AddPredictions extends StatefulWidget {
       this.teamLogo2,
       this.id,
       this.team1Name,
-      this.team2Name})
+      this.team2Name,
+      this.type})
       : super(key: key);
   @override
   _AddPredictionsState createState() => _AddPredictionsState();
@@ -319,7 +321,7 @@ class _AddPredictionsState extends State<AddPredictions> {
 
   saveToDatabase() async {
     FirebaseFirestore.instance
-        .collection("ISLPrediction")
+        .collection(widget.type)
         .doc(widget.id)
         .collection("allPredictions")
         .doc(ID)
@@ -336,10 +338,7 @@ class _AddPredictionsState extends State<AddPredictions> {
       "query": "${score1 == null ? 0 : score1}-${score2 == null ? 0 : score2}",
       "pointsAssigned": false,
     }).then((result) {
-      FirebaseFirestore.instance
-          .collection("ISLPrediction")
-          .doc(widget.id)
-          .update(
+      FirebaseFirestore.instance.collection(widget.type).doc(widget.id).update(
         {
           'usersVoted': FieldValue.arrayUnion(
             [currentUser.id],

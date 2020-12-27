@@ -18,14 +18,15 @@ import 'package:transfer_news/Utils/constants.dart';
 import 'LeaderBoardPoints.dart';
 import 'ShowPredictions.dart';
 
-class ISLPrediction extends StatefulWidget {
-  const ISLPrediction({Key key}) : super(key: key);
+class PredictionPage extends StatefulWidget {
+  final String type;
+  const PredictionPage({Key key, this.type}) : super(key: key);
   @override
-  _ISLPredictionState createState() => _ISLPredictionState();
+  _PredictionPageState createState() => _PredictionPageState();
 }
 
-class _ISLPredictionState extends State<ISLPrediction>
-    with AutomaticKeepAliveClientMixin<ISLPrediction> {
+class _PredictionPageState extends State<PredictionPage>
+    with AutomaticKeepAliveClientMixin<PredictionPage> {
   @override
   bool get wantKeepAlive => true;
   bool isLocked = false;
@@ -33,8 +34,7 @@ class _ISLPredictionState extends State<ISLPrediction>
 
   @override
   void initState() {
-    predStream =
-        FirebaseFirestore.instance.collection("ISLPrediction").snapshots();
+    predStream = FirebaseFirestore.instance.collection(widget.type).snapshots();
     super.initState();
   }
 
@@ -77,7 +77,9 @@ class _ISLPredictionState extends State<ISLPrediction>
                   context,
                   withNavBar: false,
                   customPageRoute: MorpheusPageRoute(
-                    builder: (context) => AddEvent(),
+                    builder: (context) => AddEvent(
+                      Name: widget.type,
+                    ),
                     transitionDuration: Duration(
                       milliseconds: 200,
                     ),
@@ -169,6 +171,7 @@ class _ISLPredictionState extends State<ISLPrediction>
                                         withNavBar: false,
                                         customPageRoute: MorpheusPageRoute(
                                           builder: (context) => LeaderPoints(
+                                            type: widget.type,
                                             docID: cards.data()["Id"],
                                           ),
                                           transitionDuration: Duration(
@@ -187,6 +190,7 @@ class _ISLPredictionState extends State<ISLPrediction>
                                         customPageRoute: MorpheusPageRoute(
                                           builder: (context) =>
                                               PredictNowScreen(
+                                            type: widget.type,
                                             ID: cards.data()["Id"],
                                             team1Name:
                                                 cards.data()["team1Name"],
@@ -492,7 +496,7 @@ class _ISLPredictionState extends State<ISLPrediction>
 
   removeEvent(String ID) {
     FirebaseFirestore.instance
-        .collection('ISLPrediction')
+        .collection(widget.type)
         .doc(ID)
         .collection("allPredictions")
         .get()
@@ -504,7 +508,7 @@ class _ISLPredictionState extends State<ISLPrediction>
       }
     }).whenComplete(() {
       FirebaseFirestore.instance
-          .collection('ISLPrediction')
+          .collection(widget.type)
           .doc(ID)
           .get()
           .then((document) {
@@ -516,16 +520,14 @@ class _ISLPredictionState extends State<ISLPrediction>
   }
 
   manageLocking(String id) async {
-    DocumentSnapshot docs = await FirebaseFirestore.instance
-        .collection("ISLPrediction")
-        .doc(id)
-        .get();
+    DocumentSnapshot docs =
+        await FirebaseFirestore.instance.collection(widget.type).doc(id).get();
     if (docs.data()["status"] == true) {
-      FirebaseFirestore.instance.collection("ISLPrediction").doc(id).update({
+      FirebaseFirestore.instance.collection(widget.type).doc(id).update({
         'status': false,
       });
     } else {
-      FirebaseFirestore.instance.collection("ISLPrediction").doc(id).update({
+      FirebaseFirestore.instance.collection(widget.type).doc(id).update({
         'status': true,
       });
     }

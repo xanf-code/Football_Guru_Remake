@@ -220,7 +220,7 @@ class _ForumState extends State<Forum> {
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
                                   builder: (context) => ForumMain(
-                                    length: 4,
+                                    length: 3,
                                     forumName: "ISL",
                                     tagName: ISLTags,
                                     appBar: "Indian Super League",
@@ -249,7 +249,7 @@ class _ForumState extends State<Forum> {
                                 withNavBar: false,
                                 customPageRoute: MorpheusPageRoute(
                                   builder: (context) => ForumMain(
-                                    length: 2,
+                                    length: 3,
                                     forumName: "I-League",
                                     tagName: IleagueTags,
                                     appBar: "I-League",

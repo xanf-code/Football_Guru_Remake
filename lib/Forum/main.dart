@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_unicons/unicons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:transfer_news/Forum/Prediction/ISLPredictionPage.dart';
+import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:transfer_news/Forum/Prediction/PredictionPage.dart';
 import 'package:transfer_news/Forum/RoutePage/PollPage.dart';
 import 'package:transfer_news/Forum/RoutePage/forumPage.dart';
 import 'package:transfer_news/Forum/learderboard/showLearderboard.dart';
 import 'package:transfer_news/Utils/constants.dart';
+import 'package:transfer_news/Widgets/customDialogBox.dart';
 
 class ForumMain extends StatefulWidget {
   final String forumName;
@@ -28,6 +33,79 @@ class _ForumMainState extends State<ForumMain> {
         appBar: AppBar(
           backgroundColor: appBG,
           automaticallyImplyLeading: false,
+          actions: [
+            widget.forumName == "ISL" || widget.forumName == "I-League"
+                ? IconButton(
+                    splashRadius: 1,
+                    splashColor: Colors.transparent,
+                    icon: Unicon(
+                      UniconData.uniTrophy,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      pushNewScreen(
+                        context,
+                        withNavBar: false,
+                        customPageRoute: MorpheusPageRoute(
+                          builder: (context) => const LearderBoard(),
+                          transitionDuration: Duration(
+                            milliseconds: 200,
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                : SizedBox.shrink(),
+            widget.forumName == "ISL" || widget.forumName == "I-League"
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                      right: 8,
+                    ),
+                    child: IconButton(
+                      splashRadius: 1,
+                      splashColor: Colors.transparent,
+                      icon: Unicon(
+                        UniconData.uniInfoCircle,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        HapticFeedback.mediumImpact();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.black,
+                              title: Text(
+                                "Prediction Points",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: Text(
+                                "• 5 Points will be awarded to every correct Prediction.\n • Increase you Points by participating in both I-League and ISL Predictions",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              actions: [
+                                FlatButton(
+                                  child: Text("OK"),
+                                  onPressed: () {
+                                    HapticFeedback.mediumImpact();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  )
+                : SizedBox.shrink(),
+          ],
           title: Row(
             children: [
               Icon(
@@ -47,7 +125,7 @@ class _ForumMainState extends State<ForumMain> {
               padding: EdgeInsets.all(12),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: widget.length == 4
+                child: widget.length == 3
                     ? TabBar(
                         physics: BouncingScrollPhysics(),
                         labelColor: Colors.white,
@@ -122,26 +200,26 @@ class _ForumMainState extends State<ForumMain> {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 12.0,
-                              right: 12.0,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  EvilIcons.trophy,
-                                  color: IconColor,
-                                ),
-                                SizedBox(
-                                  width: 6,
-                                ),
-                                Tab(
-                                  text: "Leaderboard",
-                                ),
-                              ],
-                            ),
-                          )
+                          // Padding(
+                          //   padding: const EdgeInsets.only(
+                          //     left: 12.0,
+                          //     right: 12.0,
+                          //   ),
+                          //   child: Row(
+                          //     children: [
+                          //       Icon(
+                          //         EvilIcons.trophy,
+                          //         color: IconColor,
+                          //       ),
+                          //       SizedBox(
+                          //         width: 6,
+                          //       ),
+                          //       Tab(
+                          //         text: "Leaderboard",
+                          //       ),
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       )
                     : TabBar(
@@ -203,7 +281,7 @@ class _ForumMainState extends State<ForumMain> {
             ),
           ),
         ),
-        body: widget.length == 4
+        body: widget.length == 3
             ? TabBarView(
                 children: [
                   ForumDetails(
@@ -214,8 +292,13 @@ class _ForumMainState extends State<ForumMain> {
                   PollPage(
                     route: widget.forumName,
                   ),
-                  const ISLPrediction(),
-                  const LearderBoard(),
+                  widget.forumName == "ISL"
+                      ? const PredictionPage(
+                          type: "ISLPrediction",
+                        )
+                      : const PredictionPage(
+                          type: "I-League",
+                        ),
                 ],
               )
             : TabBarView(

@@ -6,6 +6,9 @@ import 'package:transfer_news/Pages/home.dart';
 import 'package:uuid/uuid.dart';
 
 class AddEvent extends StatefulWidget {
+  final String Name;
+
+  const AddEvent({Key key, this.Name}) : super(key: key);
   @override
   _AddEventState createState() => _AddEventState();
 }
@@ -17,7 +20,7 @@ class _AddEventState extends State<AddEvent> {
   String _selectedImage2;
   bool isLocked = false;
   String ID = Uuid().v4();
-  List<Map> teamNames = [
+  List<Map> ISLteamNames = [
     {
       "id": '1',
       "image": "https://www.fotmob.com/images/team/578655",
@@ -75,6 +78,64 @@ class _AddEventState extends State<AddEvent> {
     },
   ];
 
+  List<Map> ILeagueteamNames = [
+    {
+      "id": '1',
+      "image": "https://www.fotmob.com/images/team/624350",
+      "name": "Aizawl FC",
+    },
+    {
+      "id": '2',
+      "image": "https://www.fotmob.com/images/team/818233",
+      "name": "Chennai City FC",
+    },
+    {
+      "id": '3',
+      "image": "https://www.fotmob.com/images/team/165180",
+      "name": "Churchill Brothers",
+    },
+    {
+      "id": '4',
+      "image": "https://www.fotmob.com/images/team/898335",
+      "name": "Gokulam FC",
+    },
+    {
+      "id": '5',
+      "image": "https://www.fotmob.com/images/team/231168",
+      "name": "Indian Arrows",
+    },
+    {
+      "id": '6',
+      "image": "https://www.fotmob.com/images/team/165187",
+      "name": "Mohammedan SC",
+    },
+    {
+      "id": '7',
+      "image": "https://www.fotmob.com/images/team/898338",
+      "name": "Neroca FC",
+    },
+    {
+      "id": '8',
+      "image": "https://www.fotmob.com/images/team/589749",
+      "name": "Punjab FC",
+    },
+    {
+      "id": '9',
+      "image": "https://www.fotmob.com/images/team/970686",
+      "name": "Real Kashmir FC",
+    },
+    {
+      "id": '10',
+      "image": "https://www.fotmob.com/images/team/1215010",
+      "name": "Sudeva FC",
+    },
+    {
+      "id": '11',
+      "image": "https://www.fotmob.com/images/team/1111274",
+      "name": "TRAU FC",
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,18 +169,31 @@ class _AddEventState extends State<AddEvent> {
                       _selectedName1 = newValue;
                     });
                   },
-                  items: teamNames.map((Map map) {
-                    return new DropdownMenuItem<String>(
-                      value: map["name"],
-                      // value: _mySelection,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text(
-                          map["name"],
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                  items: widget.Name == "ISLPrediction"
+                      ? ISLteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["name"],
+                            // value: _mySelection,
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                map["name"],
+                              ),
+                            ),
+                          );
+                        }).toList()
+                      : ILeagueteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["name"],
+                            // value: _mySelection,
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                map["name"],
+                              ),
+                            ),
+                          );
+                        }).toList(),
                 ),
               ),
             ),
@@ -148,16 +222,27 @@ class _AddEventState extends State<AddEvent> {
                       _selectedImage1 = newValue;
                     });
                   },
-                  items: teamNames.map((Map map) {
-                    return new DropdownMenuItem<String>(
-                      value: map["image"],
-                      // value: _mySelection,
-                      child: CachedNetworkImage(
-                        imageUrl: map["image"],
-                        width: 25,
-                      ),
-                    );
-                  }).toList(),
+                  items: widget.Name == "ISLPrediction"
+                      ? ISLteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["image"],
+                            // value: _mySelection,
+                            child: CachedNetworkImage(
+                              imageUrl: map["image"],
+                              width: 25,
+                            ),
+                          );
+                        }).toList()
+                      : ILeagueteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["image"],
+                            // value: _mySelection,
+                            child: CachedNetworkImage(
+                              imageUrl: map["image"],
+                              width: 25,
+                            ),
+                          );
+                        }).toList(),
                 ),
               ),
             ),
@@ -186,18 +271,31 @@ class _AddEventState extends State<AddEvent> {
                       _selectedName2 = newValue;
                     });
                   },
-                  items: teamNames.map((Map map) {
-                    return new DropdownMenuItem<String>(
-                      value: map["name"],
-                      // value: _mySelection,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text(
-                          map["name"],
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                  items: widget.Name == "ISLPrediction"
+                      ? ISLteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["name"],
+                            // value: _mySelection,
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                map["name"],
+                              ),
+                            ),
+                          );
+                        }).toList()
+                      : ILeagueteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["name"],
+                            // value: _mySelection,
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                map["name"],
+                              ),
+                            ),
+                          );
+                        }).toList(),
                 ),
               ),
             ),
@@ -226,16 +324,27 @@ class _AddEventState extends State<AddEvent> {
                       _selectedImage2 = newValue;
                     });
                   },
-                  items: teamNames.map((Map map) {
-                    return new DropdownMenuItem<String>(
-                      value: map["image"],
-                      // value: _mySelection,
-                      child: CachedNetworkImage(
-                        imageUrl: map["image"],
-                        width: 25,
-                      ),
-                    );
-                  }).toList(),
+                  items: widget.Name == "ISLPrediction"
+                      ? ISLteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["image"],
+                            // value: _mySelection,
+                            child: CachedNetworkImage(
+                              imageUrl: map["image"],
+                              width: 25,
+                            ),
+                          );
+                        }).toList()
+                      : ILeagueteamNames.map((Map map) {
+                          return new DropdownMenuItem<String>(
+                            value: map["image"],
+                            // value: _mySelection,
+                            child: CachedNetworkImage(
+                              imageUrl: map["image"],
+                              width: 25,
+                            ),
+                          );
+                        }).toList(),
                 ),
               ),
             ),
@@ -254,7 +363,7 @@ class _AddEventState extends State<AddEvent> {
   }
 
   saveToDatabase() {
-    FirebaseFirestore.instance.collection("ISLPrediction").doc(ID).set({
+    FirebaseFirestore.instance.collection(widget.Name).doc(ID).set({
       "Id": ID,
       "ownerID": currentUser.id,
       "timestamp": DateTime.now(),

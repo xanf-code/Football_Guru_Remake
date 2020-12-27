@@ -42,10 +42,6 @@ android {
         disable 'InvalidPackage'
     }
 
-    aaptOptions {
-        ignoreAssetsPattern "!x86:!*ffprobe"
-    }
-
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.indianfootball.transfer_news"
