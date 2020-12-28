@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_date_picker_timeline/flutter_date_picker_timeline.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,6 @@ class LiveScoreWidget extends StatefulWidget {
 }
 
 class _LiveScoreWidgetState extends State<LiveScoreWidget> {
-  String urlPath = "https://www.fotmob.com/matches/";
   List LiveScores;
 
   Map<String, String> headers = {
@@ -40,7 +40,9 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
   };
 
   Future<String> getLiveScores() async {
-    var response = await http.get(urlPath, headers: headers);
+    var response = await http.get(
+        "https://www.fotmob.com/matches?date=${_selectedValue.toString().replaceAll("-", "").substring(0, 8)}",
+        headers: headers);
     if (response.statusCode == 200) {
       var jsonresponse = json.decode(response.body);
       setState(() {
@@ -51,6 +53,7 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
     }
   }
 
+  bool _loading = false;
   Timer timer;
 
   @override
@@ -66,20 +69,79 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
     super.dispose();
   }
 
+  DateTime _selectedValue = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return LiveScores == null
-        ? SizedBox()
-        : ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: LiveScores.length,
-            itemBuilder: (context, index) {
-              var scores = LiveScores[index];
-              return scores["primaryId"] == widget.leagueId
-                  ? scorecard(context, scores)
-                  : SizedBox();
-            },
+        ? SizedBox.shrink()
+        : Column(
+            children: [
+              FlutterDatePickerTimeline(
+                unselectedItemTextStyle: TextStyle(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.bold,
+                ),
+                selectedItemTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                unselectedItemBackgroundColor: Colors.black,
+                initialFocusedDate: DateTime.now(),
+                startDate: DateTime(2020, 11, 20),
+                endDate: DateTime(2021, 05, 02),
+                initialSelectedDate: DateTime.now(),
+                onSelectedDateChange: (DateTime dateTime) {
+                  setState(
+                    () {
+                      _loading = true;
+                      _selectedValue = dateTime;
+                      Future.delayed(
+                        Duration(
+                          seconds: 5,
+                        ),
+                      ).whenComplete(() {
+                        _loading = false;
+                      });
+                    },
+                  );
+                },
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              _loading == false
+                  ? ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: LiveScores.length,
+                      itemBuilder: (context, index) {
+                        var scores = LiveScores[index];
+                        return scores["primaryId"] == widget.leagueId
+                            ? scorecard(context, scores)
+                            : SizedBox.shrink();
+                      },
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(
+                        left: 12.0,
+                        right: 12,
+                        bottom: 8,
+                        // top: 8,
+                      ),
+                      child: Shimmer.fromColors(
+                        highlightColor: Colors.blue,
+                        baseColor: Colors.grey[900],
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+            ],
           );
   }
 

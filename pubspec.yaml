@@ -99,6 +99,9 @@ dependencies:
   parallax_image: ^0.3.1+1
   dotted_border: ^1.0.7
 
+  #Date Picker
+  flutter_date_picker_timeline: ^0.1.3
+
   #Cache Management
   flutter_cache_manager: ^2.0.0
   cached_network_image: ^2.3.3

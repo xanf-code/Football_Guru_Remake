@@ -206,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
         "isBlocked": isBlocked,
         "isAdmin": isAdmin,
         "verified": isVerified,
+        "subscribed": true,
       });
       documentSnapshot = await usersReference.doc(gCurrentUser.id).get();
     }

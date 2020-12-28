@@ -397,7 +397,7 @@ class Stats extends StatelessWidget {
                       );
               },
             ),
-            isPostOwner
+            isPostOwner || currentUser.isAdmin == true
                 ? FlatButton.icon(
                     icon: Unicon(
                       UniconData.uniSetting,

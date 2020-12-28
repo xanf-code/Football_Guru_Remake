@@ -67,6 +67,9 @@ class rank1 extends StatelessWidget {
         if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
+        if (snapshot.data.docs.isEmpty) {
+          return SizedBox.shrink();
+        }
         return Padding(
           padding: const EdgeInsets.only(
             top: 12,

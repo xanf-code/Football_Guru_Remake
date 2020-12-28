@@ -9,7 +9,9 @@ class User {
   final bool isBlocked;
   final bool isAdmin;
   final bool isVerified;
+  final bool subscribed;
   User({
+    this.subscribed,
     this.isAdmin,
     this.isVerified,
     this.isBlocked,
@@ -29,6 +31,7 @@ class User {
       isBlocked: doc["isBlocked"],
       isAdmin: doc["isAdmin"],
       isVerified: doc["verified"],
+      subscribed: doc["subscribed"],
     );
   }
 }

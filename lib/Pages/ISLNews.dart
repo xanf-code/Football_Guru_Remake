@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:transfer_news/Animations/shimmer.dart';
 import 'package:http/http.dart' as http;
@@ -27,10 +28,10 @@ class _ISLNewsState extends State<ISLNews>
 
   List ISLnewsData;
   List NatnewsData = [];
-
+  int limit = 10;
   Future<String> getISLNews() async {
     var response = await http.get(
-      "https://iftwc.com/wp-json/wp/v2/posts?categories=101",
+      "https://iftwc.com/wp-json/wp/v2/posts?categories=101&per_page=$limit",
     );
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -58,11 +59,40 @@ class _ISLNewsState extends State<ISLNews>
     }
   }
 
+  bool _loading;
+  ScrollController _scrollController = new ScrollController();
   @override
   void initState() {
     getNatNews();
     getISLNews();
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels == 0) {
+          return null;
+        } else {
+          setState(() {
+            _loading = true;
+            limit += 10;
+            getISLNews();
+            Future.delayed(
+              Duration(
+                seconds: 5,
+              ),
+            ).whenComplete(() {
+              _loading = false;
+            });
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -70,10 +100,11 @@ class _ISLNewsState extends State<ISLNews>
     return ISLnewsData == null
         ? const ShimmerList()
         : SingleChildScrollView(
+            controller: _scrollController,
             physics: ClampingScrollPhysics(),
             child: ListView(
-              shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               children: [
                 DelayedDisplay(
                   slidingBeginOffset: const Offset(0, -1),
@@ -81,9 +112,6 @@ class _ISLNewsState extends State<ISLNews>
                   slidingCurve: Curves.decelerate,
                   delay: const Duration(milliseconds: 200),
                   child: const Stories(),
-                ),
-                SizedBox(
-                  height: 12,
                 ),
                 DelayedDisplay(
                   slidingBeginOffset: Offset(1, 0),
@@ -112,6 +140,11 @@ class _ISLNewsState extends State<ISLNews>
                   delay: const Duration(milliseconds: 300),
                   child: ISLNewsWidget(ISLnewsData: ISLnewsData),
                 ),
+                _loading == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SizedBox.shrink(),
               ],
             ),
           );

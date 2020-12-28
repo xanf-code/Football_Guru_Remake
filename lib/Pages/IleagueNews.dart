@@ -85,7 +85,7 @@ class ILeagueNewsWidget extends StatelessWidget {
             slidingCurve: Curves.decelerate,
             delay: const Duration(milliseconds: 200),
             child: const LiveScoreWidget(
-              leagueId: 0,
+              leagueId: 8982,
             ),
           ),
           DelayedDisplay(
