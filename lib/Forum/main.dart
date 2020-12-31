@@ -200,26 +200,6 @@ class _ForumMainState extends State<ForumMain> {
                               ],
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(
-                          //     left: 12.0,
-                          //     right: 12.0,
-                          //   ),
-                          //   child: Row(
-                          //     children: [
-                          //       Icon(
-                          //         EvilIcons.trophy,
-                          //         color: IconColor,
-                          //       ),
-                          //       SizedBox(
-                          //         width: 6,
-                          //       ),
-                          //       Tab(
-                          //         text: "Leaderboard",
-                          //       ),
-                          //     ],
-                          //   ),
-                          // )
                         ],
                       )
                     : TabBar(

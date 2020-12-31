@@ -97,6 +97,7 @@ class _ISLNewsState extends State<ISLNews>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ISLnewsData == null
         ? const ShimmerList()
         : SingleChildScrollView(
@@ -141,8 +142,17 @@ class _ISLNewsState extends State<ISLNews>
                   child: ISLNewsWidget(ISLnewsData: ISLnewsData),
                 ),
                 _loading == true
-                    ? Center(
-                        child: CircularProgressIndicator(),
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Center(
+                          child: Theme(
+                            data: ThemeData(
+                              cupertinoOverrideTheme: CupertinoThemeData(
+                                  brightness: Brightness.dark),
+                            ),
+                            child: CupertinoActivityIndicator(),
+                          ),
+                        ),
                       )
                     : SizedBox.shrink(),
               ],
