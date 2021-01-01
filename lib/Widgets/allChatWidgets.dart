@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:smart_text_view/smart_text_view.dart';
-import 'package:swipe_to/swipe_to.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/RealTime/imageDetailScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,6 +24,7 @@ class Chats extends StatefulWidget {
   final String messageID;
   final String reference;
   final String ImageUrl;
+  final String sticker;
   Chats({
     this.userName,
     this.userId,
@@ -32,6 +35,7 @@ class Chats extends StatefulWidget {
     this.messageID,
     this.reference,
     this.ImageUrl,
+    this.sticker,
   });
 
   factory Chats.fromDocument(DocumentSnapshot documentSnapshot) {
@@ -45,6 +49,7 @@ class Chats extends StatefulWidget {
       messageID: documentSnapshot["messageID"],
       reference: documentSnapshot["reference"],
       ImageUrl: documentSnapshot["ImageUrl"],
+      sticker: documentSnapshot["sticker"],
     );
   }
 
@@ -67,6 +72,7 @@ class _ChatsState extends State<Chats> {
             likes: widget.likes,
             time: widget.timestamp.toDate(),
             ImageUrl: widget.ImageUrl,
+            sticker: widget.sticker,
           )
         : CurrentUserChatWidget(
             url: widget.url,
@@ -77,6 +83,7 @@ class _ChatsState extends State<Chats> {
             likes: widget.likes,
             time: widget.timestamp.toDate(),
             ImageUrl: widget.ImageUrl,
+            sticker: widget.sticker,
           );
   }
 }
@@ -92,6 +99,7 @@ class CurrentUserChatWidget extends StatefulWidget {
     this.likes,
     this.time,
     this.ImageUrl,
+    this.sticker,
   }) : super(key: key);
   final likes;
   final String name;
@@ -101,7 +109,7 @@ class CurrentUserChatWidget extends StatefulWidget {
   final String url;
   final DateTime time;
   final String ImageUrl;
-
+  final String sticker;
   @override
   _CurrentUserChatWidgetState createState() => _CurrentUserChatWidgetState();
 }
@@ -109,15 +117,25 @@ class CurrentUserChatWidget extends StatefulWidget {
 class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: SwipeTo(
-        onLeftSwipe: () {
-          HapticFeedback.mediumImpact();
-          removeMessage(widget.ref, widget.messageID);
-        },
-        iconOnLeftSwipe: MaterialIcons.delete,
-        iconColor: Colors.white,
+    return FocusedMenuHolder(
+      onPressed: () {},
+      menuWidth: MediaQuery.of(context).size.width * 0.5,
+      animateMenuItems: true,
+      duration: Duration(milliseconds: 200),
+      menuItems: <FocusedMenuItem>[
+        FocusedMenuItem(
+          title: Text("Delete"),
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            removeMessage(widget.ref, widget.messageID);
+          },
+          trailingIcon: Icon(
+            MaterialCommunityIcons.delete_circle,
+          ),
+        ),
+      ],
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -163,129 +181,189 @@ class _CurrentUserChatWidgetState extends State<CurrentUserChatWidget> {
                 Spacer(),
                 Padding(
                   padding: EdgeInsets.only(bottom: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        //width: MediaQuery.of(context).size.width / 2,
-                        constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width / 1.5,
-                          minWidth: 20.0,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
-                          color: Colors.grey[900],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              widget.ImageUrl != ""
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          HapticFeedback.mediumImpact();
-                                          pushNewScreen(
-                                            context,
-                                            withNavBar: false,
-                                            customPageRoute: MorpheusPageRoute(
-                                              builder: (context) =>
-                                                  DetailScreen(
-                                                image: widget.ImageUrl,
-                                                postID: "",
-                                              ),
-                                              transitionDuration: Duration(
-                                                milliseconds: 130,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 250,
-                                          width: 400,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: CachedNetworkImageProvider(
-                                                widget.ImageUrl,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                              SmartText(
-                                text: widget.chat,
-                                onOpen: (url) {
-                                  launch(url);
-                                },
-                                style: GoogleFonts.rubik(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                ),
-                                linkStyle: TextStyle(
-                                  color: Colors.blueAccent,
-                                ),
+                  child: widget.ImageUrl != "" || widget.chat != ""
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              //width: MediaQuery.of(context).size.width / 2,
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width / 1.5,
+                                minWidth: 20.0,
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      widget.likes.length.toString() == 0.toString()
-                          ? const SizedBox()
-                          : Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey[800],
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                                color: Colors.grey[900],
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 8.0,
-                                  right: 8,
-                                  bottom: 2,
-                                  top: 2,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                      Ionicons.ios_heart,
-                                      size: 13,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(
-                                      width: 3,
-                                    ),
-                                    Text(
-                                      widget.likes.length.toString() ==
-                                              0.toString()
-                                          ? ""
-                                          : widget.likes.length.toString(),
+                                    widget.ImageUrl != ""
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                HapticFeedback.mediumImpact();
+                                                pushNewScreen(
+                                                  context,
+                                                  withNavBar: false,
+                                                  customPageRoute:
+                                                      MorpheusPageRoute(
+                                                    builder: (context) =>
+                                                        DetailScreen(
+                                                      image: widget.ImageUrl,
+                                                      postID: "",
+                                                    ),
+                                                    transitionDuration:
+                                                        Duration(
+                                                      milliseconds: 130,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                height: 250,
+                                                width: 400,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      widget.ImageUrl,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                    SmartText(
+                                      text: widget.chat,
+                                      onOpen: (url) {
+                                        launch(url);
+                                      },
                                       style: GoogleFonts.rubik(
                                         color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
+                                        fontSize: 15,
+                                      ),
+                                      linkStyle: TextStyle(
+                                        color: Colors.blueAccent,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                    ],
-                  ),
+                            const SizedBox(
+                              height: 3,
+                            ),
+                            widget.likes.length.toString() == 0.toString()
+                                ? const SizedBox.shrink()
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[800],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 8,
+                                        bottom: 2,
+                                        top: 2,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            Ionicons.ios_heart,
+                                            size: 13,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          Text(
+                                            widget.likes.length.toString() ==
+                                                    0.toString()
+                                                ? ""
+                                                : widget.likes.length
+                                                    .toString(),
+                                            style: GoogleFonts.rubik(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              height: 200,
+                              child: Lottie.network(
+                                widget.sticker,
+                              ),
+                            ),
+                            widget.likes.length.toString() == 0.toString()
+                                ? const SizedBox()
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[800],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                        right: 8,
+                                        bottom: 2,
+                                        top: 2,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            Ionicons.ios_heart,
+                                            size: 13,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          Text(
+                                            widget.likes.length.toString() ==
+                                                    0.toString()
+                                                ? ""
+                                                : widget.likes.length
+                                                    .toString(),
+                                            style: GoogleFonts.rubik(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        ),
                 ),
                 const SizedBox(
                   width: 15,
@@ -358,6 +436,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
     this.likes,
     this.time,
     this.ImageUrl,
+    this.sticker,
   }) : super(key: key);
   final likes;
   final String url;
@@ -367,6 +446,7 @@ class NonCurrentUserChatWidget extends StatelessWidget {
   final String messageID;
   final DateTime time;
   final String ImageUrl;
+  final String sticker;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -409,134 +489,186 @@ class NonCurrentUserChatWidget extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      //width: MediaQuery.of(context).size.width / 2,
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width / 1.5,
-                        minWidth: 20.0,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        //color: Colors.grey[900],
-                        gradient: LinearGradient(
-                          colors: [
-                            const Color(0xFF4e54c8),
-                            const Color(0xFF2948ff),
-                          ],
-                          begin: const FractionalOffset(0.0, 0.0),
-                          end: const FractionalOffset(1.0, 0.0),
-                          stops: [0.0, 1.0],
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ImageUrl != ""
-                                ? Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 10.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        HapticFeedback.mediumImpact();
-                                        pushNewScreen(
-                                          context,
-                                          withNavBar: false,
-                                          customPageRoute: MorpheusPageRoute(
-                                            builder: (context) => DetailScreen(
-                                              image: ImageUrl,
-                                              postID: "",
-                                            ),
-                                            transitionDuration: Duration(
-                                              milliseconds: 130,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 250,
-                                        width: 400,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: CachedNetworkImageProvider(
-                                              ImageUrl,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox(),
-                            SmartText(
-                              text: chat,
-                              onOpen: (url) {
-                                launch(url);
-                              },
-                              style: GoogleFonts.rubik(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                              linkStyle: TextStyle(
-                                color: Colors.blueAccent,
-                              ),
+                child: this.ImageUrl != "" || this.chat != ""
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            //width: MediaQuery.of(context).size.width / 2,
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width / 1.5,
+                              minWidth: 20.0,
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    likes.length.toString() == 0.toString()
-                        ? const SizedBox()
-                        : Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[800],
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                              //color: Colors.grey[900],
+                              gradient: LinearGradient(
+                                colors: [
+                                  const Color(0xFF4e54c8),
+                                  const Color(0xFF2948ff),
+                                ],
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 0.0),
+                                stops: [0.0, 1.0],
+                              ),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8.0,
-                                right: 8,
-                                bottom: 2,
-                                top: 2,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Ionicons.ios_heart,
-                                    size: 13,
-                                    color: Colors.red,
-                                  ),
-                                  const SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text(
-                                    likes.length.toString(),
+                                  ImageUrl != ""
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10.0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              HapticFeedback.mediumImpact();
+                                              pushNewScreen(
+                                                context,
+                                                withNavBar: false,
+                                                customPageRoute:
+                                                    MorpheusPageRoute(
+                                                  builder: (context) =>
+                                                      DetailScreen(
+                                                    image: ImageUrl,
+                                                    postID: "",
+                                                  ),
+                                                  transitionDuration: Duration(
+                                                    milliseconds: 130,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 250,
+                                              width: 400,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image:
+                                                      CachedNetworkImageProvider(
+                                                    ImageUrl,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                  SmartText(
+                                    text: chat,
+                                    onOpen: (url) {
+                                      launch(url);
+                                    },
                                     style: GoogleFonts.rubik(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
+                                      fontSize: 15,
+                                    ),
+                                    linkStyle: TextStyle(
+                                      color: Colors.blueAccent,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                  ],
-                ),
+                          const SizedBox(
+                            height: 3,
+                          ),
+                          likes.length.toString() == 0.toString()
+                              ? const SizedBox()
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[800],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8.0,
+                                      right: 8,
+                                      bottom: 2,
+                                      top: 2,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Ionicons.ios_heart,
+                                          size: 13,
+                                          color: Colors.red,
+                                        ),
+                                        const SizedBox(
+                                          width: 3,
+                                        ),
+                                        Text(
+                                          likes.length.toString(),
+                                          style: GoogleFonts.rubik(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 200,
+                            child: Lottie.network(
+                              this.sticker,
+                            ),
+                          ),
+                          likes.length.toString() == 0.toString()
+                              ? const SizedBox()
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[800],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8.0,
+                                      right: 8,
+                                      bottom: 2,
+                                      top: 2,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Ionicons.ios_heart,
+                                          size: 13,
+                                          color: Colors.red,
+                                        ),
+                                        const SizedBox(
+                                          width: 3,
+                                        ),
+                                        Text(
+                                          likes.length.toString(),
+                                          style: GoogleFonts.rubik(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                        ],
+                      ),
               ),
               Spacer(),
               Padding(

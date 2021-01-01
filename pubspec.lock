@@ -387,6 +387,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.1.1"
+  focused_menu:
+    dependency: "direct main"
+    description:
+      name: focused_menu
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -520,6 +527,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4+2"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.4"
+  lottie:
+    dependency: "direct main"
+    description:
+      name: lottie
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0+1"
   marquee:
     dependency: "direct main"
     description:
@@ -826,13 +847,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.1"
-  swipe_to:
-    dependency: "direct main"
-    description:
-      name: swipe_to
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1+8"
   synchronized:
     dependency: transitive
     description:

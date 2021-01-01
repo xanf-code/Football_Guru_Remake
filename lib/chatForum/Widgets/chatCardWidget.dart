@@ -53,264 +53,240 @@ class _ChatCardWidgetState extends State<ChatCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPress: () {
-        HapticFeedback.mediumImpact();
-        Favourites fav = Favourites(
-          title: widget.title,
-          logo: widget.logo,
-          bg: widget.bg,
-          appTitle: widget.titleApp,
-          ref: widget.ref,
-          isSaved: false,
-        );
-        favBox.add(fav);
-        Fluttertoast.showToast(
-          msg: "Shortcut added to Navigation",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.black,
-          fontSize: 16.0,
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 8.0,
-          right: 8,
-          top: 8,
-        ),
-        child: GestureDetector(
-          onLongPress: () {
-            HapticFeedback.mediumImpact();
-            if (currentUser.isAdmin) {
-              deleteChat();
-            }
-          },
-          child: Container(
-            height: 250,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(
-                width: 2,
-                color: Color(0xFF5c5c5c),
-              ),
-              borderRadius: BorderRadius.circular(10),
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        right: 8,
+        top: 8,
+      ),
+      child: GestureDetector(
+        onLongPress: () {
+          HapticFeedback.mediumImpact();
+          if (currentUser.isAdmin) {
+            deleteChat();
+          }
+        },
+        child: Container(
+          height: 250,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(
+              width: 2,
+              color: Color(0xFF5c5c5c),
             ),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 125,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(widget.bg),
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 125,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(widget.bg),
                       ),
-                    ),
-                    Container(
-                      height: 125,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
                       ),
-                    ),
-                    Positioned(
-                      top: 5,
-                      right: 10,
-                      child: GestureDetector(
-                        onTap: () {
-                          HapticFeedback.mediumImpact();
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CustomDialogBox(
-                                title: widget.title,
-                                descriptions: widget.bio,
-                                text: "Done",
-                                logo: widget.logo,
-                              );
-                            },
-                          );
-                        },
-                        child: Icon(
-                          Feather.info,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 121,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 22,
-                      vertical: 14,
+                  Container(
+                    height: 125,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            ProfileAvatar(
-                              imageUrl: widget.logo,
-                              isActive: true,
-                            ),
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      widget.title,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    widget.check == true
-                                        ? CachedNetworkImage(
-                                            height: 18,
-                                            imageUrl:
-                                                "https://www.freepngimg.com/thumb/youtube/76561-badge-verified-youtube-logo-free-frame.png",
-                                          )
-                                        : SizedBox.shrink(),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  child: Text(
-                                    widget.bio,
+                  ),
+                  Positioned(
+                    top: 5,
+                    right: 10,
+                    child: GestureDetector(
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomDialogBox(
+                              title: widget.title,
+                              descriptions: widget.bio,
+                              text: "Done",
+                              logo: widget.logo,
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Feather.info,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: 121,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 22,
+                    vertical: 14,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          ProfileAvatar(
+                            imageUrl: widget.logo,
+                            isActive: true,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    widget.title,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                ClipOval(
-                                  child: CircleAvatar(
-                                    radius: 14,
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          "https://www.timeshighereducation.com/sites/default/files/byline_photos/default-avatar_0.png",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 6,
-                                ),
-                                Text(
-                                  "${NumberFormat.compact().format(widget.users.length)}",
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  widget.check == true
+                                      ? CachedNetworkImage(
+                                          height: 18,
+                                          imageUrl:
+                                              "https://www.freepngimg.com/thumb/youtube/76561-badge-verified-youtube-logo-free-frame.png",
+                                        )
+                                      : SizedBox.shrink(),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: Text(
+                                  widget.bio,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipOval(
+                                child: CircleAvatar(
+                                  radius: 14,
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "https://www.timeshighereducation.com/sites/default/files/byline_photos/default-avatar_0.png",
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 3,
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Text(
+                                "${NumberFormat.compact().format(widget.users.length)}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Text(
-                                  "Members",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                "Members",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              checkEntry();
+                              pushNewScreen(
+                                context,
+                                withNavBar: false,
+                                customPageRoute: MorpheusPageRoute(
+                                  builder: (context) => ChatPage(
+                                    reference: widget.ref,
+                                    title: widget.titleApp,
+                                    Image: widget.logo,
+                                    chatScreenContext: context,
+                                  ),
+                                  transitionDuration: Duration(
+                                    milliseconds: 200,
                                   ),
                                 ),
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                HapticFeedback.mediumImpact();
-                                checkEntry();
-                                pushNewScreen(
-                                  context,
-                                  withNavBar: false,
-                                  customPageRoute: MorpheusPageRoute(
-                                    builder: (context) => ChatPage(
-                                      reference: widget.ref,
-                                      title: widget.titleApp,
-                                      Image: widget.logo,
-                                      chatScreenContext: context,
-                                    ),
-                                    transitionDuration: Duration(
-                                      milliseconds: 200,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: 70,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  color: Colors.indigo,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: widget.users.contains(currentUser.id)
-                                    ? Icon(
-                                        Feather.arrow_right,
-                                        color: Colors.white,
-                                      )
-                                    : Center(
-                                        child: Text(
-                                          "Join",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                              );
+                            },
+                            child: Container(
+                              width: 70,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                color: Colors.indigo,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: widget.users.contains(currentUser.id)
+                                  ? Icon(
+                                      Feather.arrow_right,
+                                      color: Colors.white,
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        "Join",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                              ),
+                                    ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
