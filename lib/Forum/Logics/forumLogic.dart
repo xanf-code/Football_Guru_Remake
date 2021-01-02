@@ -64,6 +64,28 @@ class ForumLogic extends ChangeNotifier {
     });
   }
 
+  starPost(postID, forumName) async {
+    FirebaseFirestore.instance
+        .collection("Forum")
+        .doc(forumName)
+        .collection("Posts")
+        .doc(postID)
+        .update({
+      "top25": true,
+    });
+  }
+
+  removestarPost(postID, forumName) async {
+    FirebaseFirestore.instance
+        .collection("Forum")
+        .doc(forumName)
+        .collection("Posts")
+        .doc(postID)
+        .update({
+      "top25": false,
+    });
+  }
+
   likePost(String id, forumName) async {
     DocumentSnapshot docs = await FirebaseFirestore.instance
         .collection("Forum")

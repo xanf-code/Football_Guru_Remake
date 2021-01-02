@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:lottie/lottie.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shimmer/shimmer.dart';
@@ -122,22 +123,11 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
                             : SizedBox.shrink();
                       },
                     )
-                  : Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12.0,
-                        right: 12,
-                        bottom: 8,
-                        // top: 8,
-                      ),
-                      child: Shimmer.fromColors(
-                        highlightColor: Colors.blue,
-                        baseColor: Colors.grey[900],
-                        child: Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[900],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                  : Center(
+                      child: Container(
+                        height: 150,
+                        child: Lottie.network(
+                          "https://assets6.lottiefiles.com/packages/lf20_x62chJ.json",
                         ),
                       ),
                     ),
@@ -145,7 +135,7 @@ class _LiveScoreWidgetState extends State<LiveScoreWidget> {
           );
   }
 
-  Container scorecard(BuildContext context, scores) {
+  Widget scorecard(BuildContext context, scores) {
     return Container(
       height: 150,
       width: MediaQuery.of(context).size.width,

@@ -7,7 +7,6 @@ import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/LeaguePages/OnTapCallbackPage/AFCAsianCup2022Callback.dart';
 import 'package:transfer_news/Pages/LeaguePages/OnTapCallbackPage/IWLCallBack.dart';
-import 'package:transfer_news/Widgets/LeagueCard.dart';
 import 'package:transfer_news/Widgets/WomensHomeCard.dart';
 
 class WomensPage extends StatefulWidget {

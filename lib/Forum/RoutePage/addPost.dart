@@ -326,22 +326,6 @@ class _AddPostToForumState extends State<AddPostToForum> {
   Future captureImageWithGallery() async {
     fileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (fileImage != null) {
-      // croppedImage = await ImageCropper.cropImage(
-      //   sourcePath: fileImage.path,
-      //   aspectRatio: CropAspectRatio(
-      //     ratioX: 1,
-      //     ratioY: 1,
-      //   ),
-      //   maxWidth: 700,
-      //   maxHeight: 700,
-      //   androidUiSettings: AndroidUiSettings(
-      //     toolbarTitle: "Crop Image",
-      //     toolbarWidgetColor: Colors.white,
-      //     toolbarColor: Color(0xFF0e0e10),
-      //     statusBarColor: Color(0xFF0e0e10),
-      //     backgroundColor: Colors.white,
-      //   ),
-      // );
       setState(() {
         selectedImage = fileImage;
       });
@@ -352,22 +336,6 @@ class _AddPostToForumState extends State<AddPostToForum> {
   Future captureImageWithCamera() async {
     fileImage = await ImagePicker.pickImage(source: ImageSource.camera);
     if (fileImage != null) {
-      // croppedImage = await ImageCropper.cropImage(
-      //   sourcePath: fileImage.path,
-      //   aspectRatio: CropAspectRatio(
-      //     ratioX: 1,
-      //     ratioY: 1,
-      //   ),
-      //   maxWidth: 700,
-      //   maxHeight: 700,
-      //   androidUiSettings: AndroidUiSettings(
-      //     toolbarTitle: "Crop Image",
-      //     toolbarWidgetColor: Colors.white,
-      //     toolbarColor: Color(0xFF0e0e10),
-      //     statusBarColor: Color(0xFF0e0e10),
-      //     backgroundColor: Colors.white,
-      //   ),
-      // );
       setState(() {
         selectedImage = fileImage;
       });

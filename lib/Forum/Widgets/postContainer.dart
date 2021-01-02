@@ -444,7 +444,7 @@ class Stats extends StatelessWidget {
       context: context,
       builder: (builder) {
         return Container(
-          height: 60,
+          height: currentUser.isAdmin == true ? 120 : 60,
           color: Colors.black87,
           child: new Container(
             decoration: new BoxDecoration(
@@ -454,24 +454,55 @@ class Stats extends StatelessWidget {
                 topRight: const Radius.circular(10.0),
               ),
             ),
-            child: GestureDetector(
-              onTap: () {
-                HapticFeedback.mediumImpact();
-                Navigator.of(context).pop();
-                ForumLogic().removePost(snapshot, forumName);
-              },
-              child: ListTile(
-                leading: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Delete Post",
-                  style: TextStyle(
-                    color: Colors.white,
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.of(context).pop();
+                    ForumLogic().removePost(snapshot, forumName);
+                  },
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      "Delete Post",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                currentUser.isAdmin == true
+                    ? GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          Navigator.of(context).pop();
+                          posts.data()["top25"] == true
+                              ? ForumLogic().removestarPost(snapshot, forumName)
+                              : ForumLogic().starPost(snapshot, forumName);
+                        },
+                        child: ListTile(
+                          leading: Icon(
+                            posts.data()["top25"] == true
+                                ? Icons.star_border_sharp
+                                : Icons.star,
+                            color: Colors.white,
+                          ),
+                          title: Text(
+                            posts.data()["top25"] == true
+                                ? "Remove top 25 (Admin)"
+                                : "Make top 25 (Admin)",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+              ],
             ),
           ),
         );

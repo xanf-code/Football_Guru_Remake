@@ -23,6 +23,7 @@ const pollTags = const [
 const ISLTags = const [
   'Off topic',
   'Announcement',
+  'Fan Art',
   'Transfers',
   'Rumours',
   'Bengaluru FC',
@@ -41,6 +42,7 @@ const ISLTags = const [
 const IleagueTags = const [
   'Off topic',
   "Announcement",
+  'Fan Art',
   'Transfers',
   'Rumours',
   'Aizawl FC',
@@ -58,6 +60,7 @@ const IleagueTags = const [
 
 const NTTags = const [
   'Off topic',
+  'Fan Art',
   "Announcement",
   'National Team',
   'Women\'s National Team',
