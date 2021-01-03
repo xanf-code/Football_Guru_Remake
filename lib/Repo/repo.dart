@@ -14,6 +14,10 @@ class Repository extends ChangeNotifier {
         .orderBy("timestamp", descending: true);
   }
 
+  getWallpaper(forumName) {
+    return _firestore.collection(forumName).snapshots();
+  }
+
   getPoll(forumName) {
     return _firestore
         .collection("Forum")

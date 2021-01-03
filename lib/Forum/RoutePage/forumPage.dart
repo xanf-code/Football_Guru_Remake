@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:realtime_pagination/realtime_pagination.dart';
 import 'package:transfer_news/Forum/RoutePage/addPost.dart';
 import 'package:transfer_news/Forum/Widgets/postContainer.dart';
+import 'package:transfer_news/Forum/wallpaper.dart';
 import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Utils/constants.dart';
 
@@ -25,6 +26,7 @@ class ForumDetails extends StatefulWidget {
 
 class _ForumDetailsState extends State<ForumDetails>
     with AutomaticKeepAliveClientMixin<ForumDetails> {
+  String type = "Off topic";
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -69,18 +71,28 @@ class _ForumDetailsState extends State<ForumDetails>
         thickness: 3,
         radius: Radius.circular(10),
         child: RealtimePagination(
-            query: Provider.of<Repository>(
-              context,
-            ).getForum(widget.forumName),
-            itemsPerPage: 10,
-            bottomLoader: CupertinoActivityIndicator(),
-            itemBuilder: (index, context, docSnapshot) {
-              final DocumentSnapshot posts = docSnapshot;
-              return PostContainer(
-                post: posts,
-                route: widget.forumName,
-              );
-            }),
+          query: Provider.of<Repository>(
+            context,
+          ).getForum(widget.forumName),
+          itemsPerPage: 10,
+          bottomLoader: CupertinoActivityIndicator(),
+          itemBuilder: (index, context, docSnapshot) {
+            final DocumentSnapshot posts = docSnapshot;
+            return Column(
+              children: [
+                widget.forumName == "ISL"
+                    ? index == 0
+                        ? WallpaperWidget()
+                        : SizedBox.shrink()
+                    : SizedBox.shrink(),
+                PostContainer(
+                  post: posts,
+                  route: widget.forumName,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
