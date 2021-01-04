@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:realtime_pagination/realtime_pagination.dart';
 import 'package:transfer_news/Forum/Widgets/addWalpaperWidget.dart';
 import 'package:transfer_news/Forum/Widgets/palette.dart';
 import 'package:transfer_news/Forum/Widgets/profileAvatar.dart';
@@ -21,7 +22,10 @@ class WallpaperWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            bottom: 12,
+          ),
           child: Text(
             "Wallpapers",
             style: GoogleFonts.dmSans(
@@ -44,38 +48,34 @@ class WallpaperWidget extends StatelessWidget {
 class StoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Provider.of<Repository>(
-        context,
-      ).getWallpaper("wallpaper"),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
-        } else {
-          return SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                AddWallpaper(),
-                ListView.builder(
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: BouncingScrollPhysics(),
+      child: Row(
+        children: [
+          WallWidget(),
+          StreamBuilder(
+            stream: Provider.of<Repository>(
+              context,
+            ).getWallpaper("wallpaper"),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10.0,
-                    horizontal: 8.0,
-                  ),
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (_, index) {
                     DocumentSnapshot wallpaper = snapshot.data.docs[index];
                     return WallpaperContainerWidget(wallpaper: wallpaper);
                   },
-                ),
-              ],
-            ),
-          );
-        }
-      },
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

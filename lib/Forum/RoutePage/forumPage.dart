@@ -79,12 +79,17 @@ class _ForumDetailsState extends State<ForumDetails>
           itemBuilder: (index, context, docSnapshot) {
             final DocumentSnapshot posts = docSnapshot;
             return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 widget.forumName == "ISL"
                     ? index == 0
                         ? WallpaperWidget()
                         : SizedBox.shrink()
                     : SizedBox.shrink(),
+                SizedBox(
+                  height: 10,
+                ),
                 PostContainer(
                   post: posts,
                   route: widget.forumName,

@@ -1001,6 +1001,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
+  wallpaper_manager:
+    dependency: "direct main"
+    description:
+      name: wallpaper_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.10"
   webview_flutter:
     dependency: transitive
     description:

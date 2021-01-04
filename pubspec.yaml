@@ -124,6 +124,9 @@ dependencies:
  #Menu
   focused_menu: ^1.0.2
 
+ #Wallpaper
+  wallpaper_manager: ^1.0.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
