@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:transfer_news/Pages/home.dart';
 
 class Repository extends ChangeNotifier {
   Repository(this._firestore) : assert(_firestore != null);
@@ -28,6 +30,10 @@ class Repository extends ChangeNotifier {
         .doc(forumName)
         .collection("Polls")
         .orderBy("timestamp", descending: true);
+  }
+
+  postLikes(ref) {
+    return _firestore.collection("wallpaper").doc(ref).snapshots();
   }
 
   Stream getMessages(ref, limit) {

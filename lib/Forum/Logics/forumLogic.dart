@@ -126,4 +126,21 @@ class ForumLogic extends ChangeNotifier {
       text: text,
     );
   }
+
+  //Forum Wallpaper Logic
+  likeWallpaper(String id) async {
+    DocumentSnapshot docs =
+        await FirebaseFirestore.instance.collection("wallpaper").doc(id).get();
+    if (docs.data()['likes'].contains(currentUser.id)) {
+      FirebaseFirestore.instance.collection("wallpaper").doc(id).update({
+        'likes': FieldValue.arrayRemove(
+          [currentUser.id],
+        )
+      });
+    } else {
+      FirebaseFirestore.instance.collection("wallpaper").doc(id).update({
+        'likes': FieldValue.arrayUnion([currentUser.id])
+      });
+    }
+  }
 }

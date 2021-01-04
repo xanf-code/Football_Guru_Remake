@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
@@ -22,12 +23,23 @@ class _StoriesState extends State<Stories> {
   final ScrollController _scrollController = ScrollController();
   int _limit = 7;
   final int _limitIncrement = 10;
+  bool _loading = false;
 
   _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       setState(() {
+        _loading = true;
         _limit += _limitIncrement;
+        Future.delayed(
+          Duration(
+            seconds: 5,
+          ),
+        ).whenComplete(() {
+          setState(() {
+            _loading = false;
+          });
+        });
       });
     }
   }
@@ -131,6 +143,20 @@ class _StoriesState extends State<Stories> {
                         }
                       },
                     ),
+                    _loading == true
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Center(
+                              child: Theme(
+                                data: ThemeData(
+                                  cupertinoOverrideTheme: CupertinoThemeData(
+                                      brightness: Brightness.dark),
+                                ),
+                                child: CupertinoActivityIndicator(),
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 ),
               );

@@ -1,73 +1,89 @@
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:transfer_news/Pages/home.dart';
 import 'package:transfer_news/Utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 class AddNewWallpaper extends StatefulWidget {
+  final File image;
+
+  const AddNewWallpaper({Key key, this.image}) : super(key: key);
   @override
   _AddNewWallpaperState createState() => _AddNewWallpaperState();
 }
 
 class _AddNewWallpaperState extends State<AddNewWallpaper> {
-  File selectedImage;
-  File fileImage;
   String postId = Uuid().v4();
   bool uploading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: appBG,
-      ),
       backgroundColor: appBG,
-      body: Column(
+      body: Stack(
         children: [
-          uploading ? LinearProgressIndicator() : Text(""),
-          Container(
-            height: 500,
-            color: Colors.white,
-            child: selectedImage != null
-                ? Image.file(selectedImage)
-                : SizedBox.shrink(),
+          Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Image.file(widget.image),
+            ),
           ),
-          selectedImage != null
-              ? FlatButton(
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    controlUploadAndSave();
-                  },
-                  child: Text("Post Wallpaper"),
-                  color: Colors.white,
-                )
-              : FlatButton(
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    captureImageWithGallery();
-                  },
-                  child: Text("Add Image"),
-                  color: Colors.white,
+          uploading
+              ? SizedBox.shrink()
+              : Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      controlUploadAndSave();
+                    },
+                    child: Container(
+                      height: 50,
+                      //width: 130,
+                      decoration: BoxDecoration(
+                        gradient: createRoomGradient,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Post Wallpaper",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+          uploading
+              ? Center(
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );
-  }
-
-  //Image from gallery
-  Future captureImageWithGallery() async {
-    fileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (fileImage != null) {
-      setState(() {
-        selectedImage = fileImage;
-      });
-    }
   }
 
   Future<String> uploadImage(mImageFile) async {
@@ -87,12 +103,10 @@ class _AddNewWallpaperState extends State<AddNewWallpaper> {
     setState(() {
       uploading = true;
     });
-    if (selectedImage != null) {
-      String downloadImage = await uploadImage(selectedImage);
-      savePostToDatabase(
-        url: downloadImage,
-      );
-    }
+    String downloadImage = await uploadImage(widget.image);
+    savePostToDatabase(
+      url: downloadImage,
+    );
   }
 
   //save to database with url
@@ -110,8 +124,6 @@ class _AddNewWallpaperState extends State<AddNewWallpaper> {
       setState(() {
         uploading = false;
         postId = Uuid().v4();
-        selectedImage = null;
-        fileImage = null;
       });
     });
   }

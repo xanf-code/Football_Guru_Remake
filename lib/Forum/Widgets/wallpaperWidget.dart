@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
@@ -30,7 +31,7 @@ class WallpaperContainerWidget extends StatelessWidget {
             withNavBar: false,
             customPageRoute: MorpheusPageRoute(
               builder: (context) => WallpaperDetailPage(
-                image: wallpaper.data()["url"],
+                reference: wallpaper,
               ),
               transitionDuration: Duration(
                 milliseconds: 200,
@@ -72,7 +73,6 @@ class WallpaperContainerWidget extends StatelessWidget {
               left: 8.0,
               child: ProfileAvatar(
                 imageUrl: wallpaper.data()["userPic"],
-                hasBorder: false,
               ),
             ),
             Positioned(
@@ -89,9 +89,45 @@ class WallpaperContainerWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            wallpaper.data()["ownerID"] == currentUser.id
+                ? Positioned(
+                    top: -5.0,
+                    right: -10.0,
+                    child: IconButton(
+                      splashColor: Colors.transparent,
+                      splashRadius: 1,
+                      icon: Icon(
+                        Icons.delete_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        HapticFeedback.mediumImpact();
+                        deleteWallpaper(wallpaper.data()["postId"]);
+                      },
+                    ),
+                  )
+                : SizedBox.shrink(),
           ],
         ),
       ),
     );
+  }
+
+  deleteWallpaper(postID) {
+    FirebaseFirestore.instance
+        .collection("wallpaper")
+        .doc(postID)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+    //Delete Post Pic from Storage
+    FirebaseStorage.instance
+        .ref()
+        .child("Wallpapers")
+        .child("post_$postID.jpg")
+        .delete();
   }
 }

@@ -1,13 +1,24 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:transfer_news/Pages/home.dart';
 import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Forum/RoutePage/addWallpaper.dart';
 import 'package:transfer_news/Forum/Widgets/palette.dart';
-import 'package:transfer_news/Pages/home.dart';
 
-class WallWidget extends StatelessWidget {
+class WallWidget extends StatefulWidget {
+  @override
+  _WallWidgetState createState() => _WallWidgetState();
+}
+
+class _WallWidgetState extends State<WallWidget> {
+  File selectedImage;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,16 +26,7 @@ class WallWidget extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           HapticFeedback.mediumImpact();
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            customPageRoute: MorpheusPageRoute(
-              builder: (context) => AddNewWallpaper(),
-              transitionDuration: Duration(
-                milliseconds: 200,
-              ),
-            ),
-          );
+          captureImageWithGallery();
         },
         child: Stack(
           children: [
@@ -77,5 +79,28 @@ class WallWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //Image from gallery
+  Future captureImageWithGallery() async {
+    selectedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (selectedImage != null) {
+      pushNewScreen(
+        context,
+        withNavBar: false,
+        customPageRoute: MorpheusPageRoute(
+          builder: (context) => AddNewWallpaper(
+            image: selectedImage,
+          ),
+          transitionDuration: Duration(
+            milliseconds: 200,
+          ),
+        ),
+      ).whenComplete(() {
+        setState(() {
+          selectedImage = null;
+        });
+      });
+    }
   }
 }

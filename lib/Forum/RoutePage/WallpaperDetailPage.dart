@@ -1,15 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_unicons/flutter_unicons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:transfer_news/Forum/Logics/forumLogic.dart';
+import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Utils/constants.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
+import 'package:provider/provider.dart';
 
 class WallpaperDetailPage extends StatelessWidget {
-  final String image;
-
-  const WallpaperDetailPage({Key key, this.image}) : super(key: key);
+  final DocumentSnapshot reference;
+  const WallpaperDetailPage({Key key, this.reference}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +24,7 @@ class WallpaperDetailPage extends StatelessWidget {
         children: [
           Center(
             child: CachedNetworkImage(
-              imageUrl: image,
+              imageUrl: reference.data()["url"],
             ),
           ),
           Positioned(
@@ -36,13 +42,60 @@ class WallpaperDetailPage extends StatelessWidget {
               },
             ),
           ),
+          Positioned(
+            bottom: 20,
+            left: 20,
+            child: StreamBuilder(
+                stream: context
+                    .watch<Repository>()
+                    .postLikes(reference.data()["postId"]),
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (!snapshot.data.exists) {
+                    return SizedBox();
+                  }
+                  return Row(
+                    children: [
+                      FlatButton.icon(
+                        icon: snapshot.data["likes"].contains(currentUser.id)
+                            ? Unicon(
+                                UniconData.uniFire,
+                                color: Colors.blueAccent,
+                                size: 19,
+                              )
+                            : Unicon(
+                                UniconData.uniFire,
+                                color: Colors.grey,
+                                size: 19,
+                              ),
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          ForumLogic().likeWallpaper(snapshot.data["postId"]);
+                        },
+                        label: Text(
+                          '${NumberFormat.compact().format(snapshot.data["likes"].length)} Votes',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }),
+          ),
         ],
       ),
     );
   }
 
   Future<void> setWallpaper(wallType, message) async {
-    var file = await DefaultCacheManager().getSingleFile(image);
+    var file =
+        await DefaultCacheManager().getSingleFile(reference.data()["url"]);
     await WallpaperManager.setWallpaperFromFile(
       file.path,
       wallType,
