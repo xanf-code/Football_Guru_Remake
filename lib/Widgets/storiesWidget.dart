@@ -6,11 +6,43 @@ import 'package:morpheus/page_routes/morpheus_page_route.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:transfer_news/Pages/Stories/updatePage.dart';
 import 'package:transfer_news/Pages/home.dart';
+import 'package:transfer_news/Repo/repo.dart';
 import 'package:transfer_news/Widgets/StoryPage.dart';
 import 'package:transfer_news/Widgets/storyCard.dart';
+import 'package:provider/provider.dart';
 
-class Stories extends StatelessWidget {
+class Stories extends StatefulWidget {
   const Stories();
+
+  @override
+  _StoriesState createState() => _StoriesState();
+}
+
+class _StoriesState extends State<Stories> {
+  final ScrollController _scrollController = ScrollController();
+  int _limit = 7;
+  final int _limitIncrement = 10;
+
+  _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      setState(() {
+        _limit += _limitIncrement;
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DelayedDisplay(
@@ -20,22 +52,13 @@ class Stories extends StatelessWidget {
       child: Container(
         height: 90,
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("stories")
-              .where(
-                "timestamp",
-                isGreaterThan: DateTime.now().subtract(Duration(hours: 24)),
-              )
-              .orderBy(
-                "timestamp",
-                descending: true,
-              )
-              .snapshots(),
+          stream: context.watch<Repository>().getStories(_limit),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return SizedBox();
             } else {
               return SingleChildScrollView(
+                controller: _scrollController,
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: Row(

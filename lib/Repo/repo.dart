@@ -14,11 +14,11 @@ class Repository extends ChangeNotifier {
         .orderBy("timestamp", descending: true);
   }
 
-  getWallpaper(forumName) {
+  getWallpaper(forumName, limit) {
     return _firestore
         .collection(forumName)
         .orderBy("timestamp", descending: true)
-        .limit(30)
+        .limit(limit)
         .snapshots();
   }
 
@@ -36,6 +36,21 @@ class Repository extends ChangeNotifier {
         .doc(ref)
         .collection("chats")
         .orderBy("timestamp", descending: true)
+        .limit(limit)
+        .snapshots();
+  }
+
+  Stream getStories(limit) {
+    return _firestore
+        .collection("stories")
+        .where(
+          "timestamp",
+          isGreaterThan: DateTime.now().subtract(Duration(hours: 24)),
+        )
+        .orderBy(
+          "timestamp",
+          descending: true,
+        )
         .limit(limit)
         .snapshots();
   }
