@@ -62,7 +62,7 @@ class _NewsPageState extends State<NewsPage> {
 
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: appBG,
         appBar: AppBar(
@@ -163,9 +163,9 @@ class _NewsPageState extends State<NewsPage> {
                     Tab(
                       text: "I-League News",
                     ),
-                    Tab(
-                      text: "Transfer News",
-                    ),
+                    // Tab(
+                    //   text: "Transfer News",
+                    // ),
                   ],
                 ),
               ),
@@ -178,7 +178,7 @@ class _NewsPageState extends State<NewsPage> {
               gCurrentUser: currentUser,
             ),
             const ILeagueNews(),
-            TMNewsWidget(news: news),
+            //TMNewsWidget(news: news),
           ],
         ),
         drawer: SafeArea(
