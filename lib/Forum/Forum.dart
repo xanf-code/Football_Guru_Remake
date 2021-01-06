@@ -24,7 +24,7 @@ import 'package:transfer_news/Widgets/featuredPostWidget.dart';
 import 'package:uuid/uuid.dart';
 
 class Forum extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const Forum({Key key, this.gCurrentUser}) : super(key: key);
 

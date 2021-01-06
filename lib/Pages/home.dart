@@ -52,10 +52,10 @@ final allPostsReference = FirebaseFirestore.instance.collection("allPosts");
 final featuredPostsReference =
     FirebaseFirestore.instance.collection("featuredPosts");
 
-User currentUser;
+FirebaseUserModel currentUser;
 
 class MyHomePage extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const MyHomePage({Key key, this.gCurrentUser}) : super(key: key);
   @override
@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       documentSnapshot = await usersReference.doc(gCurrentUser.id).get();
     }
-    currentUser = User.fromDocument(documentSnapshot);
+    currentUser = FirebaseUserModel.fromDocument(documentSnapshot);
   }
 
   loginUser() async {

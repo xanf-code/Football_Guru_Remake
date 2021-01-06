@@ -118,6 +118,7 @@ class _AddNewWallpaperState extends State<AddNewWallpaper> {
       "name": currentUser.username,
       "url": url,
       "likes": [],
+      "downloadCount": 0,
       "userPic": currentUser.url,
     }).then((result) {
       Navigator.pop(context);

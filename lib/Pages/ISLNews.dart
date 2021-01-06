@@ -15,7 +15,7 @@ import 'package:transfer_news/Widgets/NewsCardWidget.dart';
 import 'package:transfer_news/Widgets/storiesWidget.dart';
 
 class ISLNews extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const ISLNews({Key key, this.gCurrentUser}) : super(key: key);
   @override

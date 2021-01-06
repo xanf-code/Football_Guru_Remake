@@ -16,7 +16,7 @@ import 'package:transfer_news/Pages/Profile/Profile.dart';
 import 'package:transfer_news/Pages/home.dart';
 
 class Standings extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const Standings({Key key, this.gCurrentUser}) : super(key: key);
   @override

@@ -18,7 +18,7 @@ import 'package:transfer_news/RealTime/bloc/data_bloc/data_bloc.dart';
 import 'package:transfer_news/Utils/constants.dart';
 
 class RealTimeUI extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const RealTimeUI({Key key, this.gCurrentUser}) : super(key: key);
   @override

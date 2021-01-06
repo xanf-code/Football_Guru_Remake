@@ -11,7 +11,7 @@ import 'package:transfer_news/Model/usermodel.dart';
 import 'package:transfer_news/Pages/Standings/ISLStandingDetails/standingsDetails.dart';
 
 class ISLPointsTable extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const ISLPointsTable({this.gCurrentUser});
   @override

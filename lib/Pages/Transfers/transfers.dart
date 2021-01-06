@@ -17,7 +17,7 @@ import 'package:transfer_news/Pages/Transfers/Details.dart';
 import 'package:transfer_news/Pages/home.dart';
 
 class AllTransfers extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const AllTransfers({Key key, this.gCurrentUser}) : super(key: key);
   @override

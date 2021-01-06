@@ -143,4 +143,10 @@ class ForumLogic extends ChangeNotifier {
       });
     }
   }
+
+  incrementDownloadCount(String id) async {
+    FirebaseFirestore.instance.collection("wallpaper").doc(id).update({
+      'downloadCount': FieldValue.increment(1),
+    });
+  }
 }

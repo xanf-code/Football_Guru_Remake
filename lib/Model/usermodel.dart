@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class FirebaseUserModel {
   final String id;
   final String profileName;
   final String username;
@@ -10,7 +10,7 @@ class User {
   final bool isAdmin;
   final bool isVerified;
   final bool subscribed;
-  User({
+  FirebaseUserModel({
     this.subscribed,
     this.isAdmin,
     this.isVerified,
@@ -21,8 +21,8 @@ class User {
     this.url,
     this.email,
   });
-  factory User.fromDocument(DocumentSnapshot doc) {
-    return User(
+  factory FirebaseUserModel.fromDocument(DocumentSnapshot doc) {
+    return FirebaseUserModel(
       id: doc.id,
       email: doc["email"],
       url: doc["photoUrl"],

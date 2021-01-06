@@ -21,7 +21,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadPage extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const UploadPage({Key key, this.gCurrentUser}) : super(key: key);
 

@@ -89,7 +89,8 @@ class WallpaperContainerWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            wallpaper.data()["ownerID"] == currentUser.id
+            wallpaper.data()["ownerID"] == currentUser.id ||
+                    currentUser.isAdmin == true
                 ? Positioned(
                     top: -5.0,
                     right: -10.0,

@@ -76,17 +76,67 @@ class WallpaperDetailPage extends StatelessWidget {
                           HapticFeedback.mediumImpact();
                           ForumLogic().likeWallpaper(snapshot.data["postId"]);
                         },
-                        label: Text(
-                          '${NumberFormat.compact().format(snapshot.data["likes"].length)} Votes',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        label: Row(
+                          children: [
+                            AnimatedSwitcher(
+                              duration: Duration(milliseconds: 200),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                return ScaleTransition(
+                                  child: child,
+                                  scale: animation,
+                                );
+                              },
+                              child: Text(
+                                '${NumberFormat.compact().format(snapshot.data["likes"].length)} ',
+                                key: ValueKey<String>(
+                                    '${NumberFormat.compact().format(snapshot.data["likes"].length)} '),
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Votes",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     ],
                   );
                 }),
+          ),
+          Positioned(
+            bottom: 75,
+            left: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Unicon(
+                  UniconData.uniDownloadAlt,
+                  color: Colors.white70,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 6.0,
+                    left: 4,
+                  ),
+                  child: Text(
+                    '${NumberFormat.compact().format(reference.data()["downloadCount"])} Downloads',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -101,6 +151,7 @@ class WallpaperDetailPage extends StatelessWidget {
       wallType,
     ).whenComplete(() {
       Fluttertoast.showToast(msg: message);
+      ForumLogic().incrementDownloadCount(reference.data()["postId"]);
     });
   }
 

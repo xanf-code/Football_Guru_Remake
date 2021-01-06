@@ -15,7 +15,7 @@ class ConfirmedPage extends StatefulWidget {
   File videoFile;
   final String videoPath;
   final ImageSource imageSource;
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
   ConfirmedPage({
     this.videoFile,
     this.videoPath,

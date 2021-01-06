@@ -31,7 +31,7 @@ import 'package:transfer_news/main.dart';
 import 'NestedPages/TransferNewsPage.dart';
 
 class NewsPage extends StatefulWidget {
-  final User gCurrentUser;
+  final FirebaseUserModel gCurrentUser;
 
   const NewsPage({Key key, this.gCurrentUser}) : super(key: key);
 
