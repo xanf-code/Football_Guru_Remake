@@ -218,7 +218,7 @@ class ILeagueNewsWidget extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       ILeaguenewsData[index]["custom"]
-                                              ["categories"][1]["name"]
+                                              ["categories"][0]["name"]
                                           .toString()
                                           .toUpperCase(),
                                       style: GoogleFonts.rubik(

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:morpheus/page_routes/morpheus_page_route.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:http/http.dart' as http;
+import 'package:transfer_news/Pages/LiveScore/DetailsWidget/DetailsPage.dart';
 import 'package:transfer_news/Pages/Standings/Ileague.dart';
 import 'package:transfer_news/Pages/Stats/ILeagueStats.dart';
 import 'dart:convert';
@@ -89,30 +93,49 @@ class _ILeagueCallBackPageState extends State<ILeagueCallBackPage> {
                     physics: BouncingScrollPhysics(),
                     itemCount: allFixtures.length,
                     itemBuilder: (context, index) {
-                      return FixtureCard(
-                        date: allFixtures[index]["status"]["startDateStr"],
-                        month: ", 2021",
-                        day: "",
-                        eventVenue: allFixtures[index]["status"]["reason"] ==
-                                null
-                            ? ""
-                            : allFixtures[index]["status"]["reason"]["long"],
-                        team1Logo:
-                            "https://www.fotmob.com/images/team/${allFixtures[index]["home"]["id"]}_small",
-                        team1Name: allFixtures[index]["home"]["name"],
-                        team1Score: allFixtures[index]["home"]["score"]
-                                    .toString() ==
-                                "null"
-                            ? "-"
-                            : allFixtures[index]["home"]["score"].toString(),
-                        team2Logo:
-                            "https://www.fotmob.com/images/team/${allFixtures[index]["away"]["id"]}_small",
-                        team2Name: allFixtures[index]["away"]["name"],
-                        team2Score: allFixtures[index]["away"]["score"]
-                                    .toString() ==
-                                "null"
-                            ? "-"
-                            : allFixtures[index]["away"]["score"].toString(),
+                      return GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          pushNewScreen(
+                            context,
+                            withNavBar: false,
+                            customPageRoute: MorpheusPageRoute(
+                              builder: (context) => ScoresDetailsWidget(
+                                matchID: int.parse(allFixtures[index]["id"]),
+                                homeTeam: allFixtures[index]["home"]["name"],
+                                awayTeam: allFixtures[index]["away"]["name"],
+                              ),
+                              transitionDuration: Duration(
+                                milliseconds: 200,
+                              ),
+                            ),
+                          );
+                        },
+                        child: FixtureCard(
+                          date: allFixtures[index]["status"]["startDateStr"],
+                          month: ", 2021",
+                          day: "",
+                          eventVenue: allFixtures[index]["status"]["reason"] ==
+                                  null
+                              ? ""
+                              : allFixtures[index]["status"]["reason"]["long"],
+                          team1Logo:
+                              "https://www.fotmob.com/images/team/${allFixtures[index]["home"]["id"]}_small",
+                          team1Name: allFixtures[index]["home"]["name"],
+                          team1Score: allFixtures[index]["home"]["score"]
+                                      .toString() ==
+                                  "null"
+                              ? "-"
+                              : allFixtures[index]["home"]["score"].toString(),
+                          team2Logo:
+                              "https://www.fotmob.com/images/team/${allFixtures[index]["away"]["id"]}_small",
+                          team2Name: allFixtures[index]["away"]["name"],
+                          team2Score: allFixtures[index]["away"]["score"]
+                                      .toString() ==
+                                  "null"
+                              ? "-"
+                              : allFixtures[index]["away"]["score"].toString(),
+                        ),
                       );
                     },
                   ),
