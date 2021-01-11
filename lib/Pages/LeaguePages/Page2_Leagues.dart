@@ -194,7 +194,7 @@ class _LeaguePageState extends State<LeaguePage>
                   leagueLogo:
                       "https://upload.wikimedia.org/wikipedia/en/thumb/7/72/I-League_logo.svg/1200px-I-League_logo.svg.png",
                   leagueName: "Hero I-League",
-                  leagueYear: "Season 2019/20",
+                  leagueYear: "Season 2020/21",
                   evenName: "Hero I-League",
                   eventVenue: ileagueFixtures[0]["status"]["startDateStr"],
                   team1Logo:

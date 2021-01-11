@@ -88,7 +88,7 @@ class _ForumDetailsState extends State<ForumDetails>
                         : SizedBox.shrink()
                     : SizedBox.shrink(),
                 SizedBox(
-                  height: 10,
+                  height: 6,
                 ),
                 PostContainer(
                   post: posts,

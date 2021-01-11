@@ -98,6 +98,7 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   parallax_image: ^0.3.1+1
   dotted_border: ^1.0.7
+  category_picker: ^1.0.1
 
   #Date Picker
   flutter_date_picker_timeline: ^0.1.3
